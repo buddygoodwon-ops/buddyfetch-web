@@ -1,0 +1,80 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BuddyFetch â€” Live Cartoon Dog App</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <main class="app">
+    <section class="stage" aria-label="BuddyFetch cartoon dog avatar">
+      <div class="status-bar">
+        <span class="dot" id="statusDot"></span>
+        <span id="statusText">Booting BuddyFetch...</span>
+      </div>
+
+      <div class="avatar-card video-card" id="avatarCard">
+        <div class="bone-logo">🎾</div>
+        <div class="avatar-glow"></div>
+        <video id="dogAvatar" class="dog-video" autoplay muted loop playsinline preload="metadata" poster="/assets/old-dog-cartoon.jpg" aria-label="BuddyFetch cartoon dog avatar video">
+          <source src="/assets/buddyfetch-elevator-pitch.mp4" type="video/mp4" />
+        </video>
+        <div class="badge">BUDDYFETCH.AI 🤖</div>
+      </div>
+
+      <a class="video-link-card" href="/assets/buddyfetch-elevator-pitch.mp4" target="_blank" rel="noopener" aria-label="Open BuddyFetch pitch video">
+        <span class="video-link-kicker">Pitch video</span>
+        <strong>Open / copy BuddyFetch video link</strong>
+        <small>https://buddyfetch-web.vercel.app/assets/buddyfetch-elevator-pitch.mp4</small>
+      </a>
+
+      <div class="controls compact-controls">
+        <button id="listenBtn" class="mic-button" type="button" aria-label="Talk to Buddy">🎙️</button>
+        <div class="fetch-row">
+          <button id="taskModeBtn" type="button" aria-pressed="false">🎾 Fetch Mode: Off</button>
+          <button id="attachBtn2" class="attach-button-inline" type="button" aria-label="Attach picture or file">📎</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" aria-label="Chat with Buddy">
+      <header class="panel-header">
+        <p class="eyebrow">BuddyFetch Live Cartoon Dog</p>
+        <h1>Talk to the dog. Get real answers.</h1>
+        <p class="sub">Voice transcribes into the message box, BuddyFetch reads typed questions aloud, then answers back in Buddyâ€™s voice.</p>
+      </header>
+
+      <div id="chat" class="chat" role="log" aria-live="polite"></div>
+
+      <form id="chatForm" class="composer sms-composer">
+        <button id="attachBtn" class="attach-button" type="button" aria-label="Attach picture or file">+</button>
+        <input id="fileInput" class="sr-only" type="file" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.csv,.json,.zip" multiple />
+        <label class="sr-only" for="messageInput">Voice transcript or text message</label>
+        <div class="message-shell">
+          <span class="message-hint">Voice transcript / text message</span>
+          <input id="messageInput" name="message" autocomplete="off" placeholder="Tap mic or type your questionâ€¦" />
+        </div>
+        <button class="send-button" type="submit">➤</button>
+      </form>
+
+      <details class="build-notes">
+        <summary>Build status</summary>
+        <ul id="statusList">
+          <li>✅ BuddyFetch pitch video link visible below the dog</li>
+          <li>✅ Live cartoon dog/avatar layer is lip-syncing lines</li>
+          <li>✅ Clean BuddyFetch LLM target added</li>
+          <li>✅ STT added to LiveKit worker for real question turns</li>
+          <li>🟡 Full back-and-forth FaceTime-style call loop is being tested</li>
+        </ul>
+      </details>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
+
+
+
+

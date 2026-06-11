@@ -1,0 +1,65 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BuddyFetch Live Backup</title>
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    body { min-height: 100vh; background: radial-gradient(circle at top, #244, #071014 55%, #020405); color: #f7fbff; }
+    .live-wrap { width: min(1080px, 94vw); margin: 24px auto; display: grid; grid-template-columns: 1.2fr .8fr; gap: 18px; }
+    .live-card { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.16); border-radius: 28px; padding: 18px; box-shadow: 0 24px 80px rgba(0,0,0,.35); backdrop-filter: blur(12px); }
+    .phone { aspect-ratio: 9 / 16; max-height: 78vh; margin: 0 auto; border-radius: 42px; background: #05080a; border: 10px solid #111; overflow: hidden; position: relative; box-shadow: inset 0 0 0 1px rgba(255,255,255,.12), 0 20px 70px rgba(0,0,0,.5); }
+    video#liveVideo { width: 100%; height: 100%; object-fit: cover; background: #000; display: block; }
+    .call-overlay { position: absolute; inset: auto 16px 20px; padding: 14px; border-radius: 24px; background: linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.72)); }
+    .pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px; background: rgba(255,255,255,.13); font-size: 13px; }
+    .controls { display: grid; gap: 12px; }
+    .controls button, .controls select, .controls textarea { width: 100%; border-radius: 14px; border: 1px solid rgba(255,255,255,.16); padding: 12px 14px; background: rgba(255,255,255,.1); color: #fff; font: inherit; }
+    .controls select option { color: #111; }
+    .controls textarea { min-height: 100px; resize: vertical; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    button.primary { background: #24c26a; color: #041008; font-weight: 800; }
+    button.danger { background: #d94747; font-weight: 800; }
+    button.secondary { background: #1e88ff; font-weight: 800; }
+    button:disabled { opacity: .55; cursor: wait; }
+    #liveLog { height: 220px; overflow: auto; font-family: ui-monospace, Consolas, monospace; font-size: 12px; background: rgba(0,0,0,.28); border-radius: 14px; padding: 10px; }
+    #avatarPreview { width: 100%; max-height: 180px; object-fit: contain; background: rgba(0,0,0,.25); border-radius: 16px; }
+    @media (max-width: 860px) { .live-wrap { grid-template-columns: 1fr; } .phone { max-height: 70vh; } }
+  </style>
+</head>
+<body>
+  <main class="live-wrap">
+    <section class="live-card">
+      <div class="phone">
+        <video id="liveVideo" playsinline autoplay></video>
+        <div class="call-overlay">
+          <div class="pill">ðŸ¶ BuddyFetch Live Backup</div>
+          <h2>Buddy + Glenn Test Line</h2>
+          <p id="liveStatus">Ready â€” start LiveAvatar</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="live-card controls">
+      <h1>BuddyFetch LiveAvatar Lite</h1>
+      <p>Temporary working backup: Glenn + Buddy. Default avatar: Elenora Fitness Coach 2 for now.</p>
+      <label>Avatar
+        <select id="avatarSelect"></select>
+      </label>
+      <img id="avatarPreview" alt="Avatar preview" />
+      <div class="row">
+        <button id="startLiveBtn" class="primary">Start LiveAvatar</button>
+        <button id="stopLiveBtn" class="danger">Stop</button>
+      </div>
+      <textarea id="liveText">Hey Glenn, BuddyFetch live backup is waking up. We are starting simple: you, me, live avatar, then we bolt on the big stuff.</textarea>
+      <div class="row">
+        <button id="speakLiveBtn" class="secondary">Make Buddy Speak</button>
+        <button id="interruptLiveBtn">Interrupt</button>
+      </div>
+      <div id="liveLog"></div>
+      <p><a href="/" style="color:#9ee7ff">Back to MVP chat shell</a></p>
+    </section>
+  </main>
+  <script src="/liveavatar.bundle.js"></script>
+</body>
+</html>
