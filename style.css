@@ -75,5 +75,6 @@ li { margin: 6px 0; }
 .video-link-card:hover { border-color: rgba(242,184,75,.55); transform: translateY(-1px); }
 .video-link-kicker { color: var(--gold); font-size: 11px; font-weight: 900; letter-spacing: .16em; text-transform: uppercase; }
 .video-link-card strong { font-size: 16px; }
+.video-cta { font-size: 28px !important; }
 .video-link-card small { color: var(--muted); overflow-wrap: anywhere; line-height: 1.25; }
 .compact-controls { margin-top: 2px; }
