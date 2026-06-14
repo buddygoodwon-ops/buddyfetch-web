@@ -1,0 +1,17 @@
+{
+  "name": "BuddyFetch",
+  "short_name": "BuddyFetch",
+  "description": "Talk to the dog. Get real answers.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080706",
+  "theme_color": "#f2b84b",
+  "icons": [
+    {
+      "src": "/assets/old-dog-cartoon.jpg",
+      "sizes": "1024x1024",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}

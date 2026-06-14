@@ -3,7 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BuddyFetch â€” Live Cartoon Dog App</title>
+  <meta name="theme-color" content="#f2b84b" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="BuddyFetch" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" type="image/jpeg" href="/assets/old-dog-cartoon.jpg" />
+  <link rel="apple-touch-icon" href="/assets/old-dog-cartoon.jpg" />
+  <title>BuddyFetch â€" Live Cartoon Dog App</title>
   <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
@@ -40,7 +47,7 @@
       <header class="panel-header">
         <p class="eyebrow">BuddyFetch Live Cartoon Dog</p>
         <h1>Talk to the dog. Get real answers.</h1>
-        <p class="sub">Voice transcribes into the message box, BuddyFetch reads typed questions aloud, then answers back in Buddyâ€™s voice.</p>
+        <p class="sub">Voice transcribes into the message box, BuddyFetch reads typed questions aloud, then answers back in Buddyâ€TMs voice.</p>
       </header>
 
       <div id="chat" class="chat" role="log" aria-live="polite"></div>
@@ -71,6 +78,7 @@
 
   <script src="/liveavatar.bundle.js"></script>
   <script type="module" src="/app.js"></script>
+  <script src="/install-prompt.js"></script>
 </body>
 </html>
 
