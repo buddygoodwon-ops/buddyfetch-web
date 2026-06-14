@@ -270,11 +270,27 @@ if (listenBtn) {
   listenBtn.addEventListener('click', toggleCall);
 }
 
-// Attach button (top of stage)
+// Attach buttons
+const attachBtn = $('attachBtn');
 const attachBtn2 = $('attachBtn2');
 const fileInput = $('fileInput');
+
+if (attachBtn && fileInput) {
+  attachBtn.addEventListener('click', () => fileInput.click());
+}
+
 if (attachBtn2 && fileInput) {
   attachBtn2.addEventListener('click', () => fileInput.click());
+}
+
+if (fileInput) {
+  fileInput.addEventListener('change', (e) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length > 0) {
+      const fileNames = files.map(f => f.name).join(', ');
+      addMsg('system', `Attached: ${fileNames}`);
+    }
+  });
 }
 
 // Task mode toggle
