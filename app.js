@@ -275,17 +275,28 @@ const attachBtn = $('attachBtn');
 const attachBtn2 = $('attachBtn2');
 const fileInput = $('fileInput');
 
+console.log('Buttons found:', { attachBtn: !!attachBtn, attachBtn2: !!attachBtn2, fileInput: !!fileInput });
+
 if (attachBtn && fileInput) {
-  attachBtn.addEventListener('click', () => fileInput.click());
+  attachBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    console.log('Bottom attach clicked');
+    fileInput.click();
+  });
 }
 
 if (attachBtn2 && fileInput) {
-  attachBtn2.addEventListener('click', () => fileInput.click());
+  attachBtn2.addEventListener('click', (e) => {
+    e.preventDefault();
+    console.log('Top attach clicked');
+    fileInput.click();
+  });
 }
 
 if (fileInput) {
   fileInput.addEventListener('change', (e) => {
     const files = Array.from(e.target.files || []);
+    console.log('Files selected:', files);
     if (files.length > 0) {
       const fileNames = files.map(f => f.name).join(', ');
       addMsg('system', `Attached: ${fileNames}`);
@@ -295,12 +306,18 @@ if (fileInput) {
 
 // Task mode toggle
 const taskModeBtn = $('taskModeBtn');
+console.log('Task mode button found:', !!taskModeBtn);
 if (taskModeBtn) {
-  taskModeBtn.addEventListener('click', () => {
+  taskModeBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    console.log('Task mode clicked');
     const isOn = taskModeBtn.getAttribute('aria-pressed') === 'true';
     taskModeBtn.setAttribute('aria-pressed', !isOn);
     taskModeBtn.textContent = isOn ? '🎾 Fetch Mode: Off' : '🎾 Fetch Mode: On';
-    addMsg('system', isOn ? 'Fetch mode disabled' : 'Fetch mode enabled - Buddy will tackle longer tasks');
+    console.log('Chat element:', chat);
+    if (chat) {
+      addMsg('system', isOn ? 'Fetch mode disabled' : 'Fetch mode enabled - Buddy will tackle longer tasks');
+    }
   });
 }
 
