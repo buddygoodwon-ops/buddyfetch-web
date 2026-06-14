@@ -270,6 +270,24 @@ if (listenBtn) {
   listenBtn.addEventListener('click', toggleCall);
 }
 
+// Attach button (top of stage)
+const attachBtn2 = $('attachBtn2');
+const fileInput = $('fileInput');
+if (attachBtn2 && fileInput) {
+  attachBtn2.addEventListener('click', () => fileInput.click());
+}
+
+// Task mode toggle
+const taskModeBtn = $('taskModeBtn');
+if (taskModeBtn) {
+  taskModeBtn.addEventListener('click', () => {
+    const isOn = taskModeBtn.getAttribute('aria-pressed') === 'true';
+    taskModeBtn.setAttribute('aria-pressed', !isOn);
+    taskModeBtn.textContent = isOn ? '🎾 Fetch Mode: Off' : '🎾 Fetch Mode: On';
+    addMsg('system', isOn ? 'Fetch mode disabled' : 'Fetch mode enabled - Buddy will tackle longer tasks');
+  });
+}
+
 if (form) {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();

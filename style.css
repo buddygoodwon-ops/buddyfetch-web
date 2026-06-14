@@ -38,6 +38,7 @@ button, input { font: inherit; }
 .controls { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; align-items: center; }
 .fetch-row { display: flex; gap: 8px; align-items: center; }
 .attach-button-inline { width: 38px; height: 38px; padding: 0; display: grid; place-items: center; font-size: 24px; line-height: 1; flex: 0 0 auto; background: #2a2118; color: var(--cream); box-shadow: none; border-radius: 50%; }
+.attach-button-match { width: 54px; height: 54px; padding: 0; display: grid; place-items: center; font-size: 28px; line-height: 1; flex: 0 0 auto; border: 0; border-radius: 999px; cursor: pointer; color: #180d06; background: linear-gradient(135deg, var(--gold), var(--orange)); font-weight: 800; box-shadow: 0 10px 22px rgba(255,107,34,.22); }
 button { border: 0; border-radius: 999px; padding: 12px 16px; cursor: pointer; color: #180d06; background: linear-gradient(135deg, var(--gold), var(--orange)); font-weight: 800; box-shadow: 0 10px 22px rgba(255,107,34,.22); }
 button.secondary, #taskModeBtn[aria-pressed="true"] { background: #fff4df; }
 #demoVideo { width: min(430px, 88vw); max-height: 60vh; border-radius: 18px; border: 1px solid var(--line); background: #000; }
