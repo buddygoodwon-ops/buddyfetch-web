@@ -1,88 +1,40 @@
-﻿<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#f2b84b" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="BuddyFetch" />
-  <link rel="manifest" href="/manifest.json" />
-  <link rel="icon" type="image/jpeg" href="/assets/old-dog-cartoon.jpg" />
-  <link rel="apple-touch-icon" href="/assets/old-dog-cartoon.jpg" />
-  <title>BuddyFetch â€" Live Cartoon Dog App</title>
-  <link rel="stylesheet" href="/style.css" />
-</head>
-<body>
-  <main class="app">
-    <section class="stage" aria-label="BuddyFetch cartoon dog avatar">
-      <div class="status-bar">
-        <span class="dot" id="statusDot"></span>
-        <span id="statusText">Booting BuddyFetch...</span>
-      </div>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="theme-color" content="#f2b84b"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/><meta name="apple-mobile-web-app-title" content="BuddyFetch"/><link rel="manifest" href="/manifest.json"/><link rel="icon" type="image/jpeg" href="/assets/old-dog-cartoon.jpg"/><link rel="apple-touch-icon" href="/assets/old-dog-cartoon.jpg"/><title>BuddyFetch</title>
+<style>
+body{background:#000;margin:0;}
+.buddy-avatar-promo{max-width:360px;margin:40px auto;padding:40px 20px 32px;text-align:center;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#333333;border-radius:20px;}
+.buddy-avatar-promo .avatar-frame{width:329px;height:329px;background:#fff;border-radius:20px;overflow:visible;display:block;margin:0 auto 16px;box-sizing:border-box;position:relative;}
+.buddy-avatar-promo .avatar-caption{position:absolute;left:50%;top:100%;transform:translate(-50%,-100%);background:#5a5a5a;color:#fff;font-weight:700;font-size:14px;letter-spacing:.02em;text-transform:none;padding:8px 20px;margin:0;border-radius:999px;white-space:nowrap;}
+.buddy-avatar-promo .avatar-frame img{width:100%;height:100%;object-fit:cover;border-radius:20px;transform-origin:center center;cursor:pointer;display:block;}
+.buddy-avatar-promo .eyebrow{color:#f2842b;font-weight:700;letter-spacing:.06em;font-size:14px;text-transform:uppercase;margin:0 0 12px;}
+.buddy-avatar-promo h1{font-size:22px;line-height:1.3;margin:24px 0 10px;color:#fff;}
+.buddy-avatar-promo p{font-size:14px;color:#d8c3ae;line-height:1.4;margin:0 0 16px;}
+.buddy-avatar-promo .btn{display:block;width:100%;box-sizing:border-box;padding:14px 16px;margin:8px 0;border-radius:999px;border:none;font-size:15px;font-weight:600;cursor:pointer;}
+.buddy-avatar-promo .btn-primary{background:#f2842b;color:#fff;}
+.buddy-avatar-promo .btn-secondary{background:#f5efe6;color:#2b2b2b;}lemon-slice-widget{transition:transform .25s ease;display:none;}
+lemon-slice-widget[controlled-widget-state="active"]{display:block;}
+@media (max-width:700px){
+lemon-slice-widget[controlled-widget-state="active"]{position:fixed!important;top:calc(50% - 12px)!important;left:50%!important;transform:translate(-50%,-50%) scale(1.17)!important;transform-origin:center center!important;z-index:9999!important;max-height:90vh!important;}
+body:has(lemon-slice-widget[controlled-widget-state="active"]){background:#2b2b2b;} body:has(lemon-slice-widget[controlled-widget-state="active"]) .buddy-avatar-promo{display:none;}
+#buddy-mute-hint{display:none;}
+body:has(lemon-slice-widget[controlled-widget-state="active"]) #buddy-mute-hint{display:flex;position:fixed;left:50%;bottom:calc(25dvh - 158px);transform:translateX(-50%);z-index:9999;flex-direction:row;align-items:center;gap:6px;color:#fff;font-size:16px;font-weight:600;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;white-space:nowrap;text-align:center;}
+#buddy-mute-hint button{background:rgba(255,255,255,.16);border:none;border-radius:999px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;}}
+</style>
+</head><body>
 
-      <div class="avatar-card video-card" id="avatarCard">
-        <div class="avatar-glow"></div>
-        <video id="dogAvatar" class="dog-video" autoplay muted loop playsinline preload="metadata" poster="/assets/old-dog-cartoon.jpg" aria-label="BuddyFetch cartoon dog avatar video">
-          <source src="/assets/buddyfetch-elevator-pitch.mp4" type="video/mp4" />
-        </video>
-        <div class="badge">🎾 BuddyFetch.AI</div>
-      </div>
-
-      <div class="controls compact-controls">
-        <button id="listenBtn" class="mic-button" type="button" aria-label="Talk to Buddy">🎤</button>
-        <div class="fetch-row">
-          <button id="taskModeBtn" type="button" aria-pressed="false">🎾 Fetch Mode: Off</button>
-          <button id="attachBtn2" class="attach-button-match" type="button" aria-label="Attach picture or file">📎</button>
-        </div>
-      </div>
-
-      <a class="video-link-card" href="/assets/buddyfetch-elevator-pitch.mp4" target="_blank" rel="noopener" aria-label="Open BuddyFetch pitch video">
-        <span class="video-link-kicker">Why BuddyFetch?</span>
-        <strong class="video-cta">Let me tell you why!</strong>
-      </a>
-    </section>
-
-    <section class="panel" aria-label="Chat with Buddy">
-      <header class="panel-header">
-        <p class="eyebrow">BuddyFetch Live Cartoon Dog</p>
-        <h1>Talk to the dog. Get real answers.</h1>
-        <p class="sub">Voice transcribes into the message box, BuddyFetch reads typed questions aloud, then answers back in Buddyâ€TMs voice.</p>
-      </header>
-
-      <div id="chat" class="chat" role="log" aria-live="polite"></div>
-
-      <form id="chatForm" class="composer sms-composer">
-        <button id="attachBtn" class="attach-button" type="button" aria-label="Upload picture or file" title="Upload picture or file">📎</button>
-        <input id="fileInput" class="sr-only" type="file" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.csv,.json,.zip" multiple />
-        <label class="sr-only" for="messageInput">Voice transcript or text message</label>
-        <div class="message-shell">
-          <span class="message-hint">Voice transcript / text message</span>
-          <input id="messageInput" name="message" autocomplete="off" placeholder="Tap mic or type your questionâ€¦" />
-        </div>
-        <button class="send-button" type="submit">➤</button>
-      </form>
-
-      <details class="build-notes">
-        <summary>Build status</summary>
-        <ul id="statusList">
-          <li>✅ BuddyFetch pitch video link visible below the dog</li>
-          <li>✅ Live cartoon dog/avatar layer is lip-syncing lines</li>
-          <li>✅ Clean BuddyFetch LLM target added</li>
-          <li>✅ STT added to LiveKit worker for real question turns</li>
-          <li>🟡 Full back-and-forth FaceTime-style call loop is being tested</li>
-        </ul>
-      </details>
-    </section>
-  </main>
-
-  <script src="/liveavatar.bundle.js"></script>
-  <script type="module" src="/app.js"></script>
-  <script src="/install-prompt.js"></script>
-</body>
-</html>
-
-
-
-
-
+<div class="buddy-avatar-promo">
+<p class="eyebrow">BUDDYFETCH.AI</p>
+<div class="avatar-frame"><img src="/assets/buddy-avatar-cartoon.jpg" alt="Buddy avatar" id="buddy-avatar-trigger"/><p class="avatar-caption">Let's Yap!&nbsp;&nbsp;Click me.</p></div>
+<h1>Your Virtual Mascot<br>Your Company Brain<br>Fetching Real Tasks</h1>
+<p>Your Company's Window into your AI powered custom Virtual Mascot to access your Company's Brain powered by Agentic AI OpenClaw. You and your Employes can access all your company's knowledge base and then assign real tasks, jobs, and workflows for him do. We build this custom for your business!</p>
+<button type="button" class="btn btn-primary" id="start-buddy-avatar">Start Fetch Mode</button>
+<button type="button" class="btn btn-secondary" id="open-local-plugin-ui">Save to Your Home Screen</button>
+</div>
+<lemon-slice-widget agent-id="agent_f1c18ca648d1c23c" inline="" custom-minimized-width="200" custom-minimized-height="300" custom-active-width="320" custom-active-height="520" video-button-color-opacity="0.88" show-minimize-button="true" initial-state="minimized"></lemon-slice-widget>
+<div id="buddy-mute-hint"><span>If Buddy is Muted Hit</span><span aria-hidden="true" style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:999px;background:rgba(255,255,255,.16);flex-shrink:0;"><svg width="4" height="16" viewBox="0 0 4 16" fill="#fff"><circle cx="2" cy="2" r="2"/><circle cx="2" cy="8" r="2"/><circle cx="2" cy="14" r="2"/></svg></span><span>Button Above</span></div><script type="module" src="https://unpkg.com/@lemonsliceai/lemon-slice-widget"></script>
+<script>
+function openBuddyAvatar(){var w=document.querySelector('lemon-slice-widget');if(!w)return;w.setAttribute('controlled-widget-state','active');}
+document.getElementById('buddy-avatar-trigger').addEventListener('click',openBuddyAvatar);
+document.getElementById('start-buddy-avatar').addEventListener('click',openBuddyAvatar);
+document.getElementById('open-local-plugin-ui').addEventListener('click',function(){var w=document.querySelector('lemon-slice-widget');if(w){w.dispatchEvent(new Event('click',{bubbles:true}));}openBuddyAvatar();});
+</script>
+</body></html>
