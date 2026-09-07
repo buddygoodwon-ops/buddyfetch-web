@@ -1,0 +1,206 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="theme-color" content="#f2b84b"/><link rel="icon" type="image/png" href="https://www.whoagenticaiwhat.com/assets/old-dog-cartoon.jpg"/><title>Date &amp; Clock - WhoAgenticAIwhat</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#fafafa;color:#111;margin:0;padding:0;}
+.wrap{max-width:680px;margin:0 auto;padding:20px 20px 60px;}
+.nav{text-align:center;padding:10px 0 20px;}
+.nav a{color:#f2842b;text-decoration:none;font-weight:700;margin:0 10px;font-size:14px;}
+.clock-card{text-align:center;padding:28px 20px;border-radius:16px;background:#111;color:#fff;margin-bottom:20px;}
+.clock{font-size:42px;font-weight:700;letter-spacing:1px;}
+.dateline{font-size:16px;color:#f2b84b;margin-top:6px;}
+.status-card{border-radius:14px;padding:20px;margin-bottom:24px;border:2px solid #2e7d32;background:#eef8ee;}
+.status-card h2{margin:0 0 8px;font-size:18px;color:#2e7d32;}
+.status-card p{margin:0 0 6px;font-size:14px;line-height:1.5;color:#333;}
+.status-card p.note{font-size:12px;color:#777;}
+.status-holiday{border-color:#c0392b;background:#fdecea;}
+.status-holiday h2{color:#c0392b;}
+.status-light{border-color:#f2842b;background:#fff7ec;}
+.status-light h2{color:#f2842b;}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:28px;}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid #eee;}
+th{color:#888;text-transform:uppercase;font-size:11px;letter-spacing:.05em;}
+h3{font-size:15px;margin:0 0 4px;color:#111;}
+.sub{font-size:12px;color:#888;margin:0 0 10px;}
+.today-row{background:#fff7ec;}
+.shift-tag{display:inline-block;font-size:11px;padding:2px 7px;border-radius:999px;background:#fdecea;color:#c0392b;font-weight:600;margin-left:6px;}
+</style>
+</head><body>
+<div class="wrap">
+<div class="nav"><a href="/">Home</a><a href="/calendar">Calendar</a></div>
+
+<div class="clock-card">
+<div class="clock" id="clock">--:--:--</div>
+<div class="dateline" id="dateline">Loading date...</div>
+</div>
+
+<div class="status-card" id="statusCard">
+<h2 id="statusTitle">Checking today...</h2>
+<p id="statusText"></p>
+<p class="note" id="statusNote"></p>
+</div>
+
+<h3>Federal Holidays (<span id="yearLabelA"></span>)</h3>
+<p class="sub">If a holiday's actual date falls on a Saturday, it is observed the preceding Friday. If it falls on a Sunday, it is observed the following Monday. That observed date is the actual day off.</p>
+<table id="holidayTable"><thead><tr><th>Actual Date</th><th>Holiday</th><th>Observed / Day Off</th></tr></thead><tbody></tbody></table>
+
+<h3>Informal "Light Staffing" Days (<span id="yearLabelB"></span>)</h3>
+<p class="sub">Not official holidays, but days when many offices run with light staffing.</p>
+<table id="lightTable"><thead><tr><th>Date</th><th>Why it's quiet</th></tr></thead><tbody></tbody></table>
+
+</div>
+<script>
+function nthWeekdayOfMonth(year, monthIndex, weekday, n){
+var d = new Date(year, monthIndex, 1);
+var offset = (weekday - d.getDay() + 7) % 7;
+var day = 1 + offset + (n - 1) * 7;
+return new Date(year, monthIndex, day);
+}
+function lastWeekdayOfMonth(year, monthIndex, weekday){
+var d = new Date(year, monthIndex + 1, 0);
+var offset = (d.getDay() - weekday + 7) % 7;
+return new Date(year, monthIndex, d.getDate() - offset);
+}
+function addDays(d, n){
+var r = new Date(d);
+r.setDate(r.getDate() + n);
+return r;
+}
+function sameDate(a, b){
+return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+}
+function fmt(d){
+return d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric" });
+}
+function getObserved(date){
+var day = date.getDay();
+if (day === 6) return addDays(date, -1);
+if (day === 0) return addDays(date, 1);
+return date;
+}
+
+function getFederalHolidays(year){
+return [
+{ name: "New Year's Day", date: new Date(year, 0, 1) },
+{ name: "Martin Luther King Jr. Day", date: nthWeekdayOfMonth(year, 0, 1, 3) },
+{ name: "Presidents' Day", date: nthWeekdayOfMonth(year, 1, 1, 3) },
+{ name: "Memorial Day", date: lastWeekdayOfMonth(year, 4, 1) },
+{ name: "Juneteenth", date: new Date(year, 5, 19) },
+{ name: "Independence Day", date: new Date(year, 6, 4) },
+{ name: "Labor Day", date: nthWeekdayOfMonth(year, 8, 1, 1) },
+{ name: "Columbus Day", date: nthWeekdayOfMonth(year, 9, 1, 2) },
+{ name: "Veterans Day", date: new Date(year, 10, 11) },
+{ name: "Thanksgiving Day", date: nthWeekdayOfMonth(year, 10, 4, 4) },
+{ name: "Christmas Day", date: new Date(year, 11, 25) }
+].map(function(h){
+h.observed = getObserved(h.date);
+return h;
+});
+}
+
+function getLightDays(year){
+var memorialDay = lastWeekdayOfMonth(year, 4, 1);
+var laborDay = nthWeekdayOfMonth(year, 8, 1, 1);
+var thanksgiving = nthWeekdayOfMonth(year, 10, 4, 4);
+var days = [
+{ name: "Day after Thanksgiving", date: addDays(thanksgiving, 1), why: "Black Friday - one of the most commonly taken days off; many offices are barely staffed." },
+{ name: "Day after Christmas", date: new Date(year, 11, 26), why: "Between Christmas and New Year's, offices typically run very light." },
+{ name: "New Year's Eve", date: new Date(year, 11, 31), why: "Many people leave early or take the day off ahead of New Year's celebrations." },
+{ name: "Friday before Memorial Day", date: addDays(memorialDay, -3), why: "Kicks off the long Memorial Day weekend early for many workers." },
+{ name: "Friday before Labor Day", date: addDays(laborDay, -3), why: "Kicks off the long Labor Day weekend early for many workers." }
+];
+
+var july4 = new Date(year, 6, 4);
+var july4Weekday = july4.getDay();
+if (july4Weekday === 4) {
+days.push({ name: "Day after Independence Day", date: addDays(july4, 1), why: "With July 4th (a Thursday) just behind, many offices bridge into a 4-day weekend." });
+} else if (july4Weekday === 2) {
+days.push({ name: "Day before Independence Day", date: addDays(july4, -1), why: "With July 4th falling on a Tuesday, many workers bridge the preceding Monday into a 4-day weekend." });
+}
+
+return days;
+}
+
+function updateClock(){
+var now = new Date();
+document.getElementById("clock").textContent = now.toLocaleTimeString("en-US");
+document.getElementById("dateline").textContent = fmt(now);
+}
+
+function renderStatus(){
+var now = new Date();
+var year = now.getFullYear();
+var holidays = getFederalHolidays(year);
+var lightDays = getLightDays(year);
+var card = document.getElementById("statusCard");
+var title = document.getElementById("statusTitle");
+var text = document.getElementById("statusText");
+var note = document.getElementById("statusNote");
+note.textContent = "";
+
+var matchHoliday = holidays.find(function(h){ return sameDate(h.observed, now); });
+var matchLight = lightDays.find(function(l){ return sameDate(l.date, now); });
+
+if (matchHoliday) {
+card.className = "status-card status-holiday";
+title.textContent = "Today is " + matchHoliday.name + (sameDate(matchHoliday.date, matchHoliday.observed) ? "" : " (observed)");
+text.textContent = "This is a recognized U.S. federal holiday. Most banks, government offices, and many companies are closed.";
+if (!sameDate(matchHoliday.date, matchHoliday.observed)) {
+note.textContent = matchHoliday.name + " actually falls on " + fmt(matchHoliday.date) + ", but since that's a " + matchHoliday.date.toLocaleDateString("en-US", { weekday: "long" }) + ", the holiday is observed on " + fmt(matchHoliday.observed) + " instead.";
+}
+} else if (matchLight) {
+card.className = "status-card status-light";
+title.textContent = "Today is a light staffing day: " + matchLight.name;
+text.textContent = matchLight.why;
+} else {
+card.className = "status-card";
+title.textContent = "Today is a regular business day";
+text.textContent = "No federal holiday or notably light staffing pattern applies to today.";
+}
+
+document.getElementById("yearLabelA").textContent = year;
+document.getElementById("yearLabelB").textContent = year;
+
+var hBody = document.querySelector("#holidayTable tbody");
+hBody.innerHTML = "";
+holidays.slice().sort(function(a,b){ return a.date - b.date; }).forEach(function(h){
+var tr = document.createElement("tr");
+if (sameDate(h.observed, now)) tr.className = "today-row";
+var td1 = document.createElement("td");
+td1.textContent = fmt(h.date);
+var td2 = document.createElement("td");
+td2.textContent = h.name;
+var td3 = document.createElement("td");
+if (sameDate(h.date, h.observed)) {
+td3.textContent = "Same day";
+} else {
+td3.textContent = fmt(h.observed);
+var tag = document.createElement("span");
+tag.className = "shift-tag";
+tag.textContent = "shifted";
+td3.appendChild(tag);
+}
+tr.appendChild(td1);
+tr.appendChild(td2);
+tr.appendChild(td3);
+hBody.appendChild(tr);
+});
+
+var lBody = document.querySelector("#lightTable tbody");
+lBody.innerHTML = "";
+lightDays.slice().sort(function(a,b){ return a.date - b.date; }).forEach(function(l){
+var tr = document.createElement("tr");
+if (sameDate(l.date, now)) tr.className = "today-row";
+var td1 = document.createElement("td");
+td1.textContent = fmt(l.date);
+var td2 = document.createElement("td");
+td2.textContent = l.why;
+tr.appendChild(td1);
+tr.appendChild(td2);
+lBody.appendChild(tr);
+});
+}
+
+updateClock();
+renderStatus();
+setInterval(updateClock, 1000);
+</script>
+</body></html>
