@@ -7,6 +7,10 @@
     { "source": "/SlamDunk", "destination": "/slamdunk.html" },
     { "source": "/slamdunk/", "destination": "/slamdunk.html" },
     { "source": "/SlamDunk/", "destination": "/slamdunk.html" },
+    { "source": "/slamdunk2", "destination": "/slamdunk2.html" },
+    { "source": "/SlamDunk2", "destination": "/slamdunk2.html" },
+    { "source": "/slamdunk2/", "destination": "/slamdunk2.html" },
+    { "source": "/SlamDunk2/", "destination": "/slamdunk2.html" },
     { "source": "/calendar", "destination": "/calendar.html" },
     { "source": "/", "destination": "/index.html" }
   ]
