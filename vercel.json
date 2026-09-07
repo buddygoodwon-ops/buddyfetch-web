@@ -7,6 +7,7 @@
     { "source": "/SlamDunk", "destination": "/slamdunk.html" },
     { "source": "/slamdunk/", "destination": "/slamdunk.html" },
     { "source": "/SlamDunk/", "destination": "/slamdunk.html" },
+    { "source": "/calendar", "destination": "/calendar.html" },
     { "source": "/", "destination": "/index.html" }
   ]
 }
