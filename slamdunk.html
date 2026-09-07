@@ -1,23 +1,23 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="theme-color" content="#f2b84b"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/><meta name="apple-mobile-web-app-title" content="BuddyFetch"/><link rel="manifest" href="/manifest.json"/><link rel="icon" type="image/jpeg" href="/assets/old-dog-cartoon.jpg"/><link rel="apple-touch-icon" href="/assets/old-dog-cartoon.jpg"/><title>BuddyFetch</title>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="theme-color" content="#0A0E1F"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/><meta name="apple-mobile-web-app-title" content="BuddyFetch"/><link rel="manifest" href="/manifest.json"/><link rel="icon" type="image/jpeg" href="/assets/old-dog-cartoon.jpg"/><link rel="apple-touch-icon" href="/assets/old-dog-cartoon.jpg"/><title>BuddyFetch</title>
 <style>
-body{background:#000;margin:0;}
-.buddy-avatar-promo{max-width:360px;margin:40px auto;padding:40px 20px 32px;text-align:center;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#333333;border-radius:20px;}
+body{background:#0A0E1F;margin:0;}
+.buddy-avatar-promo{max-width:360px;margin:40px auto;padding:40px 20px 32px;text-align:center;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#12172c;border:1px solid rgba(139,108,240,.25);border-radius:20px;}
 .buddy-avatar-promo .avatar-frame{width:329px;height:329px;background:#fff;border-radius:20px;overflow:visible;display:block;margin:0 auto 16px;box-sizing:border-box;position:relative;}
-.buddy-avatar-promo .avatar-caption{position:absolute;left:50%;top:100%;transform:translate(-50%,-100%);background:#5a5a5a;color:#fff;font-weight:700;font-size:14px;letter-spacing:.02em;text-transform:none;padding:8px 20px;margin:0;border-radius:999px;white-space:nowrap;}
+.buddy-avatar-promo .avatar-caption{position:absolute;left:50%;top:100%;transform:translate(-50%,-100%);background:#4f8ef7;color:#fff;font-weight:700;font-size:14px;letter-spacing:.02em;text-transform:none;padding:8px 20px;margin:0;border-radius:999px;white-space:nowrap;}
 .buddy-avatar-promo .avatar-frame img{width:100%;height:100%;object-fit:cover;border-radius:20px;transform-origin:center center;cursor:pointer;display:block;}
-.buddy-avatar-promo .eyebrow{color:#f2842b;font-weight:700;letter-spacing:.06em;font-size:14px;text-transform:uppercase;margin:0 0 12px;}
-.buddy-avatar-promo h1{font-size:22px;line-height:1.3;margin:24px 0 10px;color:#fff;}
-.buddy-avatar-promo p{font-size:14px;color:#d8c3ae;line-height:1.4;margin:0 0 16px;}
+.buddy-avatar-promo .eyebrow{background:linear-gradient(90deg,#8b6cf0,#4f8ef7);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;font-weight:700;letter-spacing:.06em;font-size:14px;text-transform:uppercase;margin:0 0 12px;}
+.buddy-avatar-promo h1{font-size:22px;line-height:1.3;margin:24px 0 10px;color:#e9ecf7;}
+.buddy-avatar-promo p{font-size:14px;color:#a6acc9;line-height:1.4;margin:0 0 16px;}
 .buddy-avatar-promo .btn{display:block;width:100%;box-sizing:border-box;padding:14px 16px;margin:8px 0;border-radius:999px;border:none;font-size:15px;font-weight:600;cursor:pointer;}
-.buddy-avatar-promo .btn-primary{background:#f2842b;color:#fff;}
-.buddy-avatar-promo .btn-secondary{background:#f5efe6;color:#2b2b2b;}lemon-slice-widget{transition:transform .25s ease;display:none;}
+.buddy-avatar-promo .btn-primary{background:linear-gradient(90deg,#8b6cf0,#4f8ef7);color:#fff;}
+.buddy-avatar-promo .btn-secondary{background:#1c2340;color:#e9ecf7;}lemon-slice-widget{transition:transform .25s ease;display:none;}
 lemon-slice-widget[controlled-widget-state="active"]{display:block;}
 @media (max-width:700px){
 lemon-slice-widget[controlled-widget-state="active"]{position:fixed!important;top:calc(50% - 12px)!important;left:50%!important;transform:translate(-50%,-50%) scale(1.17)!important;transform-origin:center center!important;z-index:9999!important;max-height:90vh!important;}
-body:has(lemon-slice-widget[controlled-widget-state="active"]){background:#2b2b2b;} body:has(lemon-slice-widget[controlled-widget-state="active"]) .buddy-avatar-promo{display:none;}
+body:has(lemon-slice-widget[controlled-widget-state="active"]){background:#0A0E1F;} body:has(lemon-slice-widget[controlled-widget-state="active"]) .buddy-avatar-promo{display:none;}
 #buddy-mute-hint{display:none;}
 body:has(lemon-slice-widget[controlled-widget-state="active"]) #buddy-mute-hint{display:flex;position:fixed;left:50%;bottom:calc(25dvh - 158px);transform:translateX(-50%);z-index:9999;flex-direction:row;align-items:center;gap:6px;color:#fff;font-size:16px;font-weight:600;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;white-space:nowrap;text-align:center;}
-#buddy-mute-hint button{background:rgba(255,255,255,.16);border:none;border-radius:999px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;}}
+#buddy-mute-hint button{background:rgba(139,108,240,.25);border:none;border-radius:999px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;}}
 </style>
 </head><body>
 
@@ -30,7 +30,7 @@ body:has(lemon-slice-widget[controlled-widget-state="active"]) #buddy-mute-hint{
 <button type="button" class="btn btn-secondary" id="open-local-plugin-ui">Save to Your Home Screen</button>
 </div>
 <lemon-slice-widget agent-id="agent_f1c18ca648d1c23c" inline="" custom-minimized-width="200" custom-minimized-height="300" custom-active-width="320" custom-active-height="520" video-button-color-opacity="0.88" show-minimize-button="true" initial-state="minimized"></lemon-slice-widget>
-<div id="buddy-mute-hint"><span>If Buddy is Muted Hit</span><span aria-hidden="true" style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:999px;background:rgba(255,255,255,.16);flex-shrink:0;"><svg width="4" height="16" viewBox="0 0 4 16" fill="#fff"><circle cx="2" cy="2" r="2"/><circle cx="2" cy="8" r="2"/><circle cx="2" cy="14" r="2"/></svg></span><span>Button Above</span></div><script type="module" src="https://unpkg.com/@lemonsliceai/lemon-slice-widget"></script>
+<div id="buddy-mute-hint"><span>If Buddy is Muted Hit</span><span aria-hidden="true" style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:999px;background:rgba(139,108,240,.25);flex-shrink:0;"><svg width="4" height="16" viewBox="0 0 4 16" fill="#fff"><circle cx="2" cy="2" r="2"/><circle cx="2" cy="8" r="2"/><circle cx="2" cy="14" r="2"/></svg></span><span>Button Above</span></div><script type="module" src="https://unpkg.com/@lemonsliceai/lemon-slice-widget"></script>
 <script>
 function openBuddyAvatar(){var w=document.querySelector('lemon-slice-widget');if(!w)return;w.setAttribute('controlled-widget-state','active');}
 document.getElementById('buddy-avatar-trigger').addEventListener('click',openBuddyAvatar);
