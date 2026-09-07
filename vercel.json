@@ -2,6 +2,7 @@
   "version": 2,
   "rewrites": [
     { "source": "/live", "destination": "/live.html" },
+    { "source": "/slamdunk", "destination": "/slamdunk.html" },
     { "source": "/", "destination": "/index.html" }
   ]
 }
