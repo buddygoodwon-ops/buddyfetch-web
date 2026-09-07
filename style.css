@@ -27,7 +27,7 @@ button, input { font: inherit; }
 .dog-video { width: 100%; height: 100%; max-width: none !important; max-height: none !important; object-fit: cover !important; }
 .video-card { aspect-ratio: 9 / 16; width: min(430px, 88vw); max-height: calc(100vh - 190px); }
 .avatar-card.listening #dogAvatar { transform: scale(1.018) rotate(-.5deg); }
-.avatar-card.thinking #dogAvatar { transform: scale(1.018) rotate(-.5deg); }
+.avatar-card.thinking #dogAvatar { animation: thinkBob 1.2s ease-in-out infinite; }
 .avatar-card.speaking #dogAvatar { animation: speakBob .36s ease-in-out infinite; }
 .mouth { position: absolute; left: 50%; top: 62%; width: 54px; height: 12px; border-radius: 0 0 50px 50px; transform: translateX(-50%) scaleY(.35); background: rgba(30, 8, 5, .68); opacity: .7; display: none; }
 .avatar-card.speaking .mouth { display: block; animation: mouthTalk .18s linear infinite alternate; }
