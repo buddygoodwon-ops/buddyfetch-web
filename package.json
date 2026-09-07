@@ -1,12 +1,7 @@
 {
   "name": "buddyfetch-web",
-  "version": "0.1.0",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "dev": "npx serve -l 3000"
-  },
+  "version": "1.0.0",
   "dependencies": {
-    "@vapi-ai/web": "^2.5.2"
+    "livekit-server-sdk": "^2.0.0"
   }
 }

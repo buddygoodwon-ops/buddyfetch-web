@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -8,81 +8,41 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="BuddyFetch" />
   <link rel="manifest" href="/manifest.json" />
-  <link rel="icon" type="image/jpeg" href="/assets/old-dog-cartoon.jpg" />
+  <link rel="icon" type="image/png" href="/assets/old-dog-cartoon.jpg" />
   <link rel="apple-touch-icon" href="/assets/old-dog-cartoon.jpg" />
-  <title>BuddyFetch â€" Live Cartoon Dog App</title>
+  <title>BuddyFetch.ai — OpenClaw Avatar</title>
   <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
-  <main class="app">
-    <section class="stage" aria-label="BuddyFetch cartoon dog avatar">
+  <div class="app">
+    <section class="stage" id="avatarCard" aria-label="BuddyFetch cartoon dog avatar" style="cursor:pointer;">
       <div class="status-bar">
         <span class="dot" id="statusDot"></span>
-        <span id="statusText">Booting BuddyFetch...</span>
+        <span id="statusText">Avatar plugin ready</span>
       </div>
 
-      <div class="avatar-card video-card" id="avatarCard">
-        <div class="avatar-glow"></div>
-        <video id="dogAvatar" class="dog-video" autoplay muted loop playsinline preload="metadata" poster="/assets/old-dog-cartoon.jpg" aria-label="BuddyFetch cartoon dog avatar video">
-          <source src="/assets/buddyfetch-elevator-pitch.mp4" type="video/mp4" />
-        </video>
-        <div class="badge">🎾 BuddyFetch.AI</div>
-      </div>
-
-      <div class="controls compact-controls">
-        <button id="listenBtn" class="mic-button" type="button" aria-label="Talk to Buddy">🎤</button>
-        <div class="fetch-row">
-          <button id="taskModeBtn" type="button" aria-pressed="false">🎾 Fetch Mode: Off</button>
-          <button id="attachBtn2" class="attach-button-match" type="button" aria-label="Attach picture or file">📎</button>
-        </div>
-      </div>
-
-      <a class="video-link-card" href="/assets/buddyfetch-elevator-pitch.mp4" target="_blank" rel="noopener" aria-label="Open BuddyFetch pitch video">
-        <span class="video-link-kicker">Why BuddyFetch?</span>
-        <strong class="video-cta">Let me tell you why!</strong>
-      </a>
+      <div class="avatar-glow"></div>
+      <img id="dogAvatar" src="/assets/old-dog-cartoon.jpg" alt="Buddy the cartoon dog" />
+      <div class="badge">Click here to talk to Buddy</div>
     </section>
 
-    <section class="panel" aria-label="Chat with Buddy">
-      <header class="panel-header">
-        <p class="eyebrow">BuddyFetch Live Cartoon Dog</p>
-        <h1>Talk to the dog. Get real answers.</h1>
-        <p class="sub">Voice transcribes into the message box, BuddyFetch reads typed questions aloud, then answers back in Buddyâ€TMs voice.</p>
-      </header>
-
-      <div id="chat" class="chat" role="log" aria-live="polite"></div>
-
-      <form id="chatForm" class="composer sms-composer">
-        <button id="attachBtn" class="attach-button" type="button" aria-label="Upload picture or file" title="Upload picture or file">📎</button>
-        <input id="fileInput" class="sr-only" type="file" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.csv,.json,.zip" multiple />
-        <label class="sr-only" for="messageInput">Voice transcript or text message</label>
-        <div class="message-shell">
-          <span class="message-hint">Voice transcript / text message</span>
-          <input id="messageInput" name="message" autocomplete="off" placeholder="Tap mic or type your questionâ€¦" />
-        </div>
-        <button class="send-button" type="submit">➤</button>
-      </form>
-
-      <details class="build-notes">
-        <summary>Build status</summary>
-        <ul id="statusList">
-          <li>✅ BuddyFetch pitch video link visible below the dog</li>
-          <li>✅ Live cartoon dog/avatar layer is lip-syncing lines</li>
-          <li>✅ Clean BuddyFetch LLM target added</li>
-          <li>✅ STT added to LiveKit worker for real question turns</li>
-          <li>🟡 Full back-and-forth FaceTime-style call loop is being tested</li>
-        </ul>
-      </details>
+    <section class="tagline">
+      <p class="eyebrow" style="color:#f2b84b;text-transform:uppercase;font-weight:900;letter-spacing:.16em;font-size:12px;margin:0 0 12px;">BuddyFetch.AI Proof of Concept</p>
+      <h1 style="font-size:clamp(32px,7vw,80px);line-height:.92;letter-spacing:-0.04em;margin:0 0 18px;">Your Company's Digital Mascot. Company Brain. Your Commands. Taking Orders!</h1>
     </section>
-  </main>
 
-  <script src="/liveavatar.bundle.js"></script>
+    <section class="panel" style="display:none;" id="devPanel">
+    </section>
+  </div>
+
+  <script>
+    // Load LiveKit client SDK via CDN before the script module
+    const lkScript = document.createElement('script');
+    lkScript.src = 'https://cdn.jsdelivr.net/npm/livekit-client/dist/livekit-client.umd.min.js';
+    lkScript.onload = () => console.log('LiveKit SDK loaded');
+    document.head.appendChild(lkScript);
+  </script>
+  
   <script type="module" src="/app.js"></script>
-  <script src="/install-prompt.js"></script>
 </body>
 </html>
-
-
-
-
-

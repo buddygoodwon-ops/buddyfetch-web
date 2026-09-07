@@ -2,6 +2,11 @@
   "version": 2,
   "rewrites": [
     { "source": "/live", "destination": "/live.html" },
+    { "source": "/slamdunkavatar", "destination": "/slamdunkavatar.html" },
+    { "source": "/slamdunk", "destination": "/slamdunk.html" },
+    { "source": "/SlamDunk", "destination": "/slamdunk.html" },
+    { "source": "/slamdunk/", "destination": "/slamdunk.html" },
+    { "source": "/SlamDunk/", "destination": "/slamdunk.html" },
     { "source": "/", "destination": "/index.html" }
   ]
 }
