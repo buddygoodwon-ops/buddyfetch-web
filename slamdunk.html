@@ -11,14 +11,14 @@ body{background:#0A0E1F;margin:0;}
 .buddy-avatar-promo .btn{display:block;width:100%;box-sizing:border-box;padding:14px 16px;margin:8px 0;border-radius:999px;border:none;font-size:15px;font-weight:600;cursor:pointer;}
 .buddy-avatar-promo .btn-primary{background:linear-gradient(90deg,#8b6cf0,#4f8ef7);color:#fff;}
 .buddy-avatar-promo .btn-secondary{background:#4c527a;color:#e9ecf7;}lemon-slice-widget{transition:transform .25s ease;display:none;}
-lemon-slice-widget[controlled-widget-state="active"]{display:block;}
-@media (max-width:700px){
-lemon-slice-widget[controlled-widget-state="active"]{position:fixed!important;top:calc(50% - 12px)!important;left:50%!important;transform:translate(-50%,-50%) scale(1.17)!important;transform-origin:center center!important;z-index:9999!important;max-height:90vh!important;}
+lemon-slice-widget[controlled-widget-state="active"]{display:block;position:fixed!important;top:calc(50% - 12px)!important;left:50%!important;transform:translate(-50%,-50%) scale(1.17)!important;transform-origin:center center!important;z-index:9999!important;max-height:90vh!important;}
 body:has(lemon-slice-widget[controlled-widget-state="active"]){background:#0A0E1F;} body:has(lemon-slice-widget[controlled-widget-state="active"]) .buddy-avatar-promo{display:none;}
 #buddy-mute-hint{display:none;}
 body:has(lemon-slice-widget[controlled-widget-state="active"]) #buddy-mute-hint{display:flex;position:fixed;left:50%;bottom:calc(25dvh - 158px);transform:translateX(-50%);z-index:9999;flex-direction:row;align-items:center;gap:6px;color:#fff;font-size:16px;font-weight:600;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;white-space:nowrap;text-align:center;}
-#buddy-mute-hint button{background:rgba(139,108,240,.25);border:none;border-radius:999px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;}}
-</style>
+#buddy-mute-hint button{background:rgba(139,108,240,.25);border:none;border-radius:999px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;}
+@media (max-width:700px){
+  lemon-slice-widget[controlled-widget-state="active"]{max-height:90vh!important;}
+}</style>
 </head><body>
 
 <div class="buddy-avatar-promo">
@@ -29,8 +29,8 @@ body:has(lemon-slice-widget[controlled-widget-state="active"]) #buddy-mute-hint{
 <button type="button" class="btn btn-primary" id="start-buddy-avatar">Start Fetch Mode</button>
 <button type="button" class="btn btn-secondary" id="open-local-plugin-ui">Save to Your Home Screen</button>
 </div>
-<lemon-slice-widget agent-id="agent_f1c18ca648d1c23c" inline="" custom-minimized-width="200" custom-minimized-height="300" custom-active-width="320" custom-active-height="520" video-button-color-opacity="0.88" show-minimize-button="true" initial-state="minimized"></lemon-slice-widget>
-<div id="buddy-mute-hint"><span>If Buddy is Muted Hit</span><span aria-hidden="true" style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:999px;background:rgba(139,108,240,.25);flex-shrink:0;"><svg width="4" height="16" viewBox="0 0 4 16" fill="#fff"><circle cx="2" cy="2" r="2"/><circle cx="2" cy="8" r="2"/><circle cx="2" cy="14" r="2"/></svg></span><span>Button Above</span></div><script type="module" src="https://unpkg.com/@lemonsliceai/lemon-slice-widget"></script>
+<lemon-slice-widget agent-id="agent_70dc8e96528c845e" inline="" custom-minimized-width="200" custom-minimized-height="300" custom-active-width="320" custom-active-height="520" video-button-color-opacity="0.88" show-minimize-button="true" initial-state="minimized"></lemon-slice-widget>lemon-slice-widget>
+  <div id="buddy-mute-hint"><span>If Buddy is Muted Hit</span><span aria-hidden="true" style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:999px;background:rgba(139,108,240,.25);flex-shrink:0;"><svg width="4" height="16" viewBox="0 0 4 16" fill="#fff"><circle cx="2" cy="2" r="2"/><circle cx="2" cy="8" r="2"/><circle cx="2" cy="14" r="2"/></svg></span><span>Button Above</span></div><script type="module" src="https://unpkg.com/@lemonsliceai/lemon-slice-widget"></script>
 <script>
 function openBuddyAvatar(){var w=document.querySelector('lemon-slice-widget');if(!w)return;w.setAttribute('controlled-widget-state','active');}
 document.getElementById('buddy-avatar-trigger').addEventListener('click',openBuddyAvatar);
