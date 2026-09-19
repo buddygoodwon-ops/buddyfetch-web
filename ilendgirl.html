@@ -1,42 +1,37 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="theme-color" content="#FF9940"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/><meta name="apple-mobile-web-app-title" content="iLendGirl"/><link rel="manifest" href="/manifest.json"/><link rel="icon" type="image/jpeg" href="/assets/old-dog-cartoon.jpg"/><link rel="apple-touch-icon" href="/assets/old-dog-cartoon.jpg"/><title>iLendGirl</title>
 <style>
-body{background:#FF9940;margin:0;}
-.buddy-avatar-promo{max-width:360px;margin:40px auto;padding:40px 20px 32px;text-align:center;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:linear-gradient(160deg,#FFB066,#FF9940 45%,#FF7A1A);border:1px solid rgba(76,155,78,.3);border-radius:20px;}
+body{background:#0A0E1F;margin:0;}
+.buddy-avatar-promo{max-width:360px;margin:40px auto;padding:40px 20px 32px;text-align:center;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#12172c;border:1px solid rgba(139,108,240,.25);border-radius:20px;}
 .buddy-avatar-promo .avatar-frame{width:329px;height:329px;background:#fff;border-radius:20px;overflow:visible;display:block;margin:0 auto 16px;box-sizing:border-box;position:relative;}
-.buddy-avatar-promo .avatar-caption{position:absolute;left:50%;top:100%;transform:translate(-50%,-100%);background:#B97F6D;color:#fff;font-weight:700;font-size:14px;letter-spacing:.02em;text-transform:none;padding:8px 20px;margin:0;border-radius:999px;white-space:nowrap;}
+.buddy-avatar-promo .avatar-caption{position:absolute;left:50%;top:100%;transform:translate(-50%,-100%);background:#4f8ef7;color:#fff;font-weight:700;font-size:14px;letter-spacing:.02em;text-transform:none;padding:8px 20px;margin:0;border-radius:999px;white-space:nowrap;}
 .buddy-avatar-promo .avatar-frame img{width:100%;height:100%;object-fit:cover;border-radius:20px;transform-origin:center center;cursor:pointer;display:block;}
-.buddy-avatar-promo .eyebrow{background:linear-gradient(90deg,#2f6e39,#6cbf5f);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;font-weight:700;letter-spacing:.06em;font-size:14px;text-transform:uppercase;margin:0 0 12px;}
-.buddy-avatar-promo .logo-wrap{background:#fff;border-radius:12px;padding:10px 16px;margin:16px auto 10px;display:inline-block;box-shadow:0 2px 8px rgba(0,0,0,.12);}
-.buddy-avatar-promo .logo{width:150px;height:auto;display:block;}
-.buddy-avatar-promo p{font-size:14px;color:#fff;line-height:1.4;margin:0 0 16px;}
+.buddy-avatar-promo .eyebrow{background:linear-gradient(90deg,#8b6cf0,#4f8ef7);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;font-weight:700;letter-spacing:.06em;font-size:14px;text-transform:uppercase;margin:0 0 12px;}
+.buddy-avatar-promo h1{font-size:22px;line-height:1.3;margin:24px 0 10px;color:#e9ecf7;}
+.buddy-avatar-promo p{font-size:14px;color:#a6acc9;line-height:1.4;margin:0 0 16px;}
 .buddy-avatar-promo .btn{display:block;width:100%;box-sizing:border-box;padding:14px 16px;margin:8px 0;border-radius:999px;border:none;font-size:15px;font-weight:600;cursor:pointer;}
-.buddy-avatar-promo .btn-primary{background:#fff;color:#FF7A1A;}
-.buddy-avatar-promo .btn-secondary{background:#B97F6D;color:#fff;}
-.buddy-avatar-promo .contact{display:flex;align-items:center;justify-content:center;gap:14px;margin:16px 0 0;padding-top:12px;border-top:1px solid rgba(255,255,255,.35);width:100%;box-sizing:border-box;}
-.buddy-avatar-promo .contact a{display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.22);color:#fff;text-decoration:none;}
-.buddy-avatar-promo .contact a svg{width:18px;height:18px;fill:#fff;}
+.buddy-avatar-promo .btn-primary{background:linear-gradient(90deg,#8b6cf0,#4f8ef7);color:#fff;}
+.buddy-avatar-promo .btn-secondary{background:#4c527a;color:#e9ecf7;}
 lemon-slice-widget{transition:transform .25s ease;display:none;}
 lemon-slice-widget[controlled-widget-state="active"]{display:block;position:fixed!important;top:calc(50% - 12px)!important;left:50%!important;transform:translate(-50%,-50%) scale(1.17)!important;transform-origin:center center!important;z-index:9999!important;max-height:90vh!important;}
-body:has(lemon-slice-widget[controlled-widget-state="active"]){background:#FF9940;} body:has(lemon-slice-widget[controlled-widget-state="active"]) .buddy-avatar-promo{display:none;}
+body:has(lemon-slice-widget[controlled-widget-state="active"]){background:#0A0E1F;} body:has(lemon-slice-widget[controlled-widget-state="active"]) .buddy-avatar-promo{display:none;}
 #buddy-mute-hint{display:none;}
 body:has(lemon-slice-widget[controlled-widget-state="active"]) #buddy-mute-hint{display:flex;position:fixed;left:50%;bottom:calc(25dvh - 158px);transform:translateX(-50%);z-index:9999;flex-direction:row;align-items:center;gap:6px;color:#fff;font-size:16px;font-weight:600;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;white-space:nowrap;text-align:center;}
-#buddy-mute-hint button{background:rgba(185,127,109,.35);border:none;border-radius:999px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;}
+#buddy-mute-hint button{background:rgba(139,108,240,.25);border:none;border-radius:999px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;}
 @media (max-width:700px){
-lemon-slice-widget[controlled-widget-state="active"]{max-height:90vh!important;}
+  lemon-slice-widget[controlled-widget-state="active"]{max-height:90vh!important;}
 }</style>
 </head><body>
 
 <div class="buddy-avatar-promo">
 <p class="eyebrow">BUDDYFETCH.AI</p>
-<div class="avatar-frame"><img src="/assets/buddy-avatar-cartoon.jpg" alt="Buddy avatar" id="buddy-avatar-trigger"/><p class="avatar-caption">Let's Chat!&nbsp;&nbsp;Click me.</p></div>
-<div class="logo-wrap"><img class="logo" src="https://static.wixstatic.com/media/340c8d_64527a72dc714f94b2d49c01887b704ef000.jpg" alt="iLendGirl logo"/></div>
-<p>Mortgages Made Easy. You Believe It. I Achieve It. I'm your iLendGirl, and I'm committed to making your financing experience smooth and stress-free. Whether you're exploring a Reverse Mortgage or considering a refinance, you deserve a trusted lender who puts your goals first.</p>
+<div class="avatar-frame"><img src="/assets/buddy-avatar-cartoon.jpg" alt="Buddy avatar" id="buddy-avatar-trigger"/><p class="avatar-caption">Let's Yap!&nbsp;&nbsp;Click me.</p></div>
+<h1>Mortgages Made Easy<br>You Believe It<br>I Achieve It</h1>
+<p>I'm your iLendGirl, and I'm committed to making your financing experience smooth and stress-free. Whether you're exploring a Reverse Mortgage or considering a refinance, you deserve a trusted lender who puts your goals first. Call 619-920-1975 or email Pam@ilendgirl.com.</p>
 <button type="button" class="btn btn-primary" id="start-buddy-avatar">Start Fetch Mode</button>
 <button type="button" class="btn btn-secondary" id="open-local-plugin-ui">Save to Your Home Screen</button>
-<div class="contact"><a href="tel:16199201975" aria-label="Call Pam Campbell"><svg viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.57.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.57 1 1 0 01-.25 1.01l-2.2 2.21z"/></svg></a><a href="mailto:Pam@ilendgirl.com" aria-label="Email Pam Campbell"><svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4-8 5-8-5V6l8 5 8-5z"/></svg></a></div>
 </div>
 <lemon-slice-widget agent-id="agent_79cd6d385f8745b2" inline="" custom-minimized-width="200" custom-minimized-height="300" custom-active-width="320" custom-active-height="520" video-button-color-opacity="0.88" show-minimize-button="true" initial-state="minimized"></lemon-slice-widget>
-<div id="buddy-mute-hint"><span>If Muted Hit</span><span aria-hidden="true" style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:999px;background:rgba(185,127,109,.35);flex-shrink:0;"><svg width="4" height="16" viewBox="0 0 4 16" fill="#fff"><circle cx="2" cy="2" r="2"/><circle cx="2" cy="8" r="2"/><circle cx="2" cy="14" r="2"/></svg></span><span>Button Above</span></div><script type="module" src="https://unpkg.com/@lemonsliceai/lemon-slice-widget"></script>
+  <div id="buddy-mute-hint"><span>If Muted Hit</span><span aria-hidden="true" style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:999px;background:rgba(139,108,240,.25);flex-shrink:0;"><svg width="4" height="16" viewBox="0 0 4 16" fill="#fff"><circle cx="2" cy="2" r="2"/><circle cx="2" cy="8" r="2"/><circle cx="2" cy="14" r="2"/></svg></span><span>Button Above</span></div><script type="module" src="https://unpkg.com/@lemonsliceai/lemon-slice-widget"></script>
 <script>
 function openBuddyAvatar(){var w=document.querySelector('lemon-slice-widget');if(!w)return;w.setAttribute('controlled-widget-state','active');}
 document.getElementById('buddy-avatar-trigger').addEventListener('click',openBuddyAvatar);
