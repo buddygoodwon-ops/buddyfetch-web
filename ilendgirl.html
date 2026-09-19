@@ -1,16 +1,17 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="theme-color" content="#ffffff"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/><meta name="apple-mobile-web-app-title" content="iLendGirl"/><link rel="manifest" href="/manifest.json"/><link rel="icon" type="image/jpeg" href="/assets/old-dog-cartoon.jpg"/><link rel="apple-touch-icon" href="/assets/old-dog-cartoon.jpg"/><title>iLendGirl</title>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/><meta name="theme-color" content="#ffffff"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/><meta name="apple-mobile-web-app-title" content="iLendGirl"/><link rel="manifest" href="/manifest.json"/><link rel="icon" type="image/jpeg" href="/assets/old-dog-cartoon.jpg"/><link rel="apple-touch-icon" href="/assets/old-dog-cartoon.jpg"/><title>iLendGirl</title>
 <style>
-  body{background:#ffffff;margin:0;min-height:100vh;}
-  .buddy-avatar-promo{max-width:360px;margin:40px auto;padding:40px 20px 32px;text-align:center;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:linear-gradient(160deg,#FFB066,#FF9940 45%,#FF7A1A);border:1px solid rgba(76,155,78,.3);border-radius:20px;box-shadow:0 8px 24px rgba(255,122,26,.25);}
-  .buddy-avatar-promo .avatar-frame{width:329px;height:329px;background:#fff;border-radius:20px;overflow:visible;display:block;margin:0 auto 16px;box-sizing:border-box;position:relative;}
-  .buddy-avatar-promo .avatar-caption{position:absolute;left:50%;top:100%;transform:translate(-50%,-100%);background:#B97F6D;color:#fff;font-weight:700;font-size:14px;letter-spacing:.02em;text-transform:none;padding:8px 20px;margin:0;border-radius:999px;white-space:nowrap;}
-  .buddy-avatar-promo .avatar-frame img{width:100%;height:100%;object-fit:cover;border-radius:20px;transform-origin:center center;cursor:pointer;display:block;}
-  .buddy-avatar-promo .eyebrow{color:#fff;font-weight:700;letter-spacing:.06em;font-size:14px;text-transform:uppercase;margin:0 0 12px;}
-  .buddy-avatar-promo h1{font-size:20px;line-height:1.35;margin:24px 0 10px;color:#fff;font-style:italic;}
-  .buddy-avatar-promo p{font-size:14px;color:#fff;line-height:1.5;margin:0 0 16px;opacity:.95;}
-  .buddy-avatar-promo .contact{font-size:14px;color:#fff;line-height:1.6;margin:0 0 20px;font-weight:600;}
+  html,body{background:#ffffff;margin:0;height:100%;overflow:hidden;}
+  body{display:flex;align-items:center;justify-content:center;min-height:100dvh;padding:10px;box-sizing:border-box;}
+  .buddy-avatar-promo{width:100%;max-width:360px;max-height:96dvh;overflow:hidden;padding:14px 18px 16px;text-align:center;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:linear-gradient(160deg,#FFB066,#FF9940 45%,#FF7A1A);border:1px solid rgba(76,155,78,.3);border-radius:20px;box-shadow:0 8px 24px rgba(255,122,26,.25);display:flex;flex-direction:column;align-items:center;}
+  .buddy-avatar-promo .avatar-frame{width:96px;height:96px;background:#fff;border-radius:16px;overflow:visible;display:block;margin:0 auto 10px;box-sizing:border-box;position:relative;flex-shrink:0;}
+  .buddy-avatar-promo .avatar-caption{position:absolute;left:50%;top:100%;transform:translate(-50%,-100%);background:#B97F6D;color:#fff;font-weight:700;font-size:9px;letter-spacing:.02em;text-transform:none;padding:4px 10px;margin:0;border-radius:999px;white-space:nowrap;}
+  .buddy-avatar-promo .avatar-frame img{width:100%;height:100%;object-fit:cover;border-radius:16px;transform-origin:center center;cursor:pointer;display:block;}
+  .buddy-avatar-promo .eyebrow{background:linear-gradient(90deg,#2f6e39,#6cbf5f);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;font-weight:800;letter-spacing:.06em;font-size:12px;text-transform:uppercase;margin:0 0 6px;}
+  .buddy-avatar-promo h1{font-size:15px;line-height:1.25;margin:8px 0 6px;color:#fff;font-style:italic;}
+  .buddy-avatar-promo p{font-size:11.5px;color:#fff;line-height:1.35;margin:0 0 8px;opacity:.95;}
+  .buddy-avatar-promo .contact{font-size:11.5px;color:#fff;line-height:1.4;margin:0 0 10px;font-weight:600;}
   .buddy-avatar-promo .contact a{color:#fff;text-decoration:underline;}
-  .buddy-avatar-promo .btn{display:block;width:100%;box-sizing:border-box;padding:14px 16px;margin:8px 0;border-radius:999px;border:none;font-size:15px;font-weight:600;cursor:pointer;}
+  .buddy-avatar-promo .btn{display:block;width:100%;box-sizing:border-box;padding:9px 14px;margin:4px 0;border-radius:999px;border:none;font-size:13px;font-weight:600;cursor:pointer;}
   .buddy-avatar-promo .btn-primary{background:#fff;color:#FF7A1A;}
   .buddy-avatar-promo .btn-secondary{background:#B97F6D;color:#fff;}lemon-slice-widget{transition:transform .25s ease;display:none;}
   lemon-slice-widget[controlled-widget-state="active"]{display:block;position:fixed!important;top:calc(50% - 12px)!important;left:50%!important;transform:translate(-50%,-50%) scale(1.17)!important;transform-origin:center center!important;z-index:9999!important;max-height:90vh!important;}
@@ -18,16 +19,18 @@
   #buddy-mute-hint{display:none;}
   body:has(lemon-slice-widget[controlled-widget-state="active"]) #buddy-mute-hint{display:flex;position:fixed;left:50%;bottom:calc(25dvh - 158px);transform:translateX(-50%);z-index:9999;flex-direction:row;align-items:center;gap:6px;color:#fff;font-size:16px;font-weight:600;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;white-space:nowrap;text-align:center;}
   #buddy-mute-hint button{background:rgba(185,127,109,.35);border:none;border-radius:999px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;}
-  @media (max-width:700px){
-      lemon-slice-widget[controlled-widget-state="active"]{max-height:90vh!important;}
-  }</style>
+  @media (max-height:700px){
+      .buddy-avatar-promo .avatar-frame{width:76px;height:76px;}
+      .buddy-avatar-promo p{display:none;}
+  }
+  </style>
 </head><body>
 
   <div class="buddy-avatar-promo">
-    <p class="eyebrow">ILENDGIRL</p>p>
+    <p class="eyebrow">BUDDYFETCH.AI</p>p>
     <div class="avatar-frame"><img src="/assets/buddy-avatar-cartoon.jpg" alt="iLendGirl assistant avatar" id="buddy-avatar-trigger"/><p class="avatar-caption">Let's Chat!&nbsp;&nbsp;Click me.</p>p></div>div>
     <h1>Mortgages Made Easy.<br>You Believe It.<br>I Achieve It.</h1>
-  <p>I'm your iLendGirl, and I'm committed to making your financing experience smooth and stress-free. Whether you're exploring a Reverse Mortgage or considering a refinance, you deserve a trusted lender who puts your goals first. Click below and let's chat &mdash; I'm here to make your journey seamless and successful.</p>
+  <p>I'm your iLendGirl, and I'm committed to making your financing experience smooth and stress-free. Whether you're exploring a Reverse Mortgage or considering a refinance, you deserve a trusted lender who puts your goals first.</p>
   <p class="contact">Pam Campbell &middot; NMLS# 293365<br><a href="tel:16199201975">(619) 920-1975</a>a> &middot; <a href="mailto:Pam@ilendgirl.com">Pam@ilendgirl.com</a>a></p>
   <button type="button" class="btn btn-primary" id="start-buddy-avatar">Start Fetch Mode</button>button>
   <button type="button" class="btn btn-secondary" id="open-local-plugin-ui">Save to Your Home Screen</button>button>
