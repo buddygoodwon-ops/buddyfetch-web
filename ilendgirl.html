@@ -1,15 +1,15 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="theme-color" content="#FF9940"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/><meta name="apple-mobile-web-app-title" content="BuddyFetch"/><link rel="manifest" href="/manifest.json"/><link rel="icon" type="image/jpeg" href="/assets/old-dog-cartoon.jpg"/><link rel="apple-touch-icon" href="/assets/old-dog-cartoon.jpg"/><title>BuddyFetch</title>
 <style>
   body{background:linear-gradient(160deg,#FFB066,#FF9940 45%,#FF7A1A);margin:0;min-height:100vh;}
-  .buddy-avatar-promo{max-width:360px;margin:40px auto;padding:40px 20px 32px;text-align:center;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#fff;border:1px solid rgba(76,155,78,.3);border-radius:20px;}
+  .buddy-avatar-promo{max-width:360px;margin:40px auto;padding:40px 20px 32px;text-align:center;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:linear-gradient(160deg,#FFB066,#FF9940 45%,#FF7A1A);border:1px solid rgba(76,155,78,.3);border-radius:20px;}
   .buddy-avatar-promo .avatar-frame{width:329px;height:329px;background:#fff;border-radius:20px;overflow:visible;display:block;margin:0 auto 16px;box-sizing:border-box;position:relative;}
   .buddy-avatar-promo .avatar-caption{position:absolute;left:50%;top:100%;transform:translate(-50%,-100%);background:#B97F6D;color:#fff;font-weight:700;font-size:14px;letter-spacing:.02em;text-transform:none;padding:8px 20px;margin:0;border-radius:999px;white-space:nowrap;}
   .buddy-avatar-promo .avatar-frame img{width:100%;height:100%;object-fit:cover;border-radius:20px;transform-origin:center center;cursor:pointer;display:block;}
-  .buddy-avatar-promo .eyebrow{color:#4a9b4e;font-weight:700;letter-spacing:.06em;font-size:14px;text-transform:uppercase;margin:0 0 12px;}
-  .buddy-avatar-promo h1{font-size:22px;line-height:1.3;margin:24px 0 10px;color:#222429;}
-  .buddy-avatar-promo p{font-size:14px;color:#5a5a5a;line-height:1.4;margin:0 0 16px;}
+  .buddy-avatar-promo .eyebrow{color:#fff;font-weight:700;letter-spacing:.06em;font-size:14px;text-transform:uppercase;margin:0 0 12px;}
+  .buddy-avatar-promo h1{font-size:22px;line-height:1.3;margin:24px 0 10px;color:#fff;}
+  .buddy-avatar-promo p{font-size:14px;color:#fff;line-height:1.4;margin:0 0 16px;opacity:.92;}
   .buddy-avatar-promo .btn{display:block;width:100%;box-sizing:border-box;padding:14px 16px;margin:8px 0;border-radius:999px;border:none;font-size:15px;font-weight:600;cursor:pointer;}
-  .buddy-avatar-promo .btn-primary{background:#FF9940;color:#fff;}
+  .buddy-avatar-promo .btn-primary{background:#fff;color:#FF7A1A;}
   .buddy-avatar-promo .btn-secondary{background:#B97F6D;color:#fff;}lemon-slice-widget{transition:transform .25s ease;display:none;}
   lemon-slice-widget[controlled-widget-state="active"]{display:block;position:fixed!important;top:calc(50% - 12px)!important;left:50%!important;transform:translate(-50%,-50%) scale(1.17)!important;transform-origin:center center!important;z-index:9999!important;max-height:90vh!important;}
   body:has(lemon-slice-widget[controlled-widget-state="active"]){background:linear-gradient(160deg,#FFB066,#FF9940 45%,#FF7A1A);} body:has(lemon-slice-widget[controlled-widget-state="active"]) .buddy-avatar-promo{display:none;}
