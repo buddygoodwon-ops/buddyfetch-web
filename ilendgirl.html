@@ -1,18 +1,20 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="theme-color" content="#FF9940"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/><meta name="apple-mobile-web-app-title" content="BuddyFetch"/><link rel="manifest" href="/manifest.json"/><link rel="icon" type="image/jpeg" href="/assets/old-dog-cartoon.jpg"/><link rel="apple-touch-icon" href="/assets/old-dog-cartoon.jpg"/><title>BuddyFetch</title>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="theme-color" content="#ffffff"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/><meta name="apple-mobile-web-app-title" content="iLendGirl"/><link rel="manifest" href="/manifest.json"/><link rel="icon" type="image/jpeg" href="/assets/old-dog-cartoon.jpg"/><link rel="apple-touch-icon" href="/assets/old-dog-cartoon.jpg"/><title>iLendGirl</title>
 <style>
-  body{background:linear-gradient(160deg,#FFB066,#FF9940 45%,#FF7A1A);margin:0;min-height:100vh;}
-  .buddy-avatar-promo{max-width:360px;margin:40px auto;padding:40px 20px 32px;text-align:center;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:linear-gradient(160deg,#FFB066,#FF9940 45%,#FF7A1A);border:1px solid rgba(76,155,78,.3);border-radius:20px;}
+  body{background:#ffffff;margin:0;min-height:100vh;}
+  .buddy-avatar-promo{max-width:360px;margin:40px auto;padding:40px 20px 32px;text-align:center;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:linear-gradient(160deg,#FFB066,#FF9940 45%,#FF7A1A);border:1px solid rgba(76,155,78,.3);border-radius:20px;box-shadow:0 8px 24px rgba(255,122,26,.25);}
   .buddy-avatar-promo .avatar-frame{width:329px;height:329px;background:#fff;border-radius:20px;overflow:visible;display:block;margin:0 auto 16px;box-sizing:border-box;position:relative;}
   .buddy-avatar-promo .avatar-caption{position:absolute;left:50%;top:100%;transform:translate(-50%,-100%);background:#B97F6D;color:#fff;font-weight:700;font-size:14px;letter-spacing:.02em;text-transform:none;padding:8px 20px;margin:0;border-radius:999px;white-space:nowrap;}
   .buddy-avatar-promo .avatar-frame img{width:100%;height:100%;object-fit:cover;border-radius:20px;transform-origin:center center;cursor:pointer;display:block;}
   .buddy-avatar-promo .eyebrow{color:#fff;font-weight:700;letter-spacing:.06em;font-size:14px;text-transform:uppercase;margin:0 0 12px;}
-  .buddy-avatar-promo h1{font-size:22px;line-height:1.3;margin:24px 0 10px;color:#fff;}
-  .buddy-avatar-promo p{font-size:14px;color:#fff;line-height:1.4;margin:0 0 16px;opacity:.92;}
+  .buddy-avatar-promo h1{font-size:20px;line-height:1.35;margin:24px 0 10px;color:#fff;font-style:italic;}
+  .buddy-avatar-promo p{font-size:14px;color:#fff;line-height:1.5;margin:0 0 16px;opacity:.95;}
+  .buddy-avatar-promo .contact{font-size:14px;color:#fff;line-height:1.6;margin:0 0 20px;font-weight:600;}
+  .buddy-avatar-promo .contact a{color:#fff;text-decoration:underline;}
   .buddy-avatar-promo .btn{display:block;width:100%;box-sizing:border-box;padding:14px 16px;margin:8px 0;border-radius:999px;border:none;font-size:15px;font-weight:600;cursor:pointer;}
   .buddy-avatar-promo .btn-primary{background:#fff;color:#FF7A1A;}
   .buddy-avatar-promo .btn-secondary{background:#B97F6D;color:#fff;}lemon-slice-widget{transition:transform .25s ease;display:none;}
   lemon-slice-widget[controlled-widget-state="active"]{display:block;position:fixed!important;top:calc(50% - 12px)!important;left:50%!important;transform:translate(-50%,-50%) scale(1.17)!important;transform-origin:center center!important;z-index:9999!important;max-height:90vh!important;}
-  body:has(lemon-slice-widget[controlled-widget-state="active"]){background:linear-gradient(160deg,#FFB066,#FF9940 45%,#FF7A1A);} body:has(lemon-slice-widget[controlled-widget-state="active"]) .buddy-avatar-promo{display:none;}
+  body:has(lemon-slice-widget[controlled-widget-state="active"]){background:#ffffff;} body:has(lemon-slice-widget[controlled-widget-state="active"]) .buddy-avatar-promo{display:none;}
   #buddy-mute-hint{display:none;}
   body:has(lemon-slice-widget[controlled-widget-state="active"]) #buddy-mute-hint{display:flex;position:fixed;left:50%;bottom:calc(25dvh - 158px);transform:translateX(-50%);z-index:9999;flex-direction:row;align-items:center;gap:6px;color:#fff;font-size:16px;font-weight:600;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;white-space:nowrap;text-align:center;}
   #buddy-mute-hint button{background:rgba(185,127,109,.35);border:none;border-radius:999px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;}
@@ -22,15 +24,16 @@
 </head><body>
 
   <div class="buddy-avatar-promo">
-    <p class="eyebrow">BUDDYFETCH.AI</p>p>
-    <div class="avatar-frame"><img src="/assets/buddy-avatar-cartoon.jpg" alt="Buddy avatar" id="buddy-avatar-trigger"/><p class="avatar-caption">Let's Yap!&nbsp;&nbsp;Click me.</p>p></div>div>
-    <h1>Your Virtual Mascot<br>Your Company Brain<br>Fetching Real Tasks</h1>
-  <p>Your Company's Window into your AI powered custom Virtual Mascot to access your Company's Brain powered by Agentic AI OpenClaw. You and your Employes can access all your company's knowledge base and then assign real tasks, jobs, and workflows for him do. We build this custom for your business!</p>
+    <p class="eyebrow">ILENDGIRL</p>p>
+    <div class="avatar-frame"><img src="/assets/buddy-avatar-cartoon.jpg" alt="iLendGirl assistant avatar" id="buddy-avatar-trigger"/><p class="avatar-caption">Let's Chat!&nbsp;&nbsp;Click me.</p>p></div>div>
+    <h1>Mortgages Made Easy.<br>You Believe It.<br>I Achieve It.</h1>
+  <p>I'm your iLendGirl, and I'm committed to making your financing experience smooth and stress-free. Whether you're exploring a Reverse Mortgage or considering a refinance, you deserve a trusted lender who puts your goals first. Click below and let's chat &mdash; I'm here to make your journey seamless and successful.</p>
+  <p class="contact">Pam Campbell &middot; NMLS# 293365<br><a href="tel:16199201975">(619) 920-1975</a>a> &middot; <a href="mailto:Pam@ilendgirl.com">Pam@ilendgirl.com</a>a></p>
   <button type="button" class="btn btn-primary" id="start-buddy-avatar">Start Fetch Mode</button>button>
   <button type="button" class="btn btn-secondary" id="open-local-plugin-ui">Save to Your Home Screen</button>button>
   </div>div>
 <lemon-slice-widget agent-id="agent_79cd6d385f8745b2" inline="" custom-minimized-width="200" custom-minimized-height="300" custom-active-width="320" custom-active-height="520" video-button-color-opacity="0.88" show-minimize-button="true" initial-state="minimized"></lemon-slice-widget>lemon-slice-widget>
-  <div id="buddy-mute-hint"><span>If Buddy is Muted Hit</span><span aria-hidden="true" style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:999px;background:rgba(185,127,109,.35);flex-shrink:0;"><svg width="4" height="16" viewBox="0 0 4 16" fill="#fff"><circle cx="2" cy="2" r="2"/><circle cx="2" cy="8" r="2"/><circle cx="2" cy="14" r="2"/></svg>svg></span><span>Button Above</span></div>div><script type="module" src="https://unpkg.com/@lemonsliceai/lemon-slice-widget"></script>
+  <div id="buddy-mute-hint"><span>If Muted Hit</span><span aria-hidden="true" style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:999px;background:rgba(185,127,109,.35);flex-shrink:0;"><svg width="4" height="16" viewBox="0 0 4 16" fill="#fff"><circle cx="2" cy="2" r="2"/><circle cx="2" cy="8" r="2"/><circle cx="2" cy="14" r="2"/></svg>svg></span><span>Button Above</span></div>div><script type="module" src="https://unpkg.com/@lemonsliceai/lemon-slice-widget"></script>
 <script>
   function openBuddyAvatar(){var w=document.querySelector('lemon-slice-widget');if(!w)return;w.setAttribute('controlled-widget-state','active');}
   document.getElementById('buddy-avatar-trigger').addEventListener('click',openBuddyAvatar);
