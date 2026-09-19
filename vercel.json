@@ -1,8 +1,9 @@
 {
-  "version": 2,
-  "rewrites": [
-    { "source": "/live", "destination": "/live.html" },
-    { "source": "/slamdunk", "destination": "/slamdunk.html" },
-    { "source": "/", "destination": "/index.html" }
-  ]
+    "version": 2,
+    "rewrites": [
+          { "source": "/live", "destination": "/live.html" },
+          { "source": "/slamdunk", "destination": "/slamdunk.html" },
+          { "source": "/ilendgirl", "destination": "/ilendgirl.html" },
+          { "source": "/", "destination": "/index.html" }
+    ]
 }
