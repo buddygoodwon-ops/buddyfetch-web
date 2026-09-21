@@ -63,9 +63,9 @@
       console.log('[kate-trulove]', m);
     }
 
-    // Token server: explicit ?tokenUrl= wins, else local kit (runs on the host PC).
+    // Token server: explicit ?tokenUrl= wins, else same-origin Vercel function.
     const params = new URLSearchParams(location.search);
-    let tokenBase = params.get('tokenUrl') || 'http://127.0.0.1:8766';
+    let tokenBase = params.get('tokenUrl') || '/api/start';
 
     document.getElementById('start').onclick = async () => {
       try {
@@ -95,7 +95,7 @@
         document.getElementById('start').style.display = 'none';
         document.getElementById('stop').style.display = 'inline-block';
       } catch (e) {
-        log('ERROR: ' + (e.message || e) + '\nIf the avatar kit is offline, start it on the host PC (token server :8766 + agent).');
+        log('ERROR: ' + (e.message || e) + '\nThe avatar kit may be offline - try again in a moment.');
       }
     };
 
