@@ -71,8 +71,6 @@
       try {
         log('Fetching room token...');
         const roomName = 'kate-' + Date.now().toString(36);
-        log('Fetching room token...');
-        const roomName = 'kate-' + Date.now().toString(36);
         // tokenBase may be a base host (append /start) or the full endpoint (/api/start)
         const endpoint = tokenBase.endsWith('/start') ? tokenBase : (tokenBase.replace(/\/$/, '') + '/start');
         const r = await fetch(endpoint + '?room=' + encodeURIComponent(roomName) + '&participant=' + encodeURIComponent('visitor-'+Math.floor(Math.random()*1e5)));
