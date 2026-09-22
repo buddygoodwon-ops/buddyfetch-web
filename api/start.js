@@ -35,7 +35,7 @@ export default async function handler(req, res) {
     const now = Math.floor(Date.now() / 1000);
     const adminJwt = hs256Jwt({
       iss: KEY, sub: 'api', jti: 'api', nbf: now - 10, exp: now + 600,
-      video: { roomCreate: true, roomAdmin: true, roomList: true, agent: true },
+      video: { roomCreate: true, roomAdmin: true, roomList: true, room: room, agent: true },
     }, SECRET);
 
     // Create the room with the agent attached
@@ -59,7 +59,7 @@ export default async function handler(req, res) {
 
     // Explicit agent dispatch (CreateRoom-embedded agents no longer triggers jobs)
     try {
-      const ad = await fetch(`${roomService}/twirp/livekit.AgentDispatchService/CreateAgentDispatch`, {
+      const ad = await fetch(`${roomService}/twirp/livekit.AgentDispatchService/CreateDispatch`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${adminJwt}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ room, agent_name: AGENT_NAME }),
