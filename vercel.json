@@ -1,9 +1,25 @@
 {
   "version": 2,
   "rewrites": [
-    { "source": "/live", "destination": "/live.html" },
-    { "source": "/ilendgirl", "destination": "/ilendgirl.html" },
-    { "source": "/ilendgirlv3", "destination": "/ilendgirlv3.html" },
-    { "source": "/", "destination": "/index.html" }
+    {
+      "source": "/live",
+      "destination": "/live.html"
+    },
+    {
+      "source": "/ilendgirl",
+      "destination": "/ilendgirl.html"
+    },
+    {
+      "source": "/ilendgirlv3",
+      "destination": "/ilendgirlv3.html"
+    },
+    {
+      "source": "/ilendgirlv4",
+      "destination": "/ilendgirlv4.html"
+    },
+    {
+      "source": "/",
+      "destination": "/index.html"
+    }
   ]
 }
