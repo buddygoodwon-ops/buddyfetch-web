@@ -44,7 +44,7 @@ export default async function handler(req, res) {
       const cr = await fetch(`${roomService}/twirp/livekit.RoomService/CreateRoom`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${adminJwt}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: room, agents: [{ agentName: AGENT_NAME }] }),
+        body: JSON.stringify({ name: room }),
         signal: AbortSignal.timeout(10000),
       });
       if (!cr.ok) {
