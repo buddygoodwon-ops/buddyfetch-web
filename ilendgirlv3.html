@@ -72,7 +72,7 @@ document.getElementById('mic').onchange=async(e)=>{ if(room&&micTrack){await sta
 document.getElementById('start').onclick=async()=>{
  try{
   log('Fetching token...');
-  const r=await fetch('http://127.0.0.1:8768/start?room=kate-vapi-demo&participant='+encodeURIComponent('glenn')+'&t='+Date.now());
+  const r=await fetch('/api/start?room=kate-vapi-demo&participant='+encodeURIComponent('glenn')+'&dispatch=0&t='+Date.now());
   const t=await r.json();
   if(t.error){log('Server error: '+t.error);return;}
   log('Connecting to '+t.room+'...');
