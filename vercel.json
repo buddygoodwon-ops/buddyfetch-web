@@ -3,6 +3,7 @@
   "rewrites": [
     { "source": "/live", "destination": "/live.html" },
     { "source": "/ilendgirl", "destination": "/ilendgirl.html" },
+    { "source": "/ilendgirlv3", "destination": "/ilendgirlv3.html" },
     { "source": "/", "destination": "/index.html" }
   ]
 }

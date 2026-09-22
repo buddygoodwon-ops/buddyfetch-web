@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><title>Kate Trulove - VAPI x LiveKit</title>
+<meta http-equiv="Cache-Control" content="no-store"/>
+<style>
+ body{font-family:system-ui,sans-serif;background:#0f172a;color:#e2e8f0;margin:0;padding:24px}
+ h1{font-size:20px}
+ #status{margin:12px 0;color:#94a3b8;white-space:pre-line;font-size:13px}
+ video{width:420px;height:420px;border-radius:16px;background:#1e293b}
+ button{padding:10px 18px;border-radius:8px;border:0;font-size:15px;cursor:pointer;margin-right:8px}
+ #start{background:#22c55e;color:#052e16}#stop{background:#ef4444;color:#fff;display:none}
+ #audio{background:#f59e0b;color:#451a03;display:none}
+ #meter{width:420px;height:14px;background:#1e293b;border-radius:7px;margin-top:10px;overflow:hidden}
+ #bar{height:100%;width:0;background:#22c55e;transition:width .08s}
+ select{padding:6px;border-radius:6px;background:#1e293b;color:#e2e8f0;border:1px solid #334155;max-width:420px}
+</style></head>
+<body>
+<h1>Kate Trulove (BBR Realty) - VAPI + LiveKit avatar v10b</h1>
+<div id="status">Click Start, grant mic, and talk to Kate.</div>
+<video id="av" autoplay playsinline muted></video>
+<div id="meter"><div id="bar"></div></div>
+<div style="margin:10px 0;font-size:12px;color:#94a3b8">Mic device: <select id="mic"></select> <span id="miclvl"></span></div>
+<div style="margin-top:6px">
+ <button id="start">Start call</button><button id="stop">End call</button><button id="audio">Enable audio</button>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/livekit-client@2/dist/livekit-client.umd.min.js"></script>
+<script>
+const st=document.getElementById('status'),video=document.getElementById('av');let room=null,micTrack=null,meterRAF=null,analyser=null,lastMeter={p:0,t:0};
+function log(m){st.textContent+='\\n'+m;console.log('[kate-vapi]',m);fetch('/log?m='+encodeURIComponent('[page] '+m),{keepalive:true}).catch(()=>{});}
+function attachAudio(track){
+ const el=track.attach();el.autoplay=true;el.muted=false;el.volume=1;el.setAttribute('playsinline','');
+ document.body.appendChild(el);
+ el.play().then(()=>log('remote audio playing')).catch(e=>log('audio play blocked: '+e.message));
+ return el;
+}
+document.getElementById('audio').onclick=async()=>{
+ if(room){await room.startAudio();log('startAudio -> canPlaybackAudio='+room.canPlaybackAudio);}
+ document.getElementById('audio').style.display='none';
+};
+async function fillMics(selectId){
+ try{
+  const devs=await LivekitClient.Room.getLocalDevices('audioinput');
+  const sel=document.getElementById('mic');sel.innerHTML='';
+  devs.forEach((d,i)=>{const o=document.createElement('option');o.value=d.deviceId;
+    o.textContent=(d.label||('Mic '+(i+1)));if(d.deviceId===selectId)o.selected=true;sel.appendChild(o);});
+  log('mic devices found: '+devs.length);
+ }catch(e){log('mic list error: '+e.message);}
+}
+function meter(){ const d=analyser.fftSize?Float32Array.from(new Array(analyser.fftSize)):null;
+ const buf=new Uint8Array(analyser.fftSize);
+ const step=()=>{analyser.getByteTimeDomainData(buf);let peak=0;
+  for(let i=0;i<buf.length;i++){const v=Math.abs(buf[i]-128);if(v>peak)peak=v;}
+  const pct=Math.min(100,Math.round(peak/128*160));
+  document.getElementById('bar').style.width=pct+'%';
+  document.getElementById('miclvl').textContent='level '+(peak>3?'LIVE ('+peak+')':'silent');
+  const now=Date.now();
+  if(peak!==lastMeter.p || now-lastMeter.t>500){lastMeter={p:peak,t:now};
+   fetch('/log?m='+encodeURIComponent('[meter] peak='+peak+' pct='+pct),{keepalive:true}).catch(()=>{});}
+  meterRAF=requestAnimationFrame(step);};
+ step();}
+async function startMic(deviceId){
+ if(micTrack){try{room.localParticipant.unpublishTrack(micTrack);}catch(e){}micTrack.stop();micTrack=null;}
+ const opts=deviceId?{deviceId:{exact:deviceId}}:{};
+ micTrack=await LivekitClient.createLocalAudioTrack(opts);
+ await room.localParticipant.publishTrack(micTrack);
+ const ctx=new (window.AudioContext||window.webkitAudioContext)();
+ const src=ctx.createMediaStreamSource(new MediaStream([micTrack.mediaStreamTrack]));
+ analyser=ctx.createAnalyser();analyser.fftSize=512;src.connect(analyser);
+ if(meterRAF)cancelAnimationFrame(meterRAF);meter();
+ log('mic published ('+(deviceId||'default')+')');
+}
+document.getElementById('mic').onchange=async(e)=>{ if(room&&micTrack){await startMic(e.target.value);log('switched mic');} };
+document.getElementById('start').onclick=async()=>{
+ try{
+  log('Fetching token...');
+  const r=await fetch('/start?room=kate-vapi-demo&participant='+encodeURIComponent('glenn')+'&t='+Date.now());
+  const t=await r.json();
+  if(t.error){log('Server error: '+t.error);return;}
+  log('Connecting to '+t.room+'...');
+  room=new LivekitClient.Room({adaptiveStream:false,dynacast:false});
+  room.on(LivekitClient.RoomEvent.TrackSubscribed,(track,pub,participant)=>{const nm=(pub.trackName||pub.name||'');
+    log('Track from '+participant.identity+': '+track.kind+(nm?(' ('+nm+')'):''));
+    if(track.kind==='video'){track.attach(video);track.start();video.play().catch(()=>{});}
+    if(track.kind==='audio'){attachAudio(track);} });
+  room.on(LivekitClient.RoomEvent.TrackUnsubscribed,(track)=>{if(track.kind==='video')track.detach();});
+  room.on(LivekitClient.RoomEvent.Disconnected,()=>log('Disconnected'));
+  await room.connect(t.url,t.token);
+  await room.startAudio();
+  log('Connected as glenn. canPlaybackAudio='+room.canPlaybackAudio);
+  if(!room.canPlaybackAudio){document.getElementById('audio').style.display='inline-block';log('!! Audio blocked - click Enable audio');}
+  await fillMics();
+  await startMic(document.getElementById('mic').value||undefined);
+  log('Talk to Kate - watch the green meter. It MUST move when you speak.');
+  document.getElementById('start').style.display='none';
+  document.getElementById('stop').style.display='inline-block';
+ }catch(e){log('ERROR: '+(e.message||e));}
+};
+document.getElementById('stop').onclick=async()=>{if(room){await room.disconnect();room=null;}
+ if(meterRAF)cancelAnimationFrame(meterRAF);document.getElementById('bar').style.width='0';
+ document.getElementById('start').style.display='inline-block';
+ document.getElementById('stop').style.display='none';};
+</script></body></html>
