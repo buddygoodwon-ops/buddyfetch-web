@@ -1,0 +1,312 @@
+<<<<<<< HEAD
+
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="theme-color" content="#0A0E1F"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/><meta name="apple-mobile-web-app-title" content="BuddyFetch"/><link rel="manifest" href="/manifest.json"/><link rel="icon" type="image/jpeg" href="/assets/old-dog-cartoon.jpg"/><link rel="apple-touch-icon" href="/assets/old-dog-cartoon.jpg"/><title>BuddyFetch</title>
+
+<style>
+
+body{background:#0A0E1F;margin:0;}
+
+.buddy-avatar-promo{max-width:360px;margin:40px auto;padding:40px 20px 32px;text-align:center;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#12172c;border:1px solid rgba(139,108,240,.25);border-radius:20px;}
+
+.buddy-avatar-promo .avatar-frame{width:329px;height:329px;background:#fff;border-radius:20px;overflow:visible;display:block;margin:0 auto 16px;box-sizing:border-box;position:relative;}
+
+.buddy-avatar-promo .avatar-caption{position:absolute;left:50%;top:100%;transform:translate(-50%,-100%);background:#4f8ef7;color:#fff;font-weight:700;font-size:14px;letter-spacing:.02em;text-transform:none;padding:8px 20px;margin:0;border-radius:999px;white-space:nowrap;}
+
+.buddy-avatar-promo .avatar-frame img{width:100%;height:100%;object-fit:cover;border-radius:20px;transform-origin:center center;cursor:pointer;display:block;}
+
+.buddy-avatar-promo .eyebrow{background:linear-gradient(90deg,#8b6cf0,#4f8ef7);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;font-weight:700;letter-spacing:.06em;font-size:14px;text-transform:uppercase;margin:0 0 12px;}
+
+.buddy-avatar-promo h1{font-size:22px;line-height:1.3;margin:24px 0 10px;color:#e9ecf7;}
+
+.buddy-avatar-promo p{font-size:14px;color:#a6acc9;line-height:1.4;margin:0 0 16px;}
+
+.buddy-avatar-promo .btn{display:block;width:100%;box-sizing:border-box;padding:14px 16px;margin:8px 0;border-radius:999px;border:none;font-size:15px;font-weight:600;cursor:pointer;}
+
+.buddy-avatar-promo .btn-primary{background:linear-gradient(90deg,#8b6cf0,#4f8ef7);color:#fff;}
+
+.buddy-avatar-promo .btn-secondary{background:#4c527a;color:#e9ecf7;}lemon-slice-widget{transition:transform .25s ease;display:none;}
+
+lemon-slice-widget[controlled-widget-state="active"]{display:block;position:fixed!important;top:calc(50% - 12px)!important;left:50%!important;transform:translate(-50%,-50%) scale(1.17)!important;transform-origin:center center!important;z-index:9999!important;max-height:90vh!important;}
+
+body:has(lemon-slice-widget[controlled-widget-state="active"]){background:#0A0E1F;} body:has(lemon-slice-widget[controlled-widget-state="active"]) .buddy-avatar-promo{display:none;}
+
+#buddy-mute-hint{display:none;}
+
+body:has(lemon-slice-widget[controlled-widget-state="active"]) #buddy-mute-hint{display:flex;position:fixed;left:50%;bottom:calc(25dvh - 158px);transform:translateX(-50%);z-index:9999;flex-direction:row;align-items:center;gap:6px;color:#fff;font-size:16px;font-weight:600;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;white-space:nowrap;text-align:center;}
+
+#buddy-mute-hint button{background:rgba(139,108,240,.25);border:none;border-radius:999px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;}
+
+@media (max-width:700px){
+
+  lemon-slice-widget[controlled-widget-state="active"]{max-height:90vh!important;}
+
+}</style>
+
+</head><body>
+
+
+
+<div class="buddy-avatar-promo">
+
+<p class="eyebrow">BUDDYFETCH.AI</p>
+
+<div class="avatar-frame" id="buddy-avatar-trigger"><img src="/assets/image.jpg" alt="iLendGirl avatar"/><img src="/assets/ilendgirl-logo-v2-transparent.png" alt="iLendGirl logo" style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);width:132px;height:auto;pointer-events:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,.5));"/><p class="avatar-caption">Let's Yap!&nbsp;&nbsp;Click me.</p></div>
+
+<h1>Your Virtual Mascot<br>Your Company Brain<br>Fetching Real Tasks</h1>
+
+<p>Your Company's Window into your AI powered custom Virtual Mascot to access your Company's Brain powered by Agentic AI OpenClaw. You and your Employes can access all your company's knowledge base and then assign real tasks, jobs, and workflows for him do. We build this custom for your business!</p>
+
+<button type="button" class="btn btn-primary" id="start-buddy-avatar">Start Fetch Mode</button>
+
+<button type="button" class="btn btn-secondary" id="open-local-plugin-ui">Save to Your Home Screen</button>
+
+</div>
+
+<lemon-slice-widget agent-id="agent_79cd6d385f8745b2" inline="" custom-minimized-width="200" custom-minimized-height="300" custom-active-width="320" custom-active-height="520" video-button-color-opacity="0.88" show-minimize-button="true" initial-state="minimized"></lemon-slice-widget>
+
+  <div id="buddy-mute-hint"><span>If Buddy is Muted Hit</span><span aria-hidden="true" style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:999px;background:rgba(139,108,240,.25);flex-shrink:0;"><svg width="4" height="16" viewBox="0 0 4 16" fill="#fff"><circle cx="2" cy="2" r="2"/><circle cx="2" cy="8" r="2"/><circle cx="2" cy="14" r="2"/></svg></span><span>Button Above</span></div><script type="module" src="https://unpkg.com/@lemonsliceai/lemon-slice-widget"></script>
+
+<script>
+
+function openBuddyAvatar(){var w=document.querySelector('lemon-slice-widget');if(!w)return;w.setAttribute('controlled-widget-state','active');}
+
+document.getElementById('buddy-avatar-trigger').addEventListener('click',openBuddyAvatar);
+
+document.getElementById('start-buddy-avatar').addEventListener('click',openBuddyAvatar);
+
+document.getElementById('open-local-plugin-ui').addEventListener('click',function(){var w=document.querySelector('lemon-slice-widget');if(w){w.dispatchEvent(new Event('click',{bubbles:true}));}openBuddyAvatar();});
+
+</script>
+
+</body></html>
+
+=======
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="theme-color" content="#0e7490" />
+
+<title>iLend Girl - Live Avatar | BuddyFetch.AI</title>
+
+<style>
+
+  :root { --ilg-teal: #0e7490; --ilg-teal-dark: #155e75; --ilg-sand: #fdf3e7; --ilg-coral: #f2706a; --ink: #0f172a; }
+
+  * { box-sizing: border-box; }
+
+  body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background: linear-gradient(160deg, #062a36 0%, #0b3f4f 55%, #14566b 100%); color: #e8f6f9; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+
+  .card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); border-radius: 24px; padding: 28px; max-width: 620px; width: 100%; text-align: center; backdrop-filter: blur(8px); }
+
+  .kicker { letter-spacing: 0.18em; text-transform: uppercase; font-size: 12px; color: #7dd3e8; margin: 0 0 6px; }
+
+  h1 { margin: 0 0 4px; font-size: 30px; color: #fff; }
+
+  .tagline { margin: 0 0 18px; color: #b8e2ee; font-size: 15px; }
+
+  .stage { position: relative; width: 100%; aspect-ratio: 1/1; max-width: 420px; margin: 0 auto 16px; border-radius: 20px; overflow: hidden; background: radial-gradient(circle at 50% 30%, #0d4a5e 0%, #062a36 70%); border: 1px solid rgba(255,255,255,0.12); }
+
+  video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #9fd8e8; font-size: 15px; line-height: 1.6; }
+
+  .placeholder .big { font-size: 52px; margin-bottom: 8px; }
+
+  #status { min-height: 20px; margin: 0 0 14px; color: #a7d9e7; font-size: 14px; white-space: pre-line; }
+
+  .btn { padding: 13px 26px; border-radius: 999px; border: 0; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform .12s ease, opacity .12s ease; }
+
+  .btn:active { transform: scale(0.97); }
+
+  #start { background: #22c55e; color: #052e16; }
+
+  #stop { background: #ef4444; color: #fff; display: none; }
+
+  .hint { margin-top: 14px; font-size: 13px; color: #8fc4d4; }
+
+  .hint code { background: rgba(255,255,255,0.12); padding: 1px 6px; border-radius: 6px; }
+
+  .foot { margin-top: 16px; font-size: 12px; color: #6ea8ba; }
+
+  .foot a { color: #7dd3e8; }
+
+</style>
+
+</head>
+
+<body>
+
+  <div class="card">
+
+    <p class="kicker">BuddyFetch.AI / iLend Girl</p>
+
+    <h1>iLend Girl</h1>
+
+    <p class="tagline">Mortgages Made Easy. You Dream It. I Achieve It.</p>
+
+
+
+    <div class="stage">
+
+      <video id="avatarVideo" autoplay playsinline muted></video>
+
+      <div class="placeholder" id="placeholder">
+
+        <div class="big">🌺</div>
+
+        <div>Your avatar will appear here.<br/>Click Start and allow the mic.</div>
+
+      </div>
+
+    </div>
+
+
+
+    <p id="status">Load the page, click Start, grant mic access, and talk to the avatar.</p>
+
+
+
+    <button class="btn" id="start">Start call</button>
+
+    <button class="btn" id="stop">End call</button>
+
+
+
+    <p class="hint">Tip: ask her to <code>call Glenn</code> — the avatar can place real phone calls.</p>
+
+    <p class="foot"><a href="https://www.buddyfetch.ai">buddyfetch.ai</a> · LiveKit + LemonSlice + OpenClaw + ElevenLabs</p>
+
+  </div>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/livekit-client@2/dist/livekit-client.umd.min.js"></script>
+
+  <script>
+
+    const statusEl = document.getElementById('status');
+
+    const video = document.getElementById('avatarVideo');
+
+    const placeholder = document.getElementById('placeholder');
+
+    let room = null;
+
+
+
+    function log(m) {
+
+      statusEl.textContent = m;
+
+      console.log('[ilendgirl]', m);
+
+    }
+
+
+
+    // Token server: explicit ?tokenUrl= wins, else same-origin Vercel function.
+
+    const params = new URLSearchParams(location.search);
+
+    let tokenBase = params.get('tokenUrl') || '/api/start';
+
+
+
+    document.getElementById('start').onclick = async () => {
+
+      try {
+
+        log('Fetching room token...');
+
+        const roomName = 'ilendgirl-' + Date.now().toString(36);
+
+        // tokenBase may be a base host (append /start) or the full endpoint (/api/start)
+
+        const endpoint = tokenBase.endsWith('/start') ? tokenBase : (tokenBase.replace(/\/$/, '') + '/start');
+
+        const r = await fetch(endpoint + '?room=' + encodeURIComponent(roomName) + '&participant=' + encodeURIComponent('visitor-'+Math.floor(Math.random()*1e5)));
+
+        if (!r.ok) throw new Error('Token server HTTP ' + r.status);
+
+        const t = await r.json();
+
+        log('Token OK. Connecting to ' + t.url + ' agent=' + (t.agent || '?') + '...');
+
+
+
+        room = new LivekitClient.Room();
+
+        room.on(LivekitClient.RoomEvent.TrackSubscribed, (track, pub, participant) => {
+
+          log('Avatar video stream connected.');
+
+          if (track.kind === 'video') { placeholder.style.display = 'none'; track.attach(video); track.start(); }
+
+        });
+
+        room.on(LivekitClient.RoomEvent.TrackUnsubscribed, (track) => { track.detach(); placeholder.style.display = 'flex'; });
+
+        room.on(LivekitClient.RoomEvent.Disconnected, () => log('Disconnected.'));
+
+        room.on(LivekitClient.RoomEvent.ConnectionStateChanged, (s) => log('Connection: ' + s));
+
+
+
+        await room.connect(t.url, t.token);
+
+        log('Connected. Publishing your mic...');
+
+
+
+        const mic = await LivekitClient.createLocalAudioTrack();
+
+        await room.localParticipant.publishTrack(mic);
+
+        log('Live. iLend Girl should greet you now. Talk to her!');
+
+
+
+        document.getElementById('start').style.display = 'none';
+
+        document.getElementById('stop').style.display = 'inline-block';
+
+      } catch (e) {
+
+        log('ERROR: ' + (e.message || e) + '\nIf the avatar kit is offline, start it on the host PC (token server :8766 + agent).');
+
+      }
+
+    };
+
+
+
+    document.getElementById('stop').onclick = async () => {
+
+      if (room) { await room.disconnect(); room = null; }
+
+      document.getElementById('start').style.display = 'inline-block';
+
+      document.getElementById('stop').style.display = 'none';
+
+      placeholder.style.display = 'flex';
+
+      log('Call ended. Click Start to reconnect.');
+
+    };
+
+  </script>
+
+</body>
+
+</html>
+
+>>>>>>> d6da713 (Add iLend Girl live avatar page at /ilendgirl (LiveKit + LemonSlice + OpenClaw + ElevenLabs))
+
