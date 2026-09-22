@@ -26,6 +26,10 @@
       "destination": "/ilendgirlv5.html"
     },
     {
+      "source": "/ilendgirlv6",
+      "destination": "/ilendgirlv6.html"
+    },
+    {
       "source": "/",
       "destination": "/index.html"
     }
