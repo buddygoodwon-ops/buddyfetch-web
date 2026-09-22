@@ -1,113 +1,101 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#0e7490" />
-<title>Kate Trulove - BBR Realty Reception | BuddyFetch.AI</title>
-<style>
-  :root { --ilg-teal: #0e7490; --ilg-teal-dark: #155e75; --ilg-sand: #fdf3e7; --ilg-coral: #f2706a; --ink: #0f172a; }
-  * { box-sizing: border-box; }
-  body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background: linear-gradient(160deg, #062a36 0%, #0b3f4f 55%, #14566b 100%); color: #e8f6f9; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
-  .card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); border-radius: 24px; padding: 28px; max-width: 620px; width: 100%; text-align: center; backdrop-filter: blur(8px); }
-  .kicker { letter-spacing: 0.18em; text-transform: uppercase; font-size: 12px; color: #7dd3e8; margin: 0 0 6px; }
-  h1 { margin: 0 0 4px; font-size: 30px; color: #fff; }
-  .tagline { margin: 0 0 18px; color: #b8e2ee; font-size: 15px; }
-  .stage { position: relative; width: 100%; aspect-ratio: 1/1; max-width: 420px; margin: 0 auto 16px; border-radius: 20px; overflow: hidden; background: radial-gradient(circle at 50% 30%, #0d4a5e 0%, #062a36 70%); border: 1px solid rgba(255,255,255,0.12); }
-  video { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #9fd8e8; font-size: 15px; line-height: 1.6; }
-  .placeholder .big { font-size: 48px; margin-bottom: 8px; }
-  #status { min-height: 20px; margin: 0 0 14px; color: #a7d9e7; font-size: 14px; white-space: pre-line; }
-  .btn { padding: 13px 26px; border-radius: 999px; border: 0; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform .12s ease, opacity .12s ease; }
-  .btn:active { transform: scale(0.97); }
-  #start { background: #22c55e; color: #052e16; }
-  #stop { background: #ef4444; color: #fff; display: none; }
-  .hint { margin-top: 14px; font-size: 13px; color: #8fc4d4; }
-  .hint code { background: rgba(255,255,255,0.12); padding: 1px 6px; border-radius: 6px; }
-  .foot { margin-top: 16px; font-size: 12px; color: #6ea8ba; }
-  .foot a { color: #7dd3e8; }
-</style>
-</head>
-<body>
-  <div class="card">
-    <p class="kicker">BuddyFetch.AI / BBR Realty Reception</p>
-    <h1>Kate Trulove</h1>
-    <p class="tagline">BBR Realty Reception - part of the BirdRock family of brands, San Diego</p>
-
-    <div class="stage">
-      <video id="avatarVideo" autoplay playsinline muted></video>
-      <div class="placeholder" id="placeholder">
-        <div class="big">&#128104;&#8205;&#128188;</div>
-        <div>Your avatar will appear here.<br/>Click Start and allow the mic.</div>
-      </div>
-    </div>
-
-    <p id="status">Load the page, click Start, grant mic access, and talk to Kate.</p>
-
-    <button class="btn" id="start">Start call</button>
-    <button class="btn" id="stop">End call</button>
-
-    <p class="hint">Tip: ask her to <code>call Buddy</code> - the avatar can place real phone calls.</p>
-    <p class="foot"><a href="https://www.buddyfetch.ai">buddyfetch.ai</a> &middot; LiveKit + LemonSlice + OpenClaw + ElevenLabs</p>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/livekit-client@2/dist/livekit-client.umd.min.js"></script>
-  <script>
-    const statusEl = document.getElementById('status');
-    const video = document.getElementById('avatarVideo');
-    const placeholder = document.getElementById('placeholder');
-    let room = null;
-
-    function log(m) {
-      statusEl.textContent = m;
-      console.log('[kate-trulove]', m);
-    }
-
-    // Token server: explicit ?tokenUrl= wins, else same-origin Vercel function.
-    const params = new URLSearchParams(location.search);
-    let tokenBase = params.get('tokenUrl') || '/api/start';
-
-    document.getElementById('start').onclick = async () => {
-      try {
-        log('Fetching room token...');
-        const roomName = 'kate-' + Date.now().toString(36);
-        // tokenBase may be a base host (append /start) or the full endpoint (/api/start)
-        const endpoint = tokenBase.endsWith('/start') ? tokenBase : (tokenBase.replace(/\/$/, '') + '/start');
-        const r = await fetch(endpoint + '?room=' + encodeURIComponent(roomName) + '&participant=' + encodeURIComponent('visitor-'+Math.floor(Math.random()*1e5)));
-        if (!r.ok) throw new Error('Token server HTTP ' + r.status);
-        const t = await r.json();
-        log('Token OK. Connecting to ' + t.url + ' ...');
-
-        room = new LivekitClient.Room();
-        room.on(LivekitClient.RoomEvent.TrackSubscribed, (track, pub, participant) => {
-          log('Avatar video stream connected.');
-          if (track.kind === 'video') { placeholder.style.display = 'none'; track.attach(video); track.start(); }
-        });
-        room.on(LivekitClient.RoomEvent.TrackUnsubscribed, (track) => { track.detach(); placeholder.style.display = 'flex'; });
-        room.on(LivekitClient.RoomEvent.Disconnected, () => log('Disconnected.'));
-        room.on(LivekitClient.RoomEvent.ConnectionStateChanged, (s) => log('Connection: ' + s));
-
-        await room.connect(t.url, t.token);
-        log('Connected. Publishing your mic...');
-
-        const mic = await LivekitClient.createLocalAudioTrack();
-        await room.localParticipant.publishTrack(mic);
-        log('Live. Kate Trulove should greet you now. Talk to her!');
-
-        document.getElementById('start').style.display = 'none';
-        document.getElementById('stop').style.display = 'inline-block';
-      } catch (e) {
-        log('ERROR: ' + (e.message || e) + '\nThe avatar kit may be offline - try again in a moment.');
-      }
-    };
-
-    document.getElementById('stop').onclick = async () => {
-      if (room) { await room.disconnect(); room = null; }
-      document.getElementById('start').style.display = 'inline-block';
-      document.getElementById('stop').style.display = 'none';
-      placeholder.style.display = 'flex';
-      log('Call ended. Click Start to reconnect.');
-    };
-  </script>
-</body>
-</html>
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><title>Kate Trulove - VAPI x LiveKit</title>
+<meta http-equiv="Cache-Control" content="no-store"/>
+<style>
+ body{font-family:system-ui,sans-serif;background:#0f172a;color:#e2e8f0;margin:0;padding:24px}
+ h1{font-size:20px}
+ #status{margin:12px 0;color:#94a3b8;white-space:pre-line;font-size:13px}
+ video{width:420px;height:420px;border-radius:16px;background:#1e293b}
+ button{padding:10px 18px;border-radius:8px;border:0;font-size:15px;cursor:pointer;margin-right:8px}
+ #start{background:#22c55e;color:#052e16}#stop{background:#ef4444;color:#fff;display:none}
+ #audio{background:#f59e0b;color:#451a03;display:none}
+ #meter{width:420px;height:14px;background:#1e293b;border-radius:7px;margin-top:10px;overflow:hidden}
+ #bar{height:100%;width:0;background:#22c55e;transition:width .08s}
+ select{padding:6px;border-radius:6px;background:#1e293b;color:#e2e8f0;border:1px solid #334155;max-width:420px}
+</style></head>
+<body>
+<h1>Kate Trulove (BBR Realty) - VAPI + LiveKit avatar v10b</h1>
+<div id="status">Click Start, grant mic, and talk to Kate.</div>
+<video id="av" autoplay playsinline muted></video>
+<div id="meter"><div id="bar"></div></div>
+<div style="margin:10px 0;font-size:12px;color:#94a3b8">Mic device: <select id="mic"></select> <span id="miclvl"></span></div>
+<div style="margin-top:6px">
+ <button id="start">Start call</button><button id="stop">End call</button><button id="audio">Enable audio</button>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/livekit-client@2/dist/livekit-client.umd.min.js"></script>
+<script>
+const st=document.getElementById('status'),video=document.getElementById('av');let room=null,micTrack=null,meterRAF=null,analyser=null,lastMeter={p:0,t:0};
+function log(m){st.textContent+='\\n'+m;console.log('[kate-vapi]',m);fetch('/log?m='+encodeURIComponent('[page] '+m),{keepalive:true}).catch(()=>{});}
+function attachAudio(track){
+ const el=track.attach();el.autoplay=true;el.muted=false;el.volume=1;el.setAttribute('playsinline','');
+ document.body.appendChild(el);
+ el.play().then(()=>log('remote audio playing')).catch(e=>log('audio play blocked: '+e.message));
+ return el;
+}
+document.getElementById('audio').onclick=async()=>{
+ if(room){await room.startAudio();log('startAudio -> canPlaybackAudio='+room.canPlaybackAudio);}
+ document.getElementById('audio').style.display='none';
+};
+async function fillMics(selectId){
+ try{
+  const devs=await LivekitClient.Room.getLocalDevices('audioinput');
+  const sel=document.getElementById('mic');sel.innerHTML='';
+  devs.forEach((d,i)=>{const o=document.createElement('option');o.value=d.deviceId;
+    o.textContent=(d.label||('Mic '+(i+1)));if(d.deviceId===selectId)o.selected=true;sel.appendChild(o);});
+  log('mic devices found: '+devs.length);
+ }catch(e){log('mic list error: '+e.message);}
+}
+function meter(){ const d=analyser.fftSize?Float32Array.from(new Array(analyser.fftSize)):null;
+ const buf=new Uint8Array(analyser.fftSize);
+ const step=()=>{analyser.getByteTimeDomainData(buf);let peak=0;
+  for(let i=0;i<buf.length;i++){const v=Math.abs(buf[i]-128);if(v>peak)peak=v;}
+  const pct=Math.min(100,Math.round(peak/128*160));
+  document.getElementById('bar').style.width=pct+'%';
+  document.getElementById('miclvl').textContent='level '+(peak>3?'LIVE ('+peak+')':'silent');
+  const now=Date.now();
+  if(peak!==lastMeter.p || now-lastMeter.t>500){lastMeter={p:peak,t:now};
+   fetch('/log?m='+encodeURIComponent('[meter] peak='+peak+' pct='+pct),{keepalive:true}).catch(()=>{});}
+  meterRAF=requestAnimationFrame(step);};
+ step();}
+async function startMic(deviceId){
+ if(micTrack){try{room.localParticipant.unpublishTrack(micTrack);}catch(e){}micTrack.stop();micTrack=null;}
+ const opts=deviceId?{deviceId:{exact:deviceId}}:{};
+ micTrack=await LivekitClient.createLocalAudioTrack(opts);
+ await room.localParticipant.publishTrack(micTrack);
+ const ctx=new (window.AudioContext||window.webkitAudioContext)();
+ const src=ctx.createMediaStreamSource(new MediaStream([micTrack.mediaStreamTrack]));
+ analyser=ctx.createAnalyser();analyser.fftSize=512;src.connect(analyser);
+ if(meterRAF)cancelAnimationFrame(meterRAF);meter();
+ log('mic published ('+(deviceId||'default')+')');
+}
+document.getElementById('mic').onchange=async(e)=>{ if(room&&micTrack){await startMic(e.target.value);log('switched mic');} };
+document.getElementById('start').onclick=async()=>{
+ try{
+  log('Fetching token...');
+  const r=await fetch('/api/start?room=kate-vapi-demo&participant='+encodeURIComponent('glenn')+'&dispatch=0&t='+Date.now());
+  const t=await r.json();
+  if(t.error){log('Server error: '+t.error);return;}
+  log('Connecting to '+t.room+'...');
+  room=new LivekitClient.Room({adaptiveStream:false,dynacast:false});
+  room.on(LivekitClient.RoomEvent.TrackSubscribed,(track,pub,participant)=>{const nm=(pub.trackName||pub.name||'');
+    log('Track from '+participant.identity+': '+track.kind+(nm?(' ('+nm+')'):''));
+    if(track.kind==='video'){track.attach(video);track.start();video.play().catch(()=>{});}
+    if(track.kind==='audio'){attachAudio(track);} });
+  room.on(LivekitClient.RoomEvent.TrackUnsubscribed,(track)=>{if(track.kind==='video')track.detach();});
+  room.on(LivekitClient.RoomEvent.Disconnected,()=>log('Disconnected'));
+  await room.connect(t.url,t.token);
+  await room.startAudio();
+  log('Connected as glenn. canPlaybackAudio='+room.canPlaybackAudio);
+  if(!room.canPlaybackAudio){document.getElementById('audio').style.display='inline-block';log('!! Audio blocked - click Enable audio');}
+  await fillMics();
+  await startMic(document.getElementById('mic').value||undefined);
+  log('Talk to Kate - watch the green meter. It MUST move when you speak.');
+  document.getElementById('start').style.display='none';
+  document.getElementById('stop').style.display='inline-block';
+ }catch(e){log('ERROR: '+(e.message||e));}
+};
+document.getElementById('stop').onclick=async()=>{if(room){await room.disconnect();room=null;}
+ if(meterRAF)cancelAnimationFrame(meterRAF);document.getElementById('bar').style.width='0';
+ document.getElementById('start').style.display='inline-block';
+ document.getElementById('stop').style.display='none';};
+</script></body></html>
