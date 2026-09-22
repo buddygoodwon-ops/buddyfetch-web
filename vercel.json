@@ -26,13 +26,10 @@
       "destination": "/ilendgirlv5.html"
     },
     {
-<<<<<<< HEAD
-=======
       "source": "/ilendgirlv6",
       "destination": "/ilendgirlv6.html"
     },
     {
->>>>>>> 7b3ca94 (/ilendgirl = ORIGINAL 9/19 tuned design restored byte-for-byte (914748c), UNTOUCHED. Working live page preserved as /ilendgirlv6. Nothing deleted.)
       "source": "/",
       "destination": "/index.html"
     }
