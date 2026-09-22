@@ -57,8 +57,10 @@ export default async function handler(req, res) {
       return;
     }
 
+    // dispatch=0: skip explicit agent dispatch (bridge-owned rooms like kate-vapi-demo)
+    const dispatch = u.searchParams.get('dispatch') !== '0';
     // Explicit agent dispatch (CreateRoom-embedded agents no longer triggers jobs)
-    try {
+    if (dispatch) try {
       const ad = await fetch(`${roomService}/twirp/livekit.AgentDispatchService/CreateDispatch`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${adminJwt}`, 'Content-Type': 'application/json' },
