@@ -40,6 +40,10 @@
     {
       "source": "/ginger",
       "destination": "/ginger.html"
+    },
+    {
+      "source": "/ilendgirlv8",
+      "destination": "/ilendgirlv8.html"
     }
   ]
 }
