@@ -34,7 +34,7 @@ body:has(lemon-slice-widget[controlled-widget-state="active"]) #buddy-mute-hint{
 <script>
 function openBuddyAvatar(){var w=document.querySelector('lemon-slice-widget');if(!w)return;w.setAttribute('controlled-widget-state','active');}
 document.getElementById('buddy-avatar-trigger').addEventListener('click',openBuddyAvatar);
-document.getElementById('start-buddy-avatar').addEventListener('click',function(){window.location.href='/ilendgirlv3';});
+document.getElementById('start-buddy-avatar').addEventListener('click',function(){window.location.href='/ilendgirlv3?auto=1';});
 document.getElementById('open-local-plugin-ui').addEventListener('click',function(){var w=document.querySelector('lemon-slice-widget');if(w){w.dispatchEvent(new Event('click',{bubbles:true}));}openBuddyAvatar();});
 </script>
 </body></html>
