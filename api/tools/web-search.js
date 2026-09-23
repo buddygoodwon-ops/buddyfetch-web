@@ -27,13 +27,23 @@ export default async function handler(req, res) {
 
   const debug = [];
   try {
-    // Engine 1+2: DuckDuckGo
+    // Engine 1+2: DuckDuckGo (POST form bypasses datacenter-IP 403 on GET)
     for (const [label, url] of [
-      ['ddg-html', 'https://html.duckduckgo.com/html/?q=' + encodeURIComponent(query)],
-      ['ddg-lite', 'https://lite.duckduckgo.com/lite/?q=' + encodeURIComponent(query)],
+      ['ddg-html', 'https://html.duckduckgo.com/html/'],
+      ['ddg-lite', 'https://lite.duckduckgo.com/lite/'],
     ]) {
       try {
-        const r = await fetch(url, { headers: { 'User-Agent': UA, 'Accept-Language': 'en-US,en;q=0.9' }, signal: AbortSignal.timeout(15000) });
+        const r = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'User-Agent': UA,
+            'Accept-Language': 'en-US,en;q=0.9',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Referer: 'https://duckduckgo.com/',
+          },
+          body: 'q=' + encodeURIComponent(query),
+          signal: AbortSignal.timeout(15000),
+        });
         const html = await r.text();
         const results = label === 'ddg-html' ? parseDdgHtml(html) : parseDdgLite(html);
         debug.push(label + ':' + r.status + '/' + results.length);
