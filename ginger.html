@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><title>Kate Trulove - VAPI x LiveKit</title>
+<html lang="en"><head><meta charset="UTF-8"/><title>Ginger - VAPI x LiveKit</title>
 <meta http-equiv="Cache-Control" content="no-store"/>
 <style>
  body{font-family:system-ui,sans-serif;background:#0f172a;color:#e2e8f0;margin:0;padding:24px}
@@ -14,8 +14,8 @@
  select{padding:6px;border-radius:6px;background:#1e293b;color:#e2e8f0;border:1px solid #334155;max-width:420px}
 </style></head>
 <body>
-<h1>Ginger (BirdRock) - VAPI + LiveKit avatar v10b</h1>
-<div id="status">Click Start, grant mic, and talk to Kate.</div>
+<h1>Ginger - VAPI + LiveKit avatar</h1>
+<div id="status">Click Start, grant mic, and talk to Ginger.</div>
 <video id="av" autoplay playsinline muted></video>
 <div id="meter"><div id="bar"></div></div>
 <div style="margin:10px 0;font-size:12px;color:#94a3b8">Mic device: <select id="mic"></select> <span id="miclvl"></span></div>
@@ -25,7 +25,7 @@
 <script src="https://cdn.jsdelivr.net/npm/livekit-client@2/dist/livekit-client.umd.min.js"></script>
 <script>
 const st=document.getElementById('status'),video=document.getElementById('av');let room=null,micTrack=null,meterRAF=null,analyser=null,lastMeter={p:0,t:0};
-function log(m){st.textContent+='\\n'+m;console.log('[kate-vapi]',m);fetch('/log?m='+encodeURIComponent('[page] '+m),{keepalive:true}).catch(()=>{});}
+function log(m){st.textContent+='\\n'+m;console.log('[ilendgirl]',m);fetch('/log?m='+encodeURIComponent('[page] '+m),{keepalive:true}).catch(()=>{});}
 function attachAudio(track){
  const el=track.attach();el.autoplay=true;el.muted=false;el.volume=1;el.setAttribute('playsinline','');
  document.body.appendChild(el);
@@ -89,7 +89,7 @@ document.getElementById('start').onclick=async()=>{
   if(!room.canPlaybackAudio){document.getElementById('audio').style.display='inline-block';log('!! Audio blocked - click Enable audio');}
   await fillMics();
   await startMic(document.getElementById('mic').value||undefined);
-  log('Talk to Kate - watch the green meter. It MUST move when you speak.');
+  log('Talk to iLend Girl - watch the green meter. It MUST move when you speak.');
   document.getElementById('start').style.display='none';
   document.getElementById('stop').style.display='inline-block';
  }catch(e){log('ERROR: '+(e.message||e));}
