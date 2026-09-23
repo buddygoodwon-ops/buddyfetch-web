@@ -36,6 +36,10 @@
     {
       "source": "/",
       "destination": "/index.html"
+    },
+    {
+      "source": "/ginger",
+      "destination": "/ginger.html"
     }
   ]
 }
