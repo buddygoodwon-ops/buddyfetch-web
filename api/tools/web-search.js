@@ -46,11 +46,25 @@ export default async function handler(req, res) {
         });
         const html = await r.text();
         const results = label === 'ddg-html' ? parseDdgHtml(html) : parseDdgLite(html);
-        debug.push(label + ':' + r.status + '/' + results.length);
-        if (results.length >= 3) return send(res, query, results, toolCallId, debug);
+        const good = relevanceFilter(results, query);
+        debug.push(label + ':' + r.status + '/' + results.length + '/' + good.length);
+        if (good.length >= 3) return send(res, query, good, toolCallId, debug);
       } catch (e) {
         debug.push(label + ':ERR ' + String(e && e.message ? e.message : e).slice(0, 60));
       }
+    }
+
+    // Engine 4 first as news-fallback BEFORE bing when DDG blocked: rates/news queries get real data
+    try {
+      const r = await fetch('https://news.google.com/rss/search?q=' + encodeURIComponent(query) + '&hl=en-US&gl=US&ceid=US:en', {
+        headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(15000),
+      });
+      const xml = await r.text();
+      const results = parseRss(xml);
+      debug.push('gnrss:' + r.status + '/' + results.length);
+      if (results.length >= 3) return send(res, query, results, toolCallId, debug);
+    } catch (e) {
+      debug.push('gnrss:ERR ' + String(e && e.message ? e.message : e).slice(0, 60));
     }
 
     // Engine 3: Bing scrape
@@ -59,7 +73,7 @@ export default async function handler(req, res) {
         headers: { 'User-Agent': UA, 'Accept-Language': 'en-US,en;q=0.9' }, signal: AbortSignal.timeout(15000),
       });
       const html = await r.text();
-      const results = parseBing(html);
+      const results = relevanceFilter(parseBing(html), query);
       debug.push('bing:' + r.status + '/' + results.length);
       if (results.length >= 1) return send(res, query, results, toolCallId, debug);
     } catch (e) {
@@ -96,6 +110,17 @@ function send(res, query, results, toolCallId, debug) {
     results: trimmed,
     summary: trimmed.map((r2, i) => `${i + 1}. ${r2.title} — ${r2.snippet} (${r2.url})`).join('\n'),
     _debug: debug.join(' | '),
+  });
+}
+
+// Reject off-topic engine garbage: require >=2 distinct query terms (len>=3) in title+snippet
+function relevanceFilter(results, query) {
+  const terms = [...new Set(String(query).toLowerCase().split(/\s+/).filter((t) => t.length >= 3))];
+  if (!terms.length) return results;
+  return results.filter((r2) => {
+    const hay = (r2.title + ' ' + (r2.snippet || '')).toLowerCase();
+    const hits = terms.filter((t) => hay.includes(t)).length;
+    return hits >= 2;
   });
 }
 
