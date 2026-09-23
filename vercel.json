@@ -42,6 +42,14 @@
       "destination": "/ginger.html"
     },
     {
+      "source": "/slamdunk",
+      "destination": "/slamdunk.html"
+    },
+    {
+      "source": "/SlamDunk",
+      "destination": "/slamdunk.html"
+    },
+    {
       "source": "/ilendgirlv8",
       "destination": "/ilendgirlv8.html"
     }
