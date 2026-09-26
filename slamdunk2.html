@@ -1,0 +1,154 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="theme-color" content="#0A0E1F"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/><meta name="apple-mobile-web-app-title" content="BuddyFetch"/><link rel="manifest" href="/manifest.json"/><link rel="icon" type="image/jpeg" href="/assets/old-dog-cartoon.jpg"/><link rel="apple-touch-icon" href="/assets/old-dog-cartoon.jpg"/><title>BuddyFetch</title>
+<style>
+body{background:#0A0E1F;margin:0;}
+.buddy-avatar-promo{max-width:360px;margin:40px auto;padding:40px 20px 32px;text-align:center;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#12172c;border:1px solid rgba(139,108,240,.25);border-radius:20px;}
+.buddy-avatar-promo .avatar-frame{width:329px;height:329px;background:#fff;border-radius:20px;overflow:visible;display:block;margin:0 auto 16px;box-sizing:border-box;position:relative;}
+.buddy-avatar-promo .avatar-caption{position:absolute;left:50%;top:100%;transform:translate(-50%,-100%);background:#4f8ef7;color:#fff;font-weight:700;font-size:14px;letter-spacing:.02em;text-transform:none;padding:8px 20px;margin:0;border-radius:999px;white-space:nowrap;}
+.buddy-avatar-promo .avatar-frame img{width:100%;height:100%;object-fit:cover;border-radius:20px;transform-origin:center center;cursor:pointer;display:block;}
+.buddy-avatar-promo .eyebrow{background:linear-gradient(90deg,#8b6cf0,#4f8ef7);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;font-weight:700;letter-spacing:.06em;font-size:14px;text-transform:uppercase;margin:0 0 12px;}
+.buddy-avatar-promo h1{font-size:22px;line-height:1.3;margin:24px 0 10px;color:#e9ecf7;}
+.buddy-avatar-promo p{font-size:14px;color:#a6acc9;line-height:1.4;margin:0 0 16px;}
+.buddy-avatar-promo .btn{display:block;width:100%;box-sizing:border-box;padding:14px 16px;margin:8px 0;border-radius:999px;border:none;font-size:15px;font-weight:600;cursor:pointer;}
+.buddy-avatar-promo .btn-primary{background:linear-gradient(90deg,#8b6cf0,#4f8ef7);color:#fff;}
+.buddy-avatar-promo .btn-secondary{background:#4c527a;color:#e9ecf7;}
+/* ---- inline Fetch Mode (live call) layer ---- */
+#fetch-call{display:none;max-width:360px;margin:40px auto;padding:28px 20px 24px;text-align:center;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#12172c;border:1px solid rgba(139,108,240,.25);border-radius:20px;}
+#fetch-call .eyebrow{background:linear-gradient(90deg,#8b6cf0,#4f8ef7);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;font-weight:700;letter-spacing:.06em;font-size:13px;text-transform:uppercase;margin:0 0 14px;}
+#fc-stage{width:329px;height:329px;margin:0 auto 14px;border-radius:20px;background:#1e293b;overflow:hidden;position:relative;}
+#fc-video{width:100%;height:100%;object-fit:cover;border-radius:20px;display:block;background:#1e293b;}
+#fc-status{color:#a6acc9;font-size:13px;line-height:1.4;white-space:pre-line;margin:0 0 12px;min-height:18px;}
+#fc-meter{width:100%;height:12px;background:#1e293b;border-radius:7px;overflow:hidden;margin:0 0 12px;}
+#fc-bar{height:100%;width:0;background:linear-gradient(90deg,#8b6cf0,#4f8ef7);transition:width .08s;}
+#fetch-call .microw{font-size:12px;color:#8b93b4;margin:0 0 12px;text-align:left;}
+#fetch-call select{padding:6px;border-radius:6px;background:#1e293b;color:#e2e8f0;border:1px solid #334155;max-width:100%;}
+#fetch-call .btn{display:block;width:100%;box-sizing:border-box;padding:14px 16px;margin:8px 0;border-radius:999px;border:none;font-size:15px;font-weight:600;cursor:pointer;}
+#fc-end{background:#4c527a;color:#e9ecf7;}
+#fc-audio{background:linear-gradient(90deg,#8b6cf0,#4f8ef7);color:#fff;display:none;}
+lemon-slice-widget{transition:transform .25s ease;display:none;}
+lemon-slice-widget[controlled-widget-state="active"]{display:block;position:fixed!important;top:calc(50% - 12px)!important;left:50%!important;transform:translate(-50%,-50%) scale(1.17)!important;transform-origin:center center!important;z-index:9999!important;max-height:90vh!important;}
+body:has(lemon-slice-widget[controlled-widget-state="active"]){background:#0A0E1F;} body:has(lemon-slice-widget[controlled-widget-state="active"]) .buddy-avatar-promo{display:none;}
+#buddy-mute-hint{display:none;}
+body:has(lemon-slice-widget[controlled-widget-state="active"]) #buddy-mute-hint{display:flex;position:fixed;left:50%;bottom:calc(25dvh - 158px);transform:translateX(-50%);z-index:9999;flex-direction:row;align-items:center;gap:6px;color:#fff;font-size:16px;font-weight:600;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;white-space:nowrap;text-align:center;}
+#buddy-mute-hint button{background:rgba(139,108,240,.25);border:none;border-radius:999px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;}
+@media (max-width:700px){
+  lemon-slice-widget[controlled-widget-state="active"]{max-height:90vh!important;}
+  #fc-stage{width:100%;height:auto;aspect-ratio:1/1;}
+}</style>
+</head><body>
+
+<div class="buddy-avatar-promo" id="buddy-promo">
+<p class="eyebrow">BUDDYFETCH.AI</p>
+<div class="avatar-frame"><img src="/assets/buddy-avatar-cartoon.jpg" alt="Buddy avatar" id="buddy-avatar-trigger"/><p class="avatar-caption">Let's Yap!&nbsp;&nbsp;Click me.</p></div>
+<h1>Your Virtual Mascot<br>Your Company Brain<br>Fetching Real Tasks</h1>
+<p>Your Company's Window into your AI powered custom Virtual Mascot to access your Company's Brain powered by Agentic AI OpenClaw. You and your Employes can access all your company's knowledge base and then assign real tasks, jobs, and workflows for him do. We build this custom for your business!</p>
+<button type="button" class="btn btn-primary" id="start-buddy-avatar">Start Fetch Mode</button>
+<button type="button" class="btn btn-secondary" id="open-local-plugin-ui">Save to Your Home Screen</button>
+</div>
+
+<div id="fetch-call">
+<p class="eyebrow">FETCH MODE &mdash; LIVE</p>
+<div id="fc-stage"><video id="fc-video" autoplay playsinline muted></video></div>
+<div id="fc-meter"><div id="fc-bar"></div></div>
+<div id="fc-status">Connecting&hellip;</div>
+<div class="microw">Mic: <select id="fc-mic"></select> <span id="fc-miclvl"></span></div>
+<button type="button" class="btn" id="fc-audio">Enable audio</button>
+<button type="button" class="btn" id="fc-end">End Fetch Mode</button>
+</div>
+
+<lemon-slice-widget agent-id="agent_70dc8e96528c845e" inline="" custom-minimized-width="200" custom-minimized-height="300" custom-active-width="320" custom-active-height="520" video-button-color-opacity="0.88" show-minimize-button="true" initial-state="minimized"></lemon-slice-widget>
+  <div id="buddy-mute-hint"><span>If Buddy is Muted Hit</span><span aria-hidden="true" style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:999px;background:rgba(139,108,240,.25);flex-shrink:0;"><svg width="4" height="16" viewBox="0 0 4 16" fill="#fff"><circle cx="2" cy="2" r="2"/><circle cx="2" cy="8" r="2"/><circle cx="2" cy="14" r="2"/></svg></span><span>Button Above</span></div><script type="module" src="https://unpkg.com/@lemonsliceai/lemon-slice-widget"></script>
+<script src="https://cdn.jsdelivr.net/npm/livekit-client@2/dist/livekit-client.umd.min.js"></script>
+<script>
+/* ---- existing cartoon-dog / LemonSlice behavior (UNCHANGED) ---- */
+function openBuddyAvatar(){var w=document.querySelector('lemon-slice-widget');if(!w)return;w.setAttribute('controlled-widget-state','active');}
+document.getElementById('buddy-avatar-trigger').addEventListener('click',openBuddyAvatar);
+document.getElementById('open-local-plugin-ui').addEventListener('click',function(){var w=document.querySelector('lemon-slice-widget');if(w){w.dispatchEvent(new Event('click',{bubbles:true}));}openBuddyAvatar();});
+</script>
+<script>
+/* ---- NEW: inline Fetch Mode live avatar (iLend Girl) - click IS the user gesture ---- */
+(function(){
+  var video=document.getElementById('fc-video'),st=document.getElementById('fc-status');
+  var room=null,micTrack=null,meterRAF=null,analyser=null,lastMeter={p:0,t:0};
+  function log(m){st.textContent=m;console.log('[fetchmode]',m);}
+  function attachAudio(track){
+    var el=track.attach();el.autoplay=true;el.muted=false;el.volume=1;el.setAttribute('playsinline','');
+    document.body.appendChild(el);
+    el.play().then(function(){log('Remote audio playing. Talk to iLend Girl.');}).catch(function(e){log('Audio play blocked - tap Enable audio.');document.getElementById('fc-audio').style.display='block';});
+    return el;
+  }
+  document.getElementById('fc-audio').addEventListener('click',async function(){
+    if(room){try{await room.startAudio();log('audio on ('+room.canPlaybackAudio+')');}catch(e){}}
+    this.style.display='none';
+  });
+  async function fillMics(sel){
+    try{
+      var devs=await LivekitClient.Room.getLocalDevices('audioinput');
+      var s=document.getElementById('fc-mic');s.innerHTML='';
+      devs.forEach(function(d,i){var o=document.createElement('option');o.value=d.deviceId;o.textContent=(d.label||('Mic '+(i+1)));if(d.deviceId===sel)o.selected=true;s.appendChild(o);});
+    }catch(e){console.log('mic list error',e);}
+  }
+  function meter(){
+    var buf=new Uint8Array(analyser.fftSize);
+    (function step(){
+      analyser.getByteTimeDomainData(buf);var peak=0;
+      for(var i=0;i<buf.length;i++){var v=Math.abs(buf[i]-128);if(v>peak)peak=v;}
+      var pct=Math.min(100,Math.round(peak/128*160));
+      document.getElementById('fc-bar').style.width=pct+'%';
+      document.getElementById('fc-miclvl').textContent=peak>3?'LIVE':'silent';
+      meterRAF=requestAnimationFrame(step);
+    })();
+  }
+  async function startMic(deviceId){
+    if(micTrack){try{room.localParticipant.unpublishTrack(micTrack);}catch(e){}micTrack.stop();micTrack=null;}
+    var opts=deviceId?{deviceId:{exact:deviceId}}:{};
+    micTrack=await LivekitClient.createLocalAudioTrack(opts);
+    await room.localParticipant.publishTrack(micTrack);
+    var ctx=new (window.AudioContext||window.webkitAudioContext)();
+    var src=ctx.createMediaStreamSource(new MediaStream([micTrack.mediaStreamTrack]));
+    analyser=ctx.createAnalyser();analyser.fftSize=512;src.connect(analyser);
+    if(meterRAF)cancelAnimationFrame(meterRAF);meter();
+  }
+  document.getElementById('fc-mic').addEventListener('change',async function(e){if(room&&micTrack){await startMic(e.target.value);}});
+
+  async function endCall(){
+    try{if(room){await room.disconnect();}}catch(e){}
+    room=null;if(micTrack){try{micTrack.stop();}catch(e){}micTrack=null;}
+    if(meterRAF)cancelAnimationFrame(meterRAF);
+    document.getElementById('fc-bar').style.width='0';
+    document.getElementById('fetch-call').style.display='none';
+    document.getElementById('buddy-promo').style.display='block';
+    document.getElementById('fc-audio').style.display='none';
+  }
+  document.getElementById('fc-end').addEventListener('click',endCall);
+
+  document.getElementById('start-buddy-avatar').addEventListener('click',async function(){
+    /* this click is a real user gesture -> clean WebAudio/WebRTC */
+    document.getElementById('buddy-promo').style.display='none';
+    document.getElementById('fetch-call').style.display='block';
+    try{
+      log('Fetching token...');
+      var KEY='sf_who';var who=localStorage.getItem(KEY);
+      if(!who){who='guest-'+Math.random().toString(36).slice(2,8);localStorage.setItem(KEY,who);}
+      var r=await fetch('/api/start?room=kate-vapi-demo&participant='+encodeURIComponent(who)+'&dispatch=0&t='+Date.now());
+      var t=await r.json();
+      if(t.error){log('Server error: '+t.error);return;}
+      log('Connecting to '+t.room+'...');
+      room=new LivekitClient.Room({adaptiveStream:false,dynacast:false});
+      room.on(LivekitClient.RoomEvent.TrackSubscribed,function(track,pub,participant){
+        if(track.kind==='video'){track.attach(video);try{track.start();}catch(e){}video.play().catch(function(){});}
+        if(track.kind==='audio'){attachAudio(track);}
+      });
+      room.on(LivekitClient.RoomEvent.TrackUnsubscribed,function(track){if(track.kind==='video')try{track.detach();}catch(e){}});
+      room.on(LivekitClient.RoomEvent.Disconnected,function(){log('Disconnected.');});
+      await room.connect(t.url,t.token);
+      await room.startAudio();
+      log('Connected as '+who+'. Say hi to iLend Girl!');
+      if(!room.canPlaybackAudio){document.getElementById('fc-audio').style.display='block';}
+      await fillMics();
+      await startMic(document.getElementById('fc-mic').value||undefined);
+      log('Talk to iLend Girl - watch the meter move when you speak.');
+    }catch(e){log('ERROR: '+(e&&e.message?e.message:e));}
+  });
+})();
+</script>
+</body></html>
