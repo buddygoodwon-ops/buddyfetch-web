@@ -30,6 +30,10 @@
       "destination": "/ilendgirlv6.html"
     },
     {
+      "source": "/HeyGinger",
+      "destination": "/ginger.html"
+    },
+    {
       "source": "/",
       "destination": "/index.html"
     }
