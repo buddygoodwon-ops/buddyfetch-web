@@ -23,11 +23,13 @@ body:has(lemon-slice-widget[controlled-widget-state="active"]) #buddy-mute-hint{
 
 <div class="buddy-avatar-promo">
 <p class="eyebrow">BUDDYFETCH.AI</p>
-<div class="avatar-frame"><img src="/assets/image.jpg" alt="iLendGirl avatar" id="buddy-avatar-trigger"/><p class="avatar-caption">Let's Yap!&nbsp;&nbsp;Click me.</p></div>
-<h1>Kate</h1>
-<p>Kate is your AI real estate assistant. Talk to Kate to access your Company Brain, fetch real tasks, and get work delivered autonomously. Powered by BuddyFetch.AI and OpenClaw.</p>
+<div class="avatar-frame"><img src="/assets/image.jpg" alt="Pami - virtual assistant" id="buddy-avatar-trigger"/><p class="avatar-caption">Let's Yap!&nbsp;&nbsp;Click me.</p></div>
+<h1>Pami</h1>
+<h2 style="font-size:18px;line-height:1.35;margin:0 0 10px;color:#fff;">Your Virtual Mascot<br>Your Company Brain<br>Fetching Real Tasks</h2>
+<p>Pami is your company's window into your AI-powered custom Virtual Assistant &mdash; your Company's Brain powered by Agentic AI + OpenClaw. You and your employees can access your entire company knowledge base, then assign real tasks, jobs and workflows for her to do. We build this custom for your business!</p>
 <button type="button" class="btn btn-primary" id="start-buddy-avatar">Start Fetch Mode</button>
 <button type="button" class="btn btn-secondary" id="open-local-plugin-ui">Save to Your Home Screen</button>
+<p style="margin:14px 0 0;font-size:13px;font-weight:700;color:#d8c3ae;letter-spacing:.04em;">BuddyFetch.ai/ilendgirl</p>
 </div>
 <lemon-slice-widget agent-id="agent_79cd6d385f8745b2" inline="" custom-minimized-width="200" custom-minimized-height="300" custom-active-width="320" custom-active-height="520" video-button-color-opacity="0.88" show-minimize-button="true" initial-state="minimized"></lemon-slice-widget><div id="buddy-mute-hint"><span>If Buddy is Muted Hit</span><span aria-hidden="true" style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:999px;background:rgba(255,255,255,.16);flex-shrink:0;"><svg width="4" height="16" viewBox="0 0 4 16" fill="#fff"><circle cx="2" cy="2" r="2"/><circle cx="2" cy="8" r="2"/><circle cx="2" cy="14" r="2"/></svg></span><span>Button Above</span></div><script type="module" src="https://unpkg.com/@lemonsliceai/lemon-slice-widget"></script>
 <script>function openBuddyAvatar(){var w=document.querySelector('lemon-slice-widget');if(!w)return;w.setAttribute('controlled-widget-state','active');}document.getElementById('buddy-avatar-trigger').addEventListener('click',openBuddyAvatar);document.getElementById('start-buddy-avatar').addEventListener('click',openBuddyAvatar);document.getElementById('open-local-plugin-ui').addEventListener('click',function(){var w=document.querySelector('lemon-slice-widget');if(w){w.dispatchEvent(new Event('click',{bubbles:true}));}openBuddyAvatar();});</script>
