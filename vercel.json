@@ -42,6 +42,10 @@
       "destination": "/ginger.html"
     },
     {
+      "source": "/heyginger",
+      "destination": "/ginger.html"
+    },
+    {
       "source": "/HeyGinger",
       "destination": "/ginger.html"
     },
