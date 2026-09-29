@@ -10,7 +10,11 @@ body{background:#000;margin:0;}
 .buddy-avatar-promo p{font-size:14px;color:#d8c3ae;line-height:1.4;margin:0 0 16px;}
 .buddy-avatar-promo .btn{display:block;width:100%;box-sizing:border-box;padding:14px 16px;margin:8px 0;border-radius:999px;border:none;font-size:15px;font-weight:600;cursor:pointer;}
 .buddy-avatar-promo .btn-primary{background:#8b1a1a;color:#c9c9c9;}
-.buddy-avatar-promo .btn-secondary{background:#6f6f6f;color:#ffffff;}lemon-slice-widget{transition:transform .25s ease;display:none;}
+.buddy-avatar-promo .btn-secondary{background:#6f6f6f;color:#ffffff;}
+#lk-stage{display:none;}
+#lk-stage video{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:20px;background:#111;display:block;}
+#lk-status{min-height:20px;color:#d8c3ae;font-size:14px;margin:10px 0;text-align:center;}
+#lk-end{display:none;width:100%;padding:12px;border-radius:999px;border:none;background:#7a1212;color:#fff;font-size:15px;font-weight:600;cursor:pointer;}lemon-slice-widget{transition:transform .25s ease;display:none;}
 lemon-slice-widget[controlled-widget-state="active"]{display:block;}
 @media (max-width:700px){
 lemon-slice-widget[controlled-widget-state="active"]{position:fixed!important;top:calc(50% - 12px)!important;left:50%!important;transform:translate(-50%,-50%) scale(1.17)!important;transform-origin:center center!important;z-index:9999!important;max-height:90vh!important;}
@@ -22,6 +26,7 @@ body:has(lemon-slice-widget[controlled-widget-state="active"]) #buddy-mute-hint{
 </head><body>
 
 <div class="buddy-avatar-promo">
+<div id="promo-main">
 <p class="eyebrow">BUDDYFETCH.AI</p>
 <div class="avatar-frame"><img src="/assets/ginger-avatar-hero.jpg" alt="Ginger avatar" id="buddy-avatar-trigger"/><img src="/assets/abl-logo-v2.png?v=2" alt="Americas Best Lenders logo" style="position:absolute;bottom:52px;left:50%;transform:translateX(-50%);width:134px;height:auto;pointer-events:none;"/><p class="avatar-caption">Let's Yap!&nbsp;&nbsp;Click me.</p></div>
 <h1>Hey Ginger! Let's Roll.</h1>
@@ -29,7 +34,35 @@ body:has(lemon-slice-widget[controlled-widget-state="active"]) #buddy-mute-hint{
 <button type="button" class="btn btn-primary" id="start-buddy-avatar">Start Fetch Mode</button>
 <button type="button" class="btn btn-secondary" id="open-local-plugin-ui">Save to Your Home Screen</button>
 </div>
-<lemon-slice-widget agent-id="agent_150ea2643ffc45a6" inline="" custom-minimized-width="200" custom-minimized-height="300" custom-active-width="320" custom-active-height="520" video-button-color-opacity="0.88" show-minimize-button="true" initial-state="minimized"></lemon-slice-widget><div id="buddy-mute-hint"><span>If Buddy is Muted Hit</span><span aria-hidden="true" style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:999px;background:rgba(255,255,255,.16);flex-shrink:0;"><svg width="4" height="16" viewBox="0 0 4 16" fill="#fff"><circle cx="2" cy="2" r="2"/><circle cx="2" cy="8" r="2"/><circle cx="2" cy="14" r="2"/></svg></span><span>Button Above</span></div><script type="module" src="https://unpkg.com/@lemonsliceai/lemon-slice-widget"></script>
-<script>function openBuddyAvatar(){var w=document.querySelector('lemon-slice-widget');if(!w)return;w.setAttribute('controlled-widget-state','active');}document.getElementById('buddy-avatar-trigger').addEventListener('click',openBuddyAvatar);document.getElementById('start-buddy-avatar').addEventListener('click',openBuddyAvatar);var deferredPrompt=null;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;});document.getElementById('open-local-plugin-ui').addEventListener('click',function(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt=null;}else if(/iPhone|iPad|iPod/.test(navigator.userAgent)){alert('To add BuddyFetch to your Home Screen:\n\n1. Tap the Share button\n2. Tap "Add to Home Screen"\n3. Tap "Add"');}else{alert('To save BuddyFetch to your Home Screen, open your browser menu and choose "Install app" or "Add to Home screen".');}});</script>
+<div id="lk-stage">
+<video id="lk-video" autoplay playsinline muted></video>
+<div id="lk-status">Connecting…</div>
+<button id="lk-end">End Call</button>
+</div>
+</div>
+<lemon-slice-widget agent-id="agent_150ea2643ffc45a6" inline="" custom-minimized-width="200" custom-minimized-height="300" custom-active-width="320" custom-active-height="520" video-button-color-opacity="0.88" show-minimize-button="true" initial-state="minimized"></lemon-slice-widget><script src="https://cdn.jsdelivr.net/npm/livekit-client@2/dist/livekit-client.umd.min.js"></script><script>var lkRoom=null;
+function openBuddyAvatar(){var w=document.querySelector('lemon-slice-widget');if(!w)return;w.setAttribute('controlled-widget-state','active');}
+document.getElementById('buddy-avatar-trigger').addEventListener('click',openBuddyAvatar);
+function lkStatus(m){document.getElementById('lk-status').textContent=m;}
+async function startKate(){try{var w=document.querySelector('lemon-slice-widget');if(w){w.setAttribute('controlled-widget-state','minimized');}
+document.getElementById('promo-main').style.display='none';document.getElementById('lk-stage').style.display='block';
+lkStatus('Getting a LiveKit token…');
+var part='visitor-'+Math.floor(Math.random()*1e5);
+var r=await fetch('/api/start?room=ginger-demo&participant='+encodeURIComponent(part)+'&dispatch=0&t='+Date.now());
+if(!r.ok)throw new Error('token HTTP '+r.status);var t=await r.json();
+lkStatus('Connecting to Kate…');
+lkRoom=new LivekitClient.Room({adaptiveStream:false,dynacast:false});
+lkRoom.on(LivekitClient.RoomEvent.TrackSubscribed,function(track,pub,participant){if(track.kind==='video'){track.attach(document.getElementById('lk-video'));document.getElementById('lk-video').play().catch(function(){});}});
+lkRoom.on(LivekitClient.RoomEvent.TrackUnsubscribed,function(track){if(track.kind==='video')track.detach();});
+lkRoom.on(LivekitClient.RoomEvent.Disconnected,function(){lkRoom=null;document.getElementById('lk-stage').style.display='none';document.getElementById('promo-main').style.display='block';document.getElementById('lk-end').style.display='none';});
+await lkRoom.connect(t.url,t.token);
+try{await lkRoom.startAudio();}catch(e){}
+var mic=await LivekitClient.createLocalAudioTrack();
+await lkRoom.localParticipant.publishTrack(mic);
+lkStatus('Connected — Kate TruLove (AmericasBestLenders.com) is on.');
+document.getElementById('lk-end').style.display='block';}catch(e){lkStatus('Could not connect: '+e.message);}}
+document.getElementById('start-buddy-avatar').addEventListener('click',startKate);
+document.getElementById('lk-end').addEventListener('click',async function(){if(lkRoom){await lkRoom.disconnect();lkRoom=null;}});
+var deferredPrompt=null;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;});document.getElementById('open-local-plugin-ui').addEventListener('click',function(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt=null;}else if(/iPhone|iPad|iPod/.test(navigator.userAgent)){alert('To add BuddyFetch to your Home Screen:\n\n1. Tap the Share button\n2. Tap "Add to Home Screen"\n3. Tap "Add"');}else{alert('To save BuddyFetch to your Home Screen, open your browser menu and choose "Install app" or "Add to Home screen".');}});</script>
 </body>
 </html>
