@@ -46,7 +46,9 @@ const AVATAR_NAME_TO_ID_MAP = {
   'Elenora Fitness Coach': '7299c55d-1f45-482d-915c-e5efdc9dd266',
   'Business Coach': '9b1cc5d6-2391-45c3-8d09-d3a60e6ec352',
   'Friendly Presenter': '8868c66c-88f1-4584-a64c-a07269407440',
-  'Old Dog Buddy': '4613e4ea-f25f-4531-8eac-746a32246014', // BuddyFetch's dog avatar
+  'Old Dog Buddy': process.env.LIVEAVATAR_DOG_AVATAR_ID || '513fd1b7-7ef9-466d-9af2-344e51eeb833', // TEMP fallback: public 'Ann Therapist' until dog streaming avatar exists; set LIVEAVATAR_DOG_AVATAR_ID when dog is created
+  'Ann Therapist': '513fd1b7-7ef9-466d-9af2-344e51eeb833',
+  'Bryan Tech Expert': '7ee23102-58b7-4547-9c56-b0d55893001c', // placeholder-resolved at runtime if present in public list
 };
 
 // Default avatar ID to use if none is specified or found.
@@ -78,6 +80,12 @@ module.exports = async (req, res) => {
     // If friendly name isn't in map, use it as a persona name if no ID is found.
     if (!avatarId) {
         avatar_persona.name = body.avatarName;
+        // Unknown avatarName -> resolve to first public avatar so sessions never 500
+        try {
+          const pub = await liveavatarApi('/v1/avatars/public');
+          const first = pub?.data?.results?.[0];
+          if (first?.id) avatarId = first.id;
+        } catch (e) { /* keep null -> fall through to default below */ }
     }
   }
   
