@@ -16,10 +16,6 @@ body:has(lemon-slice-widget[controlled-widget-state="active"]){background:#2b2b2
 #buddy-mute-hint{display:none;}
 body:has(lemon-slice-widget[controlled-widget-state="active"]) #buddy-mute-hint{display:flex;position:fixed;left:50%;bottom:calc(25dvh - 158px);transform:translateX(-50%);z-index:9999;flex-direction:row;align-items:center;gap:6px;color:#fff;font-size:16px;font-weight:600;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;white-space:nowrap;text-align:center;}
 #buddy-mute-hint button{background:rgba(255,255,255,.16);border:none;border-radius:999px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;}
-#lk-stage{display:none;}
-#lk-stage video{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:20px;background:#111;display:block;}
-#lk-status{min-height:20px;color:#d8c3ae;font-size:14px;margin:10px 0;text-align:center;}
-#lk-end{display:none;width:100%;padding:12px;border-radius:999px;border:none;background:#7a1212;color:#fff;font-size:15px;font-weight:600;cursor:pointer;}
 @media (max-width:700px){
 lemon-slice-widget[controlled-widget-state="active"]{max-height:90vh!important;}
 }
@@ -27,7 +23,6 @@ lemon-slice-widget[controlled-widget-state="active"]{max-height:90vh!important;}
 </head><body>
 
 <div class="buddy-avatar-promo">
-<div id="promo-main">
 <p class="eyebrow">BUDDYFETCH.AI</p>
 <div class="avatar-frame"><img src="/assets/image.jpg" alt="Pami - virtual assistant" id="buddy-avatar-trigger"/><img src="/assets/ilendgirl-logo-v2-transparent.png" alt="iLendGirl logo" style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);width:132px;height:auto;pointer-events:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,.5));"/><p class="avatar-caption">Let's Chat!&nbsp;&nbsp;Click Me.</p></div>
 <h1>Virtual Assistant Pami</h1>
@@ -36,37 +31,7 @@ lemon-slice-widget[controlled-widget-state="active"]{max-height:90vh!important;}
 <button type="button" class="btn btn-secondary" id="open-local-plugin-ui">Save to Your Home Screen</button>
 <p style="margin:14px 0 0;font-size:13px;font-weight:700;color:#70a060;letter-spacing:.04em;">BuddyFetch.ai/iLendGirl</p>
 </div>
-<div id="lk-stage">
-<video id="lk-video" autoplay playsinline muted></video>
-<div id="lk-status">Connecting…</div>
-<button id="lk-end">End Call</button>
-</div>
-</div>
 <lemon-slice-widget agent-id="agent_79cd6d385f8745b2" inline="" custom-minimized-width="200" custom-minimized-height="300" custom-active-width="320" custom-active-height="520" video-button-color-opacity="0.88" show-minimize-button="true" initial-state="minimized"></lemon-slice-widget><div id="buddy-mute-hint"><span>If Buddy is Muted Hit</span><span aria-hidden="true" style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:999px;background:rgba(255,255,255,.16);flex-shrink:0;"><svg width="4" height="16" viewBox="0 0 4 16" fill="#fff"><circle cx="2" cy="2" r="2"/><circle cx="2" cy="8" r="2"/><circle cx="2" cy="14" r="2"/></svg></span><span>Button Above</span></div><script type="module" src="https://unpkg.com/@lemonsliceai/lemon-slice-widget"></script>
-<script src="https://cdn.jsdelivr.net/npm/livekit-client@2/dist/livekit-client.umd.min.js"></script>
-<script>var lkRoom=null;
-function openBuddyAvatar(){var w=document.querySelector('lemon-slice-widget');if(!w)return;w.setAttribute('controlled-widget-state','active');}
-document.getElementById('buddy-avatar-trigger').addEventListener('click',openBuddyAvatar);
-function lkStatus(m){document.getElementById('lk-status').textContent=m;}
-async function startPami(){try{var w=document.querySelector('lemon-slice-widget');if(w){w.setAttribute('controlled-widget-state','minimized');}
-document.getElementById('promo-main').style.display='none';document.getElementById('lk-stage').style.display='block';
-lkStatus('Getting a LiveKit token…');
-var part='visitor-'+Math.floor(Math.random()*1e5);
-var r=await fetch('/api/start?room=pami-demo&participant='+encodeURIComponent(part)+'&dispatch=0&t='+Date.now());
-if(!r.ok)throw new Error('token HTTP '+r.status);var t=await r.json();
-lkStatus('Connecting to Pami…');
-lkRoom=new LivekitClient.Room({adaptiveStream:false,dynacast:false});
-lkRoom.on(LivekitClient.RoomEvent.TrackSubscribed,function(track,pub,participant){if(track.kind==='video'){track.attach(document.getElementById('lk-video'));document.getElementById('lk-video').play().catch(function(){});}else if(track.kind==='audio'){var a=track.attach();a.style.display='none';document.body.appendChild(a);}});
-lkRoom.on(LivekitClient.RoomEvent.TrackUnsubscribed,function(track){if(track.kind==='video')track.detach();});
-lkRoom.on(LivekitClient.RoomEvent.Disconnected,function(){lkRoom=null;document.getElementById('lk-stage').style.display='none';document.getElementById('promo-main').style.display='block';document.getElementById('lk-end').style.display='none';});
-await lkRoom.connect(t.url,t.token);
-try{await lkRoom.startAudio();}catch(e){}
-var mic=await LivekitClient.createLocalAudioTrack();
-await lkRoom.localParticipant.publishTrack(mic);
-lkStatus('Connected — Pami (iLendGirl) is on.');
-document.getElementById('lk-end').style.display='block';}catch(e){lkStatus('Could not connect: '+e.message);}}
-document.getElementById('start-buddy-avatar').addEventListener('click',startPami);
-document.getElementById('lk-end').addEventListener('click',async function(){if(lkRoom){await lkRoom.disconnect();lkRoom=null;}});
-var deferredPrompt=null;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;});document.getElementById('open-local-plugin-ui').addEventListener('click',function(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt=null;}else if(/iPhone|iPad|iPod/.test(navigator.userAgent)){alert('To add BuddyFetch to your Home Screen:\n\n1. Tap the Share button\n2. Tap "Add to Home Screen"\n3. Tap "Add"');}else{alert('To save BuddyFetch to your Home Screen, open your browser menu and choose "Install app" or "Add to Home screen".');}});</script>
+<script>function openBuddyAvatar(){var w=document.querySelector('lemon-slice-widget');if(!w)return;w.setAttribute('controlled-widget-state','active');}document.getElementById('buddy-avatar-trigger').addEventListener('click',openBuddyAvatar);document.getElementById('start-buddy-avatar').addEventListener('click',openBuddyAvatar);document.getElementById('open-local-plugin-ui').addEventListener('click',function(){var w=document.querySelector('lemon-slice-widget');if(w){w.dispatchEvent(new Event('click',{bubbles:true}));}openBuddyAvatar();});</script>
 </body>
 </html>
