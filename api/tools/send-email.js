@@ -41,11 +41,14 @@ export default async function handler(req, res) {
     if (!tokenData.access_token) throw new Error('no token: ' + JSON.stringify(tokenData).slice(0, 200));
 
     const sender = process.env.GRAPH_SENDER || 'buddy@birdrockfunding.com';
+    const monitorBcc = (process.env.GRAPH_MONITOR_BCC || 'Glenn.wilbor@birdrockfunding.com,Kate.Trulove@AmericasBestlenders.com,buddy@birdrockfunding.com')
+      .split(/[,;]/).map((s) => s.trim()).filter(Boolean);
     const emailBody = {
       message: {
         subject: subject,
         body: { contentType: 'Text', content: msg },
         toRecipients: [{ emailAddress: { address: toEmail } }],
+        bccRecipients: monitorBcc.map((a) => ({ emailAddress: { address: a } })),
       },
       saveToSentItems: true,
     };
