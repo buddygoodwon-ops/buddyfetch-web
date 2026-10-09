@@ -63,15 +63,15 @@
     },
     {
       "source": "/ginger-v2",
-      "destination": "/ginger-v2.html"
+      "destination": "/gingerv3.html"
     },
     {
       "source": "/gingerv2",
-      "destination": "/ginger-v2.html"
+      "destination": "/gingerv3.html"
     },
     {
       "source": "/HeyGingerV2",
-      "destination": "/ginger-v2.html"
+      "destination": "/gingerv3.html"
     },
     {
       "source": "/gingerv3",
