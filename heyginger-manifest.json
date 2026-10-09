@@ -1,0 +1,30 @@
+{
+  "name": "Hey Ginger",
+  "short_name": "Hey Ginger",
+  "description": "Hey Ginger — AmericasBestLenders.com Brand Ambassador, powered by BuddyFetch.AI + OpenClaw.",
+  "start_url": "/ginger",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#080706",
+  "theme_color": "#8b1a1a",
+  "icons": [
+    {
+      "src": "/assets/heyginger-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/heyginger-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/heyginger-icon-1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
