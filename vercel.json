@@ -50,6 +50,18 @@
       "destination": "/slamdunk2.html"
     },
     {
+      "source": "/slamdunktechnologies",
+      "destination": "/slamdunktechnologies.html"
+    },
+    {
+      "source": "/Slamdunktechnologies",
+      "destination": "/slamdunktechnologies.html"
+    },
+    {
+      "source": "/SlamDunkTechnologies",
+      "destination": "/slamdunktechnologies.html"
+    },
+    {
       "source": "/ginger",
       "destination": "/ginger.html"
     },
@@ -80,6 +92,18 @@
     {
       "source": "/GingerV3",
       "destination": "/gingerv3.html"
+    },
+    {
+      "source": "/pami",
+      "destination": "/pami.html"
+    },
+    {
+      "source": "/PAMI",
+      "destination": "/pami.html"
+    },
+    {
+      "source": "/Pami",
+      "destination": "/pami.html"
     },
     {
       "source": "/",
