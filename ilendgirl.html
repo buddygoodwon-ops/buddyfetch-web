@@ -49,7 +49,7 @@ var r=await fetch('/api/start?room=pami-demo&participant='+encodeURIComponent(pa
 if(!r.ok)throw new Error('token HTTP '+r.status);var t=await r.json();
 lkStatus('Connecting to PAMI...');
 lkRoom=new LivekitClient.Room({adaptiveStream:false,dynacast:false});
-lkRoom.on(LivekitClient.RoomEvent.TrackSubscribed,function(track){if(track.kind==='video'){track.attach(document.getElementById('lk-video'));document.getElementById('lk-video').play().catch(function(){});}});
+lkRoom.on(LivekitClient.RoomEvent.TrackSubscribed,function(track){if(track.kind==='video'){track.attach(document.getElementById('lk-video'));document.getElementById('lk-video').play().catch(function(){});}else if(track.kind==='audio'){var a=track.attach();a.style.display='none';document.body.appendChild(a);}});
 lkRoom.on(LivekitClient.RoomEvent.TrackUnsubscribed,function(track){if(track.kind==='video')track.detach();});
 lkRoom.on(LivekitClient.RoomEvent.Disconnected,function(){lkRoom=null;document.getElementById('lk-stage').style.display='none';var p=document.querySelector('.buddy-avatar-promo');if(p)p.style.display='block';document.getElementById('lk-end').style.display='none';});
 await lkRoom.connect(t.url,t.token);
