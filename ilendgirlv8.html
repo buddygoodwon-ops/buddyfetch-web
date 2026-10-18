@@ -82,7 +82,7 @@ document.getElementById('start').onclick=async()=>{
   room.on(LivekitClient.RoomEvent.TrackSubscribed,(track,pub,participant)=>{const nm=(pub.trackName||pub.name||'');
     log('Track from '+participant.identity+': '+track.kind+(nm?(' ('+nm+')'):''));
     if(track.kind==='video'){track.attach(video);track.start();video.play().catch(()=>{});}
-    /* audio: LiveKit autoplay (echo fix) */ });
+    if(track.kind==='audio'){attachAudio(track);} });
   room.on(LivekitClient.RoomEvent.TrackUnsubscribed,(track)=>{if(track.kind==='video')track.detach();});
   room.on(LivekitClient.RoomEvent.Disconnected,()=>log('Disconnected'));
   await room.connect(t.url,t.token);
