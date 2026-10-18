@@ -20,7 +20,7 @@ body{background:#000;margin:0;}
 
 <div class="buddy-avatar-promo">
 <div id="promo-main">
-<p class="eyebrow">BUDDYFETCH.AI</p>
+<p class="eyebrow"><a href="/slamdunktechnologies" style="color:inherit;text-decoration:none;">BUDDYFETCH.AI</a></p>
 <div class="avatar-frame"><img src="/assets/ginger-avatar-hero.jpg" alt="Ginger avatar"/><img src="/assets/abl-logo-v2.png?v=2" alt="Americas Best Lenders logo" style="position:absolute;bottom:52px;left:50%;transform:translateX(-50%);width:134px;height:auto;pointer-events:none;"/><p class="avatar-caption">Let's Yap!</p></div>
 <h1>Hey Ginger! Let's Roll.</h1>
 <p>I am Kate Trulove, but friends call me Ginger &mdash; the Brand Ambassador at AmericasBestLenders.com, Super Powered by BuddyFetch.AI + OpenClaw. I run America's Best Lenders' entire company knowledge base and handle real tasks &mdash; Social Media, Live Chat, Loan Processing &mdash; while improving our Lender Database and creating content across the Big 5. How can I help?</p>
@@ -49,7 +49,7 @@ async function startKate(){
   lkRoom=new LivekitClient.Room({adaptiveStream:false,dynacast:false});
   lkRoom.on(LivekitClient.RoomEvent.TrackSubscribed,function(track,pub,participant){
      if(track.kind==='video'){track.attach(document.getElementById('lk-video'));document.getElementById('lk-video').play().catch(function(){});}
-     
+     else if(track.kind==='audio'){var a=track.attach();a.autoplay=true;a.muted=false;a.volume=1;a.setAttribute('playsinline','');a.style.display='none';document.body.appendChild(a);a.play().catch(function(){});}
   });
   lkRoom.on(LivekitClient.RoomEvent.TrackUnsubscribed,function(track){if(track.kind==='video')track.detach();});
   lkRoom.on(LivekitClient.RoomEvent.Disconnected,function(){lkRoom=null;document.getElementById('lk-stage').style.display='none';document.getElementById('promo-main').style.display='block';document.getElementById('lk-end').style.display='none';});
