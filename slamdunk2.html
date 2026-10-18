@@ -136,7 +136,7 @@ document.getElementById('open-local-plugin-ui').addEventListener('click',functio
       room=new LivekitClient.Room({adaptiveStream:false,dynacast:false});
       room.on(LivekitClient.RoomEvent.TrackSubscribed,function(track,pub,participant){
         if(track.kind==='video'){track.attach(video);try{track.start();}catch(e){}video.play().catch(function(){});}
-        /* audio auto-played by LiveKit - manual attach removed (echo fix) */
+        if(track.kind==='audio'){attachAudio(track);}
       });
       room.on(LivekitClient.RoomEvent.TrackUnsubscribed,function(track){if(track.kind==='video')try{track.detach();}catch(e){}});
       room.on(LivekitClient.RoomEvent.Disconnected,function(){log('Disconnected.');});
