@@ -116,6 +116,14 @@
     {
       "source": "/",
       "destination": "/index.html"
+    },
+    {
+      "source": "/ilendgirlv8",
+      "destination": "/ilendgirlv8.html"
+    },
+    {
+      "source": "/ilendgirlv7",
+      "destination": "/ilendgirlv7.html"
     }
   ],
   "redirects": [
