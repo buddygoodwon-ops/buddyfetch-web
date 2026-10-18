@@ -37,4 +37,29 @@ document.getElementById('buddy-avatar-trigger').addEventListener('click',openBud
 document.getElementById('start-buddy-avatar').addEventListener('click',function(){location.href='/ginger';});
 document.getElementById('open-local-plugin-ui').addEventListener('click',function(){location.href='/ilendgirl';});
 </script>
+<script>
+// Swipe navigation: left -> /ginger (Brand Ambassador), right -> /ilendgirl (Digital Double)
+(function(){
+  var sx=0,sy=0,tracking=false;
+  function ts(e){var t=e.touches[0];sx=t.clientX;sy=t.clientY;tracking=true;}
+  function tm(e){if(tracking)e.preventDefault();}
+  function te(e){
+    if(!tracking)return;tracking=false;
+    var t=e.changedTouches[0];
+    var dx=t.clientX-sx, dy=t.clientY-sy;
+    if(Math.abs(dx)>50 && Math.abs(dx)>Math.abs(dy)*1.5){
+      if(dx<0){location.href='/ginger';}
+      else{location.href='/ilendgirl';}
+    }
+  }
+  document.addEventListener('touchstart',ts,{passive:true});
+  document.addEventListener('touchmove',tm,{passive:false});
+  document.addEventListener('touchend',te,{passive:true});
+  // Keyboard arrows for desktop testing
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowLeft'){location.href='/ginger';}
+    else if(e.key==='ArrowRight'){location.href='/ilendgirl';}
+  });
+})();
+</script>
 </body></html>
