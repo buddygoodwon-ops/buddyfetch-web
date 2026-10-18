@@ -49,7 +49,7 @@ async function startKate(){
   lkRoom=new LivekitClient.Room({adaptiveStream:false,dynacast:false});
   lkRoom.on(LivekitClient.RoomEvent.TrackSubscribed,function(track,pub,participant){
      if(track.kind==='video'){track.attach(document.getElementById('lk-video'));document.getElementById('lk-video').play().catch(function(){});}
-     else if(track.kind==='audio'){var a=track.attach();a.autoplay=true;a.muted=false;a.volume=1;a.setAttribute('playsinline','');a.style.display='none';document.body.appendChild(a);a.play().catch(function(){});}
+     /* audio: LiveKit autoplay handles remote audio (no manual attach - echo fix) */
   });
   lkRoom.on(LivekitClient.RoomEvent.TrackUnsubscribed,function(track){if(track.kind==='video')track.detach();});
   lkRoom.on(LivekitClient.RoomEvent.Disconnected,function(){lkRoom=null;document.getElementById('lk-stage').style.display='none';document.getElementById('promo-main').style.display='block';document.getElementById('lk-end').style.display='none';});
