@@ -68,4 +68,25 @@ document.getElementById('open-local-plugin-ui').addEventListener('click',functio
   });
 })();
 </script>
+
+<script>
+/* AUDIO UNLOCK (Buddy 2026-10-18): Chrome can hold back playback until a real user
+   gesture, which makes a fully working avatar look silent. On the first pointer/key
+   anywhere, unmute and play every media element and re-run LiveKit startAudio. */
+(function(){
+  function unlock(){
+    try{
+      document.querySelectorAll('audio,video').forEach(function(el){
+        el.muted=false; el.volume=1;
+        if(el.play){ el.play().catch(function(){}); }
+      });
+      if(window.lkRoom && window.lkRoom.startAudio){ window.lkRoom.startAudio().catch(function(){}); }
+      var b=document.getElementById('audio'); if(b){ b.style.display='none'; }
+    }catch(e){}
+  }
+  ['pointerdown','keydown','touchstart'].forEach(function(ev){
+    document.addEventListener(ev, unlock, { once:true, capture:true });
+  });
+})();
+</script>
 </body></html>
