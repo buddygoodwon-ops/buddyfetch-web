@@ -84,29 +84,7 @@ export default async function handler(req, res) {
       video: { roomJoin: true, room, canPublish: true, canSubscribe: true, canPublishData: true },
     }, SECRET);
 
-    // Ensure the audio bridge is attached (Buddy 2026-10-18: bridge now runs on
-    // Cloudflare Containers, not Glenn's laptop). Best-effort: never fail the
-    // visitor's token if the bridge is slow to wake.
-    let bridgeConnected = false;
-    // Only rooms this bridge actually owns may be pinged. Rooms that belong to
-    // another avatar (ginger-*, pami-*, slamdunk-*) must NOT pull Kate's bridge in,
-    // otherwise a second/wrong assistant joins that room (Glenn 10/18: "voice must
-    // come from Ginger").
-    const bridgeOwnsRoom = /^kate(-|$)/i.test(room);
-    if (!dispatch && bridgeOwnsRoom) {
-      const BRIDGE_URL = process.env.BRIDGE_URL || 'https://kate-avatar.buddygoodwon.workers.dev';
-      try {
-        const br = await fetch(`${BRIDGE_URL}/start?room=${encodeURIComponent(room)}&participant=bridge`, {
-          signal: AbortSignal.timeout(9000),
-        });
-        const bj = await br.json().catch(() => ({}));
-        bridgeConnected = !!bj.bridge_connected;
-      } catch (e) {
-        console.log('bridge ping failed:', String(e).slice(0, 200));
-      }
-    }
-
-    res.status(200).json({ token, url: LIVEKIT_URL, room, agent: AGENT_NAME, bridgeConnected });
+    res.status(200).json({ token, url: LIVEKIT_URL, room, agent: AGENT_NAME });
   } catch (e) {
     res.status(500).json({ error: String(e).slice(0, 400) });
   }
