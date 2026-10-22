@@ -23,6 +23,28 @@ body:has(lemon-slice-widget[controlled-widget-state="active"]){background:#2b2b2
 #buddy-mute-hint{display:none;}
 body:has(lemon-slice-widget[controlled-widget-state="active"]) #buddy-mute-hint{display:flex;position:fixed;left:50%;bottom:calc(25dvh - 158px);transform:translateX(-50%);z-index:9999;flex-direction:row;align-items:center;gap:6px;color:#fff;font-size:16px;font-weight:600;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;white-space:nowrap;text-align:center;}
 #buddy-mute-hint button{background:rgba(255,255,255,.16);border:none;border-radius:999px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;}}
+#lib-toggle{display:block;width:100%;padding:12px;margin:0 0 8px;border-radius:999px;border:none;background:#f5efe6;color:#2b2b2b;font-size:15px;font-weight:600;cursor:pointer;}
+#lib-panel{display:none;text-align:left;margin:4px 0 10px;}
+body.library-mode #lib-panel{display:block;}
+body.library-mode #lk-stage video{animation:none;}
+#lib-avatar{display:none;width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:20px;background:#fff;}
+body.library-mode.lib-novideo #lib-avatar{display:block;}
+body.library-mode.lib-novideo #lk-video{display:none;}
+.lib-whisper #lk-video,.lib-whisper #lib-avatar{animation:libWhisper 1.6s ease-in-out infinite;}
+@keyframes libWhisper{0%,100%{transform:scale(1);filter:brightness(1)}50%{transform:scale(1.012);filter:brightness(1.06)}}
+#lib-badge{display:inline-block;background:#f2842b;color:#fff;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:999px;margin:0 0 8px;}
+#lib-log{max-height:260px;overflow-y:auto;background:#262626;border-radius:14px;padding:10px;margin:0 0 8px;font-size:14px;line-height:1.45;}
+#lib-log:empty::before{content:"Shh... library mode. Type a question and Buddy will whisper back. Full answer appears here.";color:#9a8b7c;font-style:italic;}
+.lib-msg{margin:0 0 8px;padding:8px 10px;border-radius:12px;white-space:pre-wrap;word-wrap:break-word;}
+.lib-you{background:#3d3d3d;color:#fff;margin-left:28px;}
+.lib-buddy{background:#f5efe6;color:#2b2b2b;margin-right:28px;}
+.lib-buddy.lib-pending{color:#8a7a6a;font-style:italic;}
+#lib-form{display:flex;gap:6px;}
+#lib-input{flex:1;min-width:0;padding:12px 14px;border-radius:999px;border:none;font-size:16px;background:#fff;color:#222;}
+#lib-send{padding:0 18px;border-radius:999px;border:none;background:#f2842b;color:#fff;font-weight:700;font-size:15px;cursor:pointer;}
+#lib-send:disabled{opacity:.5;cursor:default;}
+#lib-vol{display:flex;align-items:center;gap:8px;color:#d8c3ae;font-size:12px;margin:8px 4px 0;}
+#lib-vol input{flex:1;accent-color:#f2842b;}
 </style>
 </head><body>
 
@@ -37,7 +59,15 @@ body:has(lemon-slice-widget[controlled-widget-state="active"]) #buddy-mute-hint{
 </div>
 <div id="lk-stage">
 <video id="lk-video" autoplay playsinline muted></video>
+<img id="lib-avatar" src="/assets/buddy-avatar-cartoon.jpg" alt="Buddy whispering"/>
 <div id="lk-status">Connecting...</div>
+<button type="button" id="lib-toggle">&#128218; Library Mode (Type &amp; Whisper)</button>
+<div id="lib-panel">
+<span id="lib-badge">Library Mode &middot; Mic Off</span>
+<div id="lib-log" aria-live="polite"></div>
+<form id="lib-form" autocomplete="off"><input id="lib-input" type="text" placeholder="Type to Buddy..." enterkeyhint="send"/><button id="lib-send" type="submit">Send</button></form>
+<label id="lib-vol">Whisper volume <input id="lib-vol-range" type="range" min="0" max="100" value="25"/></label>
+</div>
 <button id="lk-end">End Call</button>
 </div>
 </div>
@@ -56,17 +86,54 @@ var r=await fetch('/api/start?room=buddy-demo&participant='+encodeURIComponent(p
 if(!r.ok)throw new Error('token HTTP '+r.status);var t=await r.json();
 lkStatus('Connecting to Buddy...');
 lkRoom=new LivekitClient.Room({adaptiveStream:false,dynacast:false});
-lkRoom.on(LivekitClient.RoomEvent.TrackSubscribed,function(track){if(track.kind==='video'){track.attach(document.getElementById('lk-video'));document.getElementById('lk-video').play().catch(function(){});}else if(track.kind==='audio'){var a=track.attach();a.style.display='none';document.body.appendChild(a);}});
+lkRoom.on(LivekitClient.RoomEvent.TrackSubscribed,function(track){if(track.kind==='video'){track.attach(document.getElementById('lk-video'));document.getElementById('lk-video').play().catch(function(){});if(window.libUpdVideo)window.libUpdVideo();}else if(track.kind==='audio'){var a=track.attach();a.style.display='none';a.className='lk-audio';document.body.appendChild(a);if(window.libApplyVol)window.libApplyVol();}});
 lkRoom.on(LivekitClient.RoomEvent.TrackUnsubscribed,function(track){if(track.kind==='video')track.detach();});
-lkRoom.on(LivekitClient.RoomEvent.Disconnected,function(){lkRoom=null;document.getElementById('lk-stage').style.display='none';document.getElementById('promo-main').style.display='block';document.getElementById('lk-end').style.display='none';});
+lkRoom.on(LivekitClient.RoomEvent.Disconnected,function(){lkRoom=null;window.lkMic=null;if(window.libReset)window.libReset();document.getElementById('lk-stage').style.display='none';document.getElementById('promo-main').style.display='block';document.getElementById('lk-end').style.display='none';});
 await lkRoom.connect(t.url,t.token);
 try{await lkRoom.startAudio();}catch(e){}
 var mic=await LivekitClient.createLocalAudioTrack();
-await lkRoom.localParticipant.publishTrack(mic);
+await lkRoom.localParticipant.publishTrack(mic);window.lkMic=mic;if(window.libIsOn&&window.libIsOn()){try{await mic.mute();}catch(e){}}
 lkStatus('Connected - Buddy (BuddyFetch.AI) is on.');
 document.getElementById('lk-end').style.display='block';}catch(e){lkStatus('Could not connect: '+e.message);}}
 document.getElementById('start-buddy-avatar').addEventListener('click',startBuddy);
 document.getElementById('lk-end').addEventListener('click',async function(){if(lkRoom){await lkRoom.disconnect();lkRoom=null;}});
 var deferredPrompt=null;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;});document.getElementById('open-local-plugin-ui').addEventListener('click',function(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt=null;}else if(/iPhone|iPad|iPod/.test(navigator.userAgent)){alert('To add BuddyFetch to your Home Screen:\n\n1. Tap the Share button\n2. Tap "Add to Home Screen"\n3. Tap "Add"');}else{alert('To save BuddyFetch to your Home Screen, open your browser menu and choose "Install app" or "Add to Home screen".');}});
+/* ---- Library Mode: type quietly, Buddy whispers back, full text shown ---- */
+(function(){
+var on=false,busy=false,hist=[],player=new Audio(),SILENT='data:audio/wav;base64,UklGRnQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YVAAAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgA==';
+var SESSION='buddyfetch-library-'+Math.random().toString(36).slice(2,10);
+var SYS='You are Buddy from BuddyFetch.AI, a friendly old-dog AI helper powered by OpenClaw. The user is in LIBRARY MODE: they are typing quietly and you are whispering back. Give a complete, helpful answer in plain conversational text (no markdown symbols), calm and to the point.';
+function $(i){return document.getElementById(i);}
+function vol(){return $('lib-vol-range').value/100;}
+function applyVol(){document.querySelectorAll('audio.lk-audio').forEach(function(a){a.volume=on?vol():1;});player.volume=vol();}
+function updVideo(){var v=$('lk-video');document.body.classList.toggle('lib-novideo',!(v.srcObject&&v.srcObject.getVideoTracks&&v.srcObject.getVideoTracks().length));}
+async function setMic(enabled){try{if(window.lkMic){if(enabled)await window.lkMic.unmute();else await window.lkMic.mute();}}catch(e){}}
+function speakDone(){document.body.classList.remove('lib-whisper');}
+function stopSpeak(){try{player.pause();}catch(e){}try{window.speechSynthesis&&speechSynthesis.cancel();}catch(e){}speakDone();}
+function unlock(){try{player.muted=true;player.src=SILENT;player.play().then(function(){player.pause();player.muted=false;}).catch(function(){player.muted=false;});}catch(e){}try{if(window.speechSynthesis){var u=new SpeechSynthesisUtterance(' ');u.volume=0;speechSynthesis.speak(u);}}catch(e){}}
+async function whisper(text){stopSpeak();if(!vol()||!on)return;document.body.classList.add('lib-whisper');
+try{var r=await fetch('/api/tts',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({text:text.slice(0,1200)})});
+if(!r.ok||!/audio/.test(r.headers.get('content-type')||''))throw new Error('no tts');
+player.src=URL.createObjectURL(await r.blob());player.volume=vol();player.onended=player.onerror=speakDone;await player.play();return;}catch(e){}
+try{var u=new SpeechSynthesisUtterance(text);u.volume=vol();u.rate=0.9;u.pitch=0.8;u.onend=u.onerror=speakDone;speechSynthesis.speak(u);}catch(e){speakDone();}}
+function add(cls,text){var d=document.createElement('div');d.className='lib-msg '+cls;d.textContent=text;$('lib-log').appendChild(d);$('lib-log').scrollTop=$('lib-log').scrollHeight;return d;}
+function setMode(v){on=v;document.body.classList.toggle('library-mode',on);
+$('lib-toggle').innerHTML=on?'&#127908; Back to Voice (Fetch Mode)':'&#128218; Library Mode (Type &amp; Whisper)';
+setMic(!on);applyVol();updVideo();if(on){$('lib-input').focus();}else{stopSpeak();}}
+window.libApplyVol=applyVol;window.libUpdVideo=updVideo;window.libIsOn=function(){return on;};
+window.libReset=function(){if(on)setMode(false);};
+$('lib-toggle').addEventListener('click',function(){setMode(!on);});
+$('lib-vol-range').addEventListener('input',applyVol);
+$('lib-form').addEventListener('submit',async function(e){e.preventDefault();var t=$('lib-input').value.trim();if(!t||busy)return;
+unlock();busy=true;$('lib-send').disabled=true;$('lib-input').value='';add('lib-you',t);
+var p=add('lib-buddy lib-pending','Buddy is fetching...'),rep,ok=false;
+try{var r=await fetch('/api/chat?sessionKey='+SESSION,{method:'POST',headers:{'content-type':'application/json'},
+body:JSON.stringify({message:t,messages:[{role:'system',content:SYS}].concat(hist.slice(-12),[{role:'user',content:t}])})});
+var j=await r.json();rep=(j&&j.reply)||'Hmm, I lost the scent. Try again?';ok=r.ok&&!j.backendError&&!j.fallback;}
+catch(err){rep='Could not reach Buddy right now ('+err.message+').';}
+if(ok){hist.push({role:'user',content:t},{role:'assistant',content:rep});}
+p.classList.remove('lib-pending');p.textContent=rep;$('lib-log').scrollTop=$('lib-log').scrollHeight;
+busy=false;$('lib-send').disabled=false;whisper(rep);});
+})();
 </script>
 </body></html>
