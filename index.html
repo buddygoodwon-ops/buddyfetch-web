@@ -51,8 +51,6 @@ body.mode-library #lib-vol{display:flex;}
 <h1>Your Virtual Mascot<br>Your Company Brain<br>Fetching Real Tasks</h1>
 <p>Your Company's Window into your AI powered custom Virtual Mascot to access your Company's Brain powered by Agentic AI OpenClaw. You and your Employees can access all your company's knowledge base and then assign real tasks, jobs, and workflows for him to do. We build this custom for your business!</p>
 <button type="button" class="btn btn-primary" id="start-buddy-avatar">Start Fetch Mode</button>
-<button type="button" class="btn btn-secondary" id="start-library-mode">&#128218; Library Mode (Type &amp; Whisper)</button>
-<button type="button" class="btn btn-secondary" id="start-silent-mode">&#128263; Silent Mode (Chat Text Only)</button>
 <button type="button" class="btn btn-secondary" id="open-local-plugin-ui">Save to Your Home Screen</button>
 </div>
 <div id="lk-stage">
@@ -91,8 +89,6 @@ applyVolume();if(liveMode==='voice'){await ensureMic();}
 lkStatus('Connected - Buddy (BuddyFetch.AI) is on.');
 document.getElementById('lk-end').style.display='block';}catch(e){lkStatus('Could not connect: '+e.message);}}
 document.getElementById('start-buddy-avatar').addEventListener('click',function(){startBuddy('voice');});
-document.getElementById('start-library-mode').addEventListener('click',function(){unlockAudio();startBuddy('library');});
-document.getElementById('start-silent-mode').addEventListener('click',function(){startBuddy('silent');});
 document.getElementById('lk-end').addEventListener('click',async function(){if(lkRoom){await lkRoom.disconnect();lkRoom=null;}});
 var deferredPrompt=null;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;});document.getElementById('open-local-plugin-ui').addEventListener('click',function(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt=null;}else if(/iPhone|iPad|iPod/.test(navigator.userAgent)){alert('To add BuddyFetch to your Home Screen:\n\n1. Tap the Share button\n2. Tap "Add to Home Screen"\n3. Tap "Add"');}else{alert('To save BuddyFetch to your Home Screen, open your browser menu and choose "Install app" or "Add to Home screen".');}});
 /* ---- Live Chat modes: Voice (talk) / Library (type + whisper) / Silent (type, avatar muted) ---- */
