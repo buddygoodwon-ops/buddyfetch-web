@@ -44,9 +44,9 @@ body.mode-library #lib-vol{display:flex;}
 #lk-end{margin-top:10px;}
 #video-wrap{position:relative;}
 #boring-bubble{display:none;position:absolute;left:50%;bottom:0;transform:translateX(-50%);background:#5a5a5a;color:#fff;font-weight:700;font-size:14px;letter-spacing:.02em;padding:9px 20px;border:none;border-radius:999px;white-space:nowrap;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.35);}
-body.mode-silent #boring-bubble{display:block;}
-body.mode-silent.avatar-hidden #lk-video{display:none;}
-body.mode-silent.avatar-hidden #boring-bubble{position:static;transform:none;margin:0 auto;}
+body.mode-silent #boring-bubble,body.mode-library #boring-bubble{display:block;}
+body.avatar-hidden #lk-video{display:none;}
+body.avatar-hidden #boring-bubble{position:static;transform:none;margin:0 auto;}
 </style>
 </head><body>
 
@@ -112,7 +112,7 @@ async function ensureMic(){if(!lkRoom)return;try{if(!lkMic){lkMic=await LivekitC
 async function muteMic(){try{if(lkMic)await lkMic.mute();}catch(e){}}
 function setMode(m,quiet){liveMode=m;document.body.classList.remove('mode-voice','mode-library','mode-silent');document.body.classList.add('mode-'+m);
 document.querySelectorAll('#mode-bar button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-mode')===m);});
-$('mode-hint').textContent=HINTS[m];applyVolume();if(m!=='silent')setAvatarHidden(false);
+$('mode-hint').textContent=HINTS[m];applyVolume();if(m==='voice')setAvatarHidden(false);
 if(m==='voice'){ensureMic();}else{muteMic();if(!quiet)$('chat-input').focus();try{player.pause();speechSynthesis.cancel();}catch(e){}}}
 document.querySelectorAll('#mode-bar button').forEach(function(b){b.addEventListener('click',function(){var m=b.getAttribute('data-mode');if(m==='library')unlockAudio();setMode(m);if(!lkRoom)startBuddy(m);});});
 $('lib-vol-range').addEventListener('input',applyVolume);
