@@ -131,7 +131,7 @@ if(!r.ok||!/audio/.test(r.headers.get('content-type')||''))return;player.src=URL
 async function textFallback(t){if(pendingEl)pendingEl.textContent='Buddy is typing...';var rep,ok=false;
 try{var r=await fetch('/api/chat?sessionKey='+CHAT_SESSION,{method:'POST',headers:{'content-type':'application/json'},
 body:JSON.stringify({message:t,messages:[{role:'system',content:'You are Buddy from BuddyFetch.AI, a friendly old-dog AI helper powered by OpenClaw. The user is typing in a live chat. Give a complete, helpful answer in plain conversational text (no markdown symbols).'}].concat(chatHist.slice(-12),[{role:'user',content:t}])})});
-var j=await r.json();rep=(j&&j.reply)||'Hmm, I lost the scent. Try again?';ok=r.ok&&!j.backendError&&!j.fallback;}catch(e){rep='Could not reach Buddy right now ('+e.message+').';}
+var j=await r.json();rep=(j&&j.reply)||'Hmm, I lost the scent. Try again?';ok=r.ok&&!j.backendError&&!j.fallback;if(!ok)rep='(Buddy\'s text reply is not hooked up yet - his answers will appear here once his v11 bridge is running.)';}catch(e){rep='Could not reach Buddy right now ('+e.message+').';}
 if(ok)chatHist.push({role:'user',content:t},{role:'assistant',content:rep});
 clearWait();lastBuddy=null;addMsg('chat-buddy',rep);whisperFallback(rep);}
 $('chat-form').addEventListener('submit',async function(e){e.preventDefault();var t=$('chat-input').value.trim();if(!t)return;
