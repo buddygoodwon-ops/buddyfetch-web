@@ -24,7 +24,8 @@ body:has(lemon-slice-widget[controlled-widget-state="active"]){background:#2b2b2
 body:has(lemon-slice-widget[controlled-widget-state="active"]) #buddy-mute-hint{display:flex;position:fixed;left:50%;bottom:calc(25dvh - 158px);transform:translateX(-50%);z-index:9999;flex-direction:row;align-items:center;gap:6px;color:#fff;font-size:16px;font-weight:600;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;white-space:nowrap;text-align:center;}
 #buddy-mute-hint button{background:rgba(255,255,255,.16);border:none;border-radius:999px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;}}
 #mode-bar{display:flex;gap:6px;margin:10px 0 8px;}
-#mode-bar button{flex:1;padding:10px 4px;border-radius:999px;border:none;background:#4a4a4a;color:#fff;font-size:13px;font-weight:700;cursor:pointer;}
+#mode-bar button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:12px 4px 10px;border-radius:16px;border:none;background:#4a4a4a;color:#fff;font-size:14px;font-weight:700;letter-spacing:.02em;cursor:pointer;transition:background .15s ease;}
+#mode-bar button svg{width:32px;height:32px;display:block;}
 #mode-bar button.on{background:#f2842b;}
 #mode-hint{color:#d8c3ae;font-size:12px;text-align:center;margin:0 0 8px;min-height:16px;}
 #chat-log{max-height:240px;overflow-y:auto;background:#262626;border-radius:14px;padding:10px;margin:0 0 8px;font-size:14px;line-height:1.45;text-align:left;}
@@ -56,7 +57,7 @@ body.mode-library #lib-vol{display:flex;}
 <div id="lk-stage">
 <video id="lk-video" autoplay playsinline muted></video>
 <div id="lk-status">Connecting...</div>
-<div id="mode-bar"><button type="button" data-mode="voice">&#127908; Voice</button><button type="button" data-mode="library">&#128218; Library</button><button type="button" data-mode="silent">&#128263; Silent</button></div>
+<div id="mode-bar"><button type="button" data-mode="voice"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2.5" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3.5"/><path d="M8.5 21.5h7"/></svg><span>Voice</span></button><button type="button" data-mode="library"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.5C10 5 7 4.5 3 5v13.5c4-.5 7 0 9 1.5"/><path d="M12 6.5c2-1.5 5-2 9-1.5v13.5c-4-.5-7 0-9 1.5"/><path d="M12 6.5V20"/></svg><span>Library</span></button><button type="button" data-mode="silent"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M16 9.5l5 5"/><path d="M21 9.5l-5 5"/></svg><span>Silent</span></button></div>
 <div id="mode-hint"></div>
 <div id="chat-log" aria-live="polite"></div>
 <form id="chat-form" autocomplete="off"><input id="chat-input" type="text" placeholder="Type to Buddy..." enterkeyhint="send"/><button id="chat-send" type="submit">Send</button></form>
