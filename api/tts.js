@@ -1,4 +1,4 @@
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ ok: false, error: 'method not allowed' });
   const text = String(req.body?.text || '').slice(0, 1200);
   const key = process.env.ELEVENLABS_API_KEY;
