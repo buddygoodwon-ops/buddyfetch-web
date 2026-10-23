@@ -1,4 +1,4 @@
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ ok: false, error: 'method not allowed' });
 
   // 2026-10-22 - Text Buddy feature on the Fetch Mode page.
@@ -76,4 +76,4 @@ module.exports = async (req, res) => {
   }
 };
 
-module.exports.maxDuration = 60;
+export const maxDuration = 60;
