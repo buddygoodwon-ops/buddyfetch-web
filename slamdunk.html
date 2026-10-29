@@ -105,6 +105,7 @@ var LIVECHAT={
   avatarWaitMs:12000                             /* if the live avatar doesn't answer in time, fall back to askUrl */,
   ambassadorUrl:'https://www.buddyfetch.ai/ginger',   /* Brand Ambassador button */
   digitalDoubleUrl:'https://www.buddyfetch.ai/ilendgirl', /* Digital Double button */
+  vapiContext:'[FETCH MODE - SlamDunk Technologies live avatar at buddyfetch.ai/slamdunk. You are Buddy, ALWAYS in Fetch Mode here: a live talking avatar the visitor sees and hears. Voice / Library / Silent only change how loud you are. You have ALL your call tools available in this chat (text messages, email, booking, lookups, etc.) - use them whenever they help. Reply in plain spoken sentences, no markdown.]',
   swipeSelfUrl:'https://www.buddyfetch.ai/slamdunk'    /* this page's place in the swipe cycle */
 };
 /* ============================================================================ */
@@ -115,7 +116,7 @@ $('brand-link').textContent=C.brand;$('brand-link').href=C.brandHref;
 $('avatar-img').src=C.image;$('ls-widget').setAttribute('agent-id',C.lemonAgentId);
 $('chat-input').placeholder='Type to Chat with '+C.name;
 $('chat-log').setAttribute('data-empty',C.name+"'s Chat Response");
-var HINTS={voice:'Voice: talk out loud. You can also type.',library:'Library: talk softly or type. Your words and '+C.name+"'s whispered answer both show as text.",silent:'Silent: mic off, sound off. Read '+C.name+"'s answer below."};
+var HINTS={voice:'Voice: talk out loud or type. '+C.name+' answers out loud and in text.',library:'Library: talk softly or type. Your words and '+C.name+"'s whispered answer both show as text.",silent:'Silent: mic off, sound off. Read '+C.name+"'s answer below."};
 
 function lkStatus(m){$('lk-status').textContent=m;}
 function libVol(){return $('lib-vol-range').value/100;}
@@ -150,7 +151,7 @@ function sttStart(){if(STT.on||!sttSupported())return;var R=window.SpeechRecogni
     if(interim)$('chat-input').value=interim;
     if(fin.trim()){$('chat-input').value=fin.trim();lastTouch=Date.now();$('chat-form').requestSubmit();}};
   r.onerror=function(e){if(e.error==='not-allowed'||e.error==='service-not-allowed'){STT.on=false;$('mode-hint').textContent='Library: allow the microphone to talk, or just type.';}};
-  r.onend=function(){if(STT.on&&liveMode==='library'&&document.body.classList.contains('live')){try{r.start();}catch(e){}}else{STT.on=false;}};
+  r.onend=function(){if(STT.on&&(liveMode==='library'||liveMode==='voice')&&document.body.classList.contains('live')){try{r.start();}catch(e){}}else{STT.on=false;}};
   try{r.start();}catch(e){STT.on=false;}}
 function sttStop(){STT.on=false;if(STT.rec){try{STT.rec.stop();}catch(e){}}STT.rec=null;}
 /* don't transcribe Buddy's own whisper coming out of the speaker while he reads an answer */
@@ -166,7 +167,7 @@ function lsStart(){var w=$('ls-widget');LS.on=true;w.setAttribute('controlled-wi
     if(!clicked){var m=lsMicBtn();if(m){m.click();clicked=true;lkStatus(C.name+' is joining...');}}  /* mic tap starts the live call */
     var v=lsVideo();
     if(v&&$('lk-video').srcObject!==v.srcObject){$('lk-video').srcObject=v.srcObject;$('lk-video').play().catch(function(){});lkStatus('Connected - '+C.name+' is on.');
-      setTimeout(function(){lsSetMic(liveMode==='voice');applyVolume();},800);}
+      setTimeout(function(){lsSetMic(false);applyVolume();},800);}
     if(v)applyVolume();
     if(!v&&tries===60)lkStatus(C.name+' is taking a while - try End Chat and tap again.');},500);}
 /* ---- Save Lemon Slice minutes: end the call when nobody is there ---- */
@@ -190,12 +191,12 @@ function lsStop(){LS.wasLive=false;clearInterval(LS.poll);LS.on=false;var c=lsBt
 function setMode(m,quiet){liveMode=m;document.body.classList.remove('mode-voice','mode-library','mode-silent');document.body.classList.add('mode-'+m);
   document.querySelectorAll('#mode-bar button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-mode')===m);});
   $('mode-hint').textContent=HINTS[m];applyVolume();
-  if(LS.on)lsSetMic(m==='voice');
-  if(m==='library'&&document.body.classList.contains('live'))sttStart();else sttStop();
+  if(LS.on)lsSetMic(false);
+  if((m==='library'||m==='voice')&&document.body.classList.contains('live'))sttStart();else sttStop();
   if(m==='voice'){setAvatarHidden(false);ensureMic();}else{muteMic();if(!quiet)$('chat-input').focus();}}
 function setAvatarHidden(h){document.body.classList.toggle('avatar-hidden',h);$('boring-bubble').textContent=h?'Show Avatar':'Boring Mode / Hide Avatar';}
 
-async function startLive(mode){if(typeof mode!=='string')mode='voice';lastTouch=Date.now();if(mode==='library')setTimeout(sttStart,300);
+async function startLive(mode){if(typeof mode!=='string')mode='voice';lastTouch=Date.now();if(mode==='library'||mode==='voice')setTimeout(sttStart,300);
   document.body.classList.add('live');setMode(mode,true);if(lkRoom||LS.on)return;
   if(C.engine==='lemonslice'){lsStart();return;}
   try{var w=$('ls-widget');if(w){w.setAttribute('controlled-widget-state','minimized');}
@@ -239,7 +240,7 @@ function onLiveData(payload,participant,kind,topic){if(topic!==C.dataReplyTopic)
     if(lastBot&&now-lastBotAt<6000){lastBot.textContent+=' '+text;}else{lastBot=addMsg('chat-bot',text);}lastBotAt=now;$('chat-log').scrollTop=$('chat-log').scrollHeight;}
   else{if(text.toLowerCase()===lastTyped.toLowerCase())return;lastBot=null;addMsg('chat-you',text);}}
 async function askText(t){var ok=false;if(pendingEl)pendingEl.textContent=C.name+' is typing...';var rep;
-  try{var r=await fetch(C.askUrl,{method:'POST',headers:{'content-type':'text/plain'},body:JSON.stringify({message:t,history:chatHist.slice(-8)})});
+  try{var r=await fetch(C.askUrl,{method:'POST',headers:{'content-type':'text/plain'},body:JSON.stringify({message:(C.vapiContext?C.vapiContext+'\n\n':'')+t,history:chatHist.slice(-8)})});
     var j=await r.json().catch(function(){return null;});
     if(!r.ok||!j||!j.reply)throw new Error((j&&j.error)||('HTTP '+r.status));
     ok=true;rep=j.reply;chatHist.push({role:'user',content:t},{role:'assistant',content:rep});
