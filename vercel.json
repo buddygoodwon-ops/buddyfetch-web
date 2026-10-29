@@ -148,6 +148,30 @@
     {
       "source": "/heyheydestiny",
       "destination": "/heyheydestiny.html"
+    },
+    {
+      "source": "/Slash",
+      "destination": "/supslash.html"
+    },
+    {
+      "source": "/slash",
+      "destination": "/supslash.html"
+    },
+    {
+      "source": "/Lorne",
+      "destination": "/yolorne.html"
+    },
+    {
+      "source": "/lorne",
+      "destination": "/yolorne.html"
+    },
+    {
+      "source": "/Destiny",
+      "destination": "/heyheydestiny.html"
+    },
+    {
+      "source": "/destiny",
+      "destination": "/heyheydestiny.html"
     }
   ],
   "redirects": [
