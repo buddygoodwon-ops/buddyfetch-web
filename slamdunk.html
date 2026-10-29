@@ -152,7 +152,15 @@ function lsStart(){var w=$('ls-widget');LS.on=true;w.setAttribute('controlled-wi
       setTimeout(function(){lsSetMic(liveMode==='voice');applyVolume();},800);}
     if(v)applyVolume();
     if(!v&&tries===60)lkStatus(C.name+' is taking a while - try End Chat and tap again.');},500);}
-function lsStop(){clearInterval(LS.poll);LS.on=false;var c=lsBtn('Close');if(c)c.click();$('ls-widget').setAttribute('controlled-widget-state','minimized');$('lk-video').srcObject=null;}
+/* ---- Save Lemon Slice minutes: end the call when nobody is there ---- */
+function endLive(why){if(!LS.on&&!lkRoom)return;if(LS.on)lsStop();if(lkRoom){try{lkRoom.disconnect();}catch(e){}lkRoom=null;}
+  document.body.classList.remove('live');$('lk-end').style.display='none';if(why)lkStatus(why);}
+/* left the tab, locked the phone, or closed the page -> hang up right away */
+document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')endLive('Chat ended when you left the page.');});
+window.addEventListener('pagehide',function(){endLive();});
+/* Lemon Slice hung up on its own (60s idle timeout / 5 min max) -> go back to the home screen instead of a frozen frame */
+setInterval(function(){if(LS.on&&LS.wasLive&&!lsVideo()){LS.wasLive=false;endLive();}if(LS.on&&lsVideo())LS.wasLive=true;},2000);
+function lsStop(){LS.wasLive=false;clearInterval(LS.poll);LS.on=false;var c=lsBtn('Close');if(c)c.click();$('ls-widget').setAttribute('controlled-widget-state','minimized');$('lk-video').srcObject=null;}
 
 
 function setMode(m,quiet){liveMode=m;document.body.classList.remove('mode-voice','mode-library','mode-silent');document.body.classList.add('mode-'+m);
