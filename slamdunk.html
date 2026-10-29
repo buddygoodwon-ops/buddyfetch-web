@@ -115,7 +115,7 @@ $('brand-link').textContent=C.brand;$('brand-link').href=C.brandHref;
 $('avatar-img').src=C.image;$('ls-widget').setAttribute('agent-id',C.lemonAgentId);
 $('chat-input').placeholder='Type to Chat with '+C.name;
 $('chat-log').setAttribute('data-empty',C.name+"'s Chat Response");
-var HINTS={voice:'Voice: talk out loud. You can also type.',library:'Library: mic off, '+C.name+' whispers. Full answer shows as text.',silent:'Silent: mic off, sound off. Read '+C.name+"'s answer below."};
+var HINTS={voice:'Voice: talk out loud. You can also type.',library:'Library: talk softly or type. Your words and '+C.name+"'s whispered answer both show as text.",silent:'Silent: mic off, sound off. Read '+C.name+"'s answer below."};
 
 function lkStatus(m){$('lk-status').textContent=m;}
 function libVol(){return $('lib-vol-range').value/100;}
@@ -139,6 +139,23 @@ function lsVolume(v){var r=lsRoot();if(!r)return;r.querySelectorAll('audio').for
 function lsSend(text){var r=lsRoot();if(!r)return false;var ta=r.querySelector('textarea'),b=lsBtn('Send message');if(!ta||!b)return false;
   Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype,'value').set.call(ta,text);ta.dispatchEvent(new Event('input',{bubbles:true}));
   setTimeout(function(){b.click();},150);return true;}
+/* ---- Library mode: your voice -> text (browser speech recognition). The avatar's own mic stays off,
+   so every answer goes through VAPI -> text bubble -> Buddy whispers that exact text. ---- */
+var STT={rec:null,on:false,quietUntil:0};
+function sttSupported(){return !!(window.SpeechRecognition||window.webkitSpeechRecognition);}
+function sttStart(){if(STT.on||!sttSupported())return;var R=window.SpeechRecognition||window.webkitSpeechRecognition;
+  var r=new R();r.lang='en-US';r.continuous=true;r.interimResults=true;STT.rec=r;STT.on=true;
+  r.onresult=function(ev){if(Date.now()<STT.quietUntil)return;var interim='',fin='';
+    for(var i=ev.resultIndex;i<ev.results.length;i++){var t=ev.results[i][0].transcript;if(ev.results[i].isFinal)fin+=t;else interim+=t;}
+    if(interim)$('chat-input').value=interim;
+    if(fin.trim()){$('chat-input').value=fin.trim();lastTouch=Date.now();$('chat-form').requestSubmit();}};
+  r.onerror=function(e){if(e.error==='not-allowed'||e.error==='service-not-allowed'){STT.on=false;$('mode-hint').textContent='Library: allow the microphone to talk, or just type.';}};
+  r.onend=function(){if(STT.on&&liveMode==='library'&&document.body.classList.contains('live')){try{r.start();}catch(e){}}else{STT.on=false;}};
+  try{r.start();}catch(e){STT.on=false;}}
+function sttStop(){STT.on=false;if(STT.rec){try{STT.rec.stop();}catch(e){}}STT.rec=null;}
+/* don't transcribe Buddy's own whisper coming out of the speaker while he reads an answer */
+function sttQuietFor(text){var words=String(text).split(/\s+/).length;STT.quietUntil=Date.now()+Math.min(60000,1500+words*420);}
+
 /* Make Buddy say exactly the text shown in the chat bubble (one source of truth = VAPI). */
 function lsSay(text){var clean=String(text).replace(/\s+/g,' ').trim();if(!clean)return;
   lsSend('[READ ALOUD VERBATIM] Say the following text out loud exactly as written, word for word. Do not add, remove, rephrase, answer, or comment on anything - just read it: '+clean);}
@@ -153,7 +170,7 @@ function lsStart(){var w=$('ls-widget');LS.on=true;w.setAttribute('controlled-wi
     if(v)applyVolume();
     if(!v&&tries===60)lkStatus(C.name+' is taking a while - try End Chat and tap again.');},500);}
 /* ---- Save Lemon Slice minutes: end the call when nobody is there ---- */
-function endLive(why){if(!LS.on&&!lkRoom)return;lastTouch=Date.now();if(LS.on)lsStop();if(lkRoom){try{lkRoom.disconnect();}catch(e){}lkRoom=null;}
+function endLive(why){sttStop();if(!LS.on&&!lkRoom)return;lastTouch=Date.now();if(LS.on)lsStop();if(lkRoom){try{lkRoom.disconnect();}catch(e){}lkRoom=null;}
   document.body.classList.remove('live');$('lk-end').style.display='none';if(why)lkStatus(why);}
 /* left the tab, locked the phone, or closed the page -> hang up right away */
 document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')endLive('Chat ended when you left the page.');});
@@ -174,10 +191,11 @@ function setMode(m,quiet){liveMode=m;document.body.classList.remove('mode-voice'
   document.querySelectorAll('#mode-bar button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-mode')===m);});
   $('mode-hint').textContent=HINTS[m];applyVolume();
   if(LS.on)lsSetMic(m==='voice');
+  if(m==='library'&&document.body.classList.contains('live'))sttStart();else sttStop();
   if(m==='voice'){setAvatarHidden(false);ensureMic();}else{muteMic();if(!quiet)$('chat-input').focus();}}
 function setAvatarHidden(h){document.body.classList.toggle('avatar-hidden',h);$('boring-bubble').textContent=h?'Show Avatar':'Boring Mode / Hide Avatar';}
 
-async function startLive(mode){if(typeof mode!=='string')mode='voice';lastTouch=Date.now();
+async function startLive(mode){if(typeof mode!=='string')mode='voice';lastTouch=Date.now();if(mode==='library')setTimeout(sttStart,300);
   document.body.classList.add('live');setMode(mode,true);if(lkRoom||LS.on)return;
   if(C.engine==='lemonslice'){lsStart();return;}
   try{var w=$('ls-widget');if(w){w.setAttribute('controlled-widget-state','minimized');}
@@ -205,7 +223,7 @@ async function startLive(mode){if(typeof mode!=='string')mode='voice';lastTouch=
 $('avatar-img').addEventListener('click',function(){startLive('voice');});
 $('yap-pill').addEventListener('click',function(){startLive('voice');});
 $('btn-ambassador').href=C.ambassadorUrl;$('btn-double').href=C.digitalDoubleUrl;
-$('lk-end').addEventListener('click',async function(){if(LS.on)lsStop();if(lkRoom){await lkRoom.disconnect();lkRoom=null;}document.body.classList.remove('live');$('lk-end').style.display='none';});
+$('lk-end').addEventListener('click',async function(){sttStop();if(LS.on)lsStop();if(lkRoom){await lkRoom.disconnect();lkRoom=null;}document.body.classList.remove('live');$('lk-end').style.display='none';});
 document.querySelectorAll('#mode-bar button').forEach(function(b){b.addEventListener('click',function(){var m=b.getAttribute('data-mode');setMode(m);if(!lkRoom&&!LS.on)startLive(m);});});
 $('lib-vol-range').addEventListener('input',applyVolume);
 $('boring-bubble').addEventListener('click',function(){setAvatarHidden(!document.body.classList.contains('avatar-hidden'));});
@@ -227,7 +245,7 @@ async function askText(t){var ok=false;if(pendingEl)pendingEl.textContent=C.name
     ok=true;rep=j.reply;chatHist.push({role:'user',content:t},{role:'assistant',content:rep});
   }catch(e){rep=LS.on?(C.name+(liveMode==='silent'?' is answering out loud - tap Library or Voice to hear him. (Text replies coming soon.)':' is answering out loud. (Text replies coming soon.)')):('Could not reach '+C.name+' right now ('+e.message+').');}
   clearWait();lastBot=null;addMsg('chat-bot',rep);
-  if(LS.on&&ok)lsSay(rep);}
+  if(LS.on&&ok){sttQuietFor(rep);lsSay(rep);}}
 $('chat-form').addEventListener('submit',async function(e){e.preventDefault();var t=$('chat-input').value.trim();if(!t)return;
   $('chat-input').value='';lastTyped=t;lastBot=null;addMsg('chat-you',t);
   clearWait();$('chat-send').disabled=true;pendingEl=addMsg('chat-pending',C.name+' is fetching...');
