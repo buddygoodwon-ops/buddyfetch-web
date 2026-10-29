@@ -30,7 +30,7 @@ body.live .lc-card{padding-top:16px;}
 #video-wrap{position:relative;width:100%;aspect-ratio:1/1;background:var(--panel);border-radius:20px;}
 #lk-video{width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:20px;background:var(--panel);display:block;}
 #boring-bubble{display:none;}
-body.mode-silent #boring-bubble,body.mode-library #boring-bubble{display:block;}
+body.mode-voice #boring-bubble,body.mode-silent #boring-bubble,body.mode-library #boring-bubble{display:block;}
 body.avatar-hidden #video-wrap{aspect-ratio:auto;background:none;padding:4px 0 6px;}
 body.avatar-hidden #lk-video{display:none;}
 body.avatar-hidden #boring-bubble{position:static;transform:none;margin:0 auto;}
@@ -106,6 +106,7 @@ var LIVECHAT={
   ambassadorUrl:'https://www.buddyfetch.ai/ginger',   /* Brand Ambassador button */
   digitalDoubleUrl:'https://www.buddyfetch.ai/ilendgirl', /* Digital Double button */
   vapiContext:'[FETCH MODE - SlamDunk Technologies live avatar at buddyfetch.ai/slamdunk. You are Buddy, ALWAYS in Fetch Mode here: a live talking avatar the visitor sees and hears. Voice / Library / Silent only change how loud you are. You have ALL your call tools available in this chat (text messages, email, booking, lookups, etc.) - use them whenever they help. Reply in plain spoken sentences, no markdown.]',
+  greeting:'Hey Hey! Welcome to SlamDunk Technologies, powered by BuddyFetch dot A I. Got questions? I got answers!', /* = VAPI SlamDunk agent First message */
   swipeSelfUrl:'https://www.buddyfetch.ai/slamdunk'    /* this page's place in the swipe cycle */
 };
 /* ============================================================================ */
@@ -164,7 +165,7 @@ function lsStart(){var w=$('ls-widget');LS.on=true;w.setAttribute('controlled-wi
   lkStatus('Connecting to '+C.name+'...');$('lk-end').style.display='block';
   var tries=0,clicked=false;clearInterval(LS.poll);
   LS.poll=setInterval(function(){tries++;
-    if(!clicked){var m=lsMicBtn();if(m){m.click();clicked=true;lkStatus(C.name+' is joining...');}}  /* mic tap starts the live call */
+    if(!clicked&&lsBtn('Send message')){clicked=true;lkStatus(C.name+' is joining...');sttQuietFor(C.greeting);lsSay(C.greeting);lastBot=addMsg('chat-bot',C.greeting);chatHist.push({role:'assistant',content:C.greeting});}  /* mic tap starts the live call */
     var v=lsVideo();
     if(v&&$('lk-video').srcObject!==v.srcObject){$('lk-video').srcObject=v.srcObject;$('lk-video').play().catch(function(){});lkStatus('Connected - '+C.name+' is on.');
       setTimeout(function(){lsSetMic(false);applyVolume();},800);}
@@ -182,7 +183,7 @@ window.addEventListener('offline',function(){endLive('Chat ended - your connecti
    no tap, click, key or typing for 90 seconds -> hang up (Voice mode uses Lemon Slice's 60s silence timeout) */
 var lastTouch=Date.now();
 ['pointerdown','keydown','touchstart','input','wheel'].forEach(function(ev){document.addEventListener(ev,function(){lastTouch=Date.now();},{capture:true,passive:true});});
-setInterval(function(){if((LS.on||lkRoom)&&liveMode!=='voice'&&Date.now()-lastTouch>90000)endLive('Chat ended after 90 seconds with no activity. Tap the picture to start again.');},5000);
+setInterval(function(){if((LS.on||lkRoom)&&Date.now()-lastTouch>90000)endLive('Chat ended after 90 seconds with no activity. Tap the picture to start again.');},5000);
 /* Lemon Slice hung up on its own (60s idle timeout / 5 min max) -> go back to the home screen instead of a frozen frame */
 setInterval(function(){if(LS.on&&LS.wasLive&&!lsVideo()){LS.wasLive=false;endLive();}if(LS.on&&lsVideo())LS.wasLive=true;},2000);
 function lsStop(){LS.wasLive=false;clearInterval(LS.poll);LS.on=false;var c=lsBtn('Close');if(c)c.click();$('ls-widget').setAttribute('controlled-widget-state','minimized');$('lk-video').srcObject=null;}
@@ -193,7 +194,7 @@ function setMode(m,quiet){liveMode=m;document.body.classList.remove('mode-voice'
   $('mode-hint').textContent=HINTS[m];applyVolume();
   if(LS.on)lsSetMic(false);
   if((m==='library'||m==='voice')&&document.body.classList.contains('live'))sttStart();else sttStop();
-  if(m==='voice'){setAvatarHidden(false);ensureMic();}else{muteMic();if(!quiet)$('chat-input').focus();}}
+  if(m==='voice'&&lkRoom){ensureMic();}else{muteMic();}if(m!=='voice'&&!quiet)$('chat-input').focus();}
 function setAvatarHidden(h){document.body.classList.toggle('avatar-hidden',h);$('boring-bubble').textContent=h?'Show Avatar':'Boring Mode / Hide Avatar';}
 
 async function startLive(mode){if(typeof mode!=='string')mode='voice';lastTouch=Date.now();if(mode==='library'||mode==='voice')setTimeout(sttStart,300);
