@@ -124,6 +124,30 @@
     {
       "source": "/ilendgirlv7",
       "destination": "/ilendgirlv7.html"
+    },
+    {
+      "source": "/YoLorne",
+      "destination": "/yolorne.html"
+    },
+    {
+      "source": "/yolorne",
+      "destination": "/yolorne.html"
+    },
+    {
+      "source": "/SupSlash",
+      "destination": "/supslash.html"
+    },
+    {
+      "source": "/supslash",
+      "destination": "/supslash.html"
+    },
+    {
+      "source": "/HeyHeyDestiny",
+      "destination": "/heyheydestiny.html"
+    },
+    {
+      "source": "/heyheydestiny",
+      "destination": "/heyheydestiny.html"
     }
   ],
   "redirects": [

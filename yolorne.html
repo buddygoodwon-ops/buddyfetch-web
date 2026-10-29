@@ -1,0 +1,290 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"/><meta name="theme-color" content="#0A0E1F"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/><title>Yo Lorne | BirdRock Management</title>
+<!-- buddyfetch.ai/YoLorne - Fetch Mode avatar page (template: buddyfetch.ai/slamdunk). -->
+<!--
+  SlamDunk Live Chat v2 — shared Live Chat mode for all our sites.
+  Based on buddyfetch-web index.html @ 542d001 (Fetch Mode: Voice / Library / Silent + Boring Mode),
+  reskinned in the SlamDunk navy / purple / blue theme from slamdunk.html.
+  To reuse on another site: copy this file + assets/livechat/, then edit LIVECHAT below.
+-->
+<style>
+:root{--bg:#0A0E1F;--card:#12172c;--panel:#0d1224;--line:rgba(139,108,240,.25);--purple:#8b6cf0;--blue:#4f8ef7;--grad:linear-gradient(90deg,#8b6cf0,#4f8ef7);--text:#e9ecf7;--muted:#a6acc9;--slate:#4c527a;--slate2:#232a48;--danger:#b4234a;}
+*{box-sizing:border-box;}
+html,body{background:var(--bg);margin:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--text);-webkit-text-size-adjust:100%;}
+.lc-card{max-width:360px;margin:40px auto;padding:40px 16px 28px;text-align:center;background:var(--card);border:1px solid var(--line);border-radius:20px;}
+.eyebrow{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;font-weight:700;letter-spacing:.06em;font-size:14px;text-transform:uppercase;margin:0 0 12px;}
+.eyebrow a{color:inherit;-webkit-text-fill-color:inherit;text-decoration:none;}
+.frame{width:100%;aspect-ratio:1/1;background:#fff;border-radius:20px;position:relative;margin:0 auto 16px;}
+.frame img{width:100%;height:100%;object-fit:cover;border-radius:20px;display:block;cursor:pointer;}
+.pill{position:absolute;left:50%;bottom:0;transform:translate(-50%,0);background:var(--blue);color:#fff;font-family:inherit;font-weight:700;font-size:14px;line-height:1;letter-spacing:.02em;padding:9px 20px;margin:0;border:none;border-radius:999px;white-space:nowrap;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.35);}
+h1{font-size:22px;line-height:1.3;margin:24px 0 10px;color:var(--text);}
+.lc-card p{font-size:14px;color:var(--muted);line-height:1.4;margin:0 0 16px;}
+.btn{display:block;width:100%;text-align:center;text-decoration:none;font-family:inherit;padding:14px 16px;margin:8px 0;border-radius:999px;border:none;font-size:15px;font-weight:600;cursor:pointer;color:#fff;}
+.btn-primary{background:var(--grad);}
+.btn-secondary{background:#262b40;color:var(--text);}
+/* ---- Live (Fetch) mode ---- */
+#lk-stage{display:none;}
+body.live #promo-main{display:none;}
+body.live #lk-stage{display:block;}
+body.live .lc-card{padding-top:16px;}
+#video-wrap{position:relative;width:100%;aspect-ratio:1/1;background:var(--panel);border-radius:20px;}
+#lk-video{width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:20px;background:var(--panel);display:block;}
+#boring-bubble{display:none;}
+body.mode-voice #boring-bubble,body.mode-silent #boring-bubble,body.mode-library #boring-bubble{display:block;}
+body.avatar-hidden #video-wrap{aspect-ratio:auto;background:none;padding:4px 0 6px;}
+body.avatar-hidden #lk-video{display:none;}
+body.avatar-hidden #boring-bubble{position:static;transform:none;margin:0 auto;}
+#lk-status{min-height:20px;color:var(--muted);font-size:13px;margin:10px 0;}
+#mode-bar{display:flex;gap:6px;margin:10px 0 8px;}
+#mode-bar button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:12px 4px 10px;border-radius:16px;border:none;background:var(--slate2);color:var(--text);font-size:14px;font-weight:700;letter-spacing:.02em;cursor:pointer;transition:background .15s ease;}
+#mode-bar button svg{width:30px;height:30px;display:block;margin:4px 0;}
+#mode-bar button[data-mode="library"] svg{transform:scale(1.26);}
+#mode-bar button[data-mode="silent"] svg{transform:scale(1.365);}
+#mode-bar button.on{background:var(--grad);color:#fff;}
+#mode-hint{color:var(--muted);font-size:12px;margin:0 0 8px;min-height:16px;}
+#chat-log{min-height:46px;max-height:240px;overflow-y:auto;background:#bcc2cc;border:none;border-radius:23px;padding:12px 14px;margin:8px 0 0;font-size:15px;line-height:1.45;text-align:left;color:#000;}
+#chat-log:empty::before{content:attr(data-empty);color:#232838;}
+.chat-msg{margin:0 0 8px;padding:8px 12px;border-radius:16px;white-space:pre-wrap;word-wrap:break-word;}
+.chat-you{background:#a2a9b6;color:#000;margin-left:28px;}
+.chat-bot{background:transparent;color:#000;padding-left:0;padding-right:0;}
+.chat-msg:last-child{margin-bottom:0;}
+.chat-pending{background:transparent;color:#000;font-style:italic;padding:0;}
+#chat-form{display:flex;gap:6px;}
+#chat-input{flex:1;min-width:0;padding:12px 14px;border-radius:999px;border:1px solid var(--line);font-size:15px;background:#fff;color:#141a33;}
+#chat-input::placeholder{color:#232838;opacity:1;}
+#chat-send{padding:0 18px;border-radius:999px;border:none;background:var(--grad);color:#fff;font-weight:700;font-size:15px;cursor:pointer;}
+#chat-send:disabled{opacity:.5;cursor:default;}
+#lib-vol{display:none;align-items:center;gap:8px;color:var(--muted);font-size:12px;margin:8px 4px 0;}
+body.mode-library #lib-vol{display:flex;}
+#lib-vol input{flex:1;accent-color:var(--purple);}
+lemon-slice-widget{position:fixed!important;left:-12000px!important;top:0!important;width:320px;height:520px;opacity:0;pointer-events:none;}
+#lk-end{display:none;margin-top:10px;width:100%;padding:12px;border-radius:999px;border:none;background:#737a90;color:#7a0d0d;font-size:15px;font-weight:700;cursor:pointer;}
+/* Phones: card fills the screen */
+@media (max-width:420px){
+.lc-card{margin:0;min-height:100dvh;border-radius:0;border:none;padding:calc(env(safe-area-inset-top) + 24px) 14px calc(env(safe-area-inset-bottom) + 20px);}
+body.live .lc-card{padding-top:calc(env(safe-area-inset-top) + 12px);}
+#chat-log{max-height:32dvh;}
+}
+</style>
+</head><body>
+<div class="lc-card">
+  <div id="promo-main">
+    <p class="eyebrow"><a id="brand-link" href="/">BirdRock Management</a></p>
+    <div class="frame"><img id="avatar-img" src="https://6ammc3n5zzf5ljnz.public.blob.vercel-storage.com/inf2-image-uploads/image-m923InhLc8G8PdCdPta3VYjVsCiCjg.jpg" alt="Avatar - tap to start Live Chat"/><button type="button" class="pill" id="yap-pill">Let's Yap!&nbsp;&nbsp;Click me.</button></div>
+    <h1>Yo! It's Lorne.<br>BirdRock Management</h1>
+    <p id="promo-text">I'm Lorne Goodwon with BirdRock Management, San Diego's premier property manager. Ask me about rentals, owner services, maintenance or anything property management. Talk out loud, whisper in Library mode, or just type.</p>
+    <a class="btn btn-primary" id="btn-ambassador" href="https://www.buddyfetch.ai/ginger">Brand Ambassador</a>
+    <a class="btn btn-secondary" id="btn-double" href="https://www.buddyfetch.ai/ilendgirl">Digital Double</a>
+  </div>
+  <div id="lk-stage">
+    <div id="video-wrap"><video id="lk-video" autoplay playsinline muted></video><button type="button" class="pill" id="boring-bubble">Boring Mode / Hide Avatar</button></div>
+    <div id="lk-status">Connecting...</div>
+    <div id="mode-bar"><button type="button" data-mode="voice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2.5" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3.5"/><path d="M8.5 21.5h7"/></svg><span>Voice</span></button><button type="button" data-mode="library"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.5C10 5 7 4.5 3 5v13.5c4-.5 7 0 9 1.5"/><path d="M12 6.5c2-1.5 5-2 9-1.5v13.5c-4-.5-7 0-9 1.5"/><path d="M12 6.5V20"/></svg><span>Library</span></button><button type="button" data-mode="silent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M16 9.5l5 5"/><path d="M21 9.5l-5 5"/></svg><span>Silent</span></button></div>
+    <div id="mode-hint"></div>
+    <form id="chat-form" autocomplete="off"><input id="chat-input" type="text" enterkeyhint="send"/><button id="chat-send" type="submit">Send</button></form>
+    <div id="chat-log" aria-live="polite"></div>
+    <label id="lib-vol">Whisper volume <input id="lib-vol-range" type="range" min="1" max="40" value="8"/></label>
+    <button id="lk-end" type="button">End Chat</button>
+  </div>
+</div>
+<lemon-slice-widget id="ls-widget" agent-id="agent_e8e5724275c196d2" inline="" custom-minimized-width="200" custom-minimized-height="300" custom-active-width="320" custom-active-height="520" video-button-color-opacity="0.88" show-minimize-button="true" initial-state="minimized"></lemon-slice-widget><script type="module" src="https://unpkg.com/@lemonsliceai/lemon-slice-widget"></script><script src="https://cdn.jsdelivr.net/npm/livekit-client@2/dist/livekit-client.umd.min.js"></script>
+<script>
+/* ===== Per-site settings: change these to reuse Live Chat on another site ===== */
+var LIVECHAT={
+  brand:'BirdRock Management',
+  brandHref:'https://birdrockmanagement.com',
+  name:'Lorne',
+  persona:'lorne',                             /* which VAPI assistant answers (see /api/avatar-ask) */                                  /* what the avatar is called in the UI */
+  image:'https://6ammc3n5zzf5ljnz.public.blob.vercel-storage.com/inf2-image-uploads/image-m923InhLc8G8PdCdPta3VYjVsCiCjg.jpg', /* Ginger: /assets/livechat/ginger-avatar-hero.jpg */
+  engine:'lemonslice',                           /* 'lemonslice' = avatar runs in LemonSlice (no PC bridge) | 'livekit' = bridge room (Ginger: ginger-demo) */
+  lemonAgentId:'agent_e8e5724275c196d2',          /* LemonSlice "Buddy SlamDunk Technologies" (Ginger: agent_150ea2643ffc45a6) */
+  room:'slamdunk-demo',                          /* Buddy SlamDunk bridge room - run-slamdunk-bridge.ps1 (Ginger: ginger-demo) */
+  tokenUrl:'https://www.buddyfetch.ai/api/start', /* same LiveKit token call buddyfetch.ai/ginger Fetch Mode uses (read-only, CORS open) */
+  askUrl:'https://buddyfetch-ai-slamdunkv2.pages.dev/api/avatar-ask',                     /* POST {message,history} -> {reply} */
+  dataTopic:'',                                  /* Ginger's bridge has no typed-text channel: typed chat goes straight to askUrl (Buddy: 'buddy-library') */
+  dataReplyTopic:'buddy-library-transcript',     /* avatar's transcript comes back on this topic */
+  avatarWaitMs:12000                             /* if the live avatar doesn't answer in time, fall back to askUrl */,
+  ambassadorUrl:'https://www.buddyfetch.ai/ginger',   /* Brand Ambassador button */
+  digitalDoubleUrl:'https://www.buddyfetch.ai/ilendgirl', /* Digital Double button */
+  vapiContext:'[FETCH MODE - BirdRock Management live avatar at buddyfetch.ai/YoLorne. You are Lorne, ALWAYS in Fetch Mode here: a live talking avatar the visitor sees and hears. Voice / Library / Silent only change how loud you are. You have ALL your call tools available in this chat (text messages, email, booking, lookups, etc.) - use them whenever they help. Reply in plain spoken sentences, no markdown.]',
+  greeting:'BirdRock Management! San Diego\'s Premier and Unrivaled Property Manager! This is Lorne Goodwon. How can I help you today!', /* = VAPI SlamDunk agent First message */
+  swipeSelfUrl:''    /* this page's place in the swipe cycle */
+};
+/* ============================================================================ */
+function $(i){return document.getElementById(i);}
+var C=LIVECHAT,lkRoom=null,lkMic=null,liveMode='voice';
+document.title='Live Chat | '+C.brand;
+$('brand-link').textContent=C.brand;$('brand-link').href=C.brandHref;
+$('avatar-img').src=C.image;$('ls-widget').setAttribute('agent-id',C.lemonAgentId);
+$('chat-input').placeholder='Type to Chat with '+C.name;
+$('chat-log').setAttribute('data-empty',C.name+"'s Chat Response");
+var HINTS={voice:'Voice: talk out loud or type. '+C.name+' answers out loud and in text.',library:'Library: talk softly or type. Your words and '+C.name+"'s whispered answer both show as text.",silent:'Silent: mic off, sound off. Read '+C.name+"'s answer below."};
+
+function lkStatus(m){$('lk-status').textContent=m;}
+function libVol(){return $('lib-vol-range').value/100;}
+function applyVolume(){var v=liveMode==='voice'?1:liveMode==='library'?libVol():0;
+  document.querySelectorAll('audio.lk-audio').forEach(function(a){a.muted=(v===0);a.volume=v;});
+  try{if(lkRoom)lkRoom.remoteParticipants.forEach(function(p){if(p.setVolume)p.setVolume(v);});}catch(e){}
+  if(LS.on)lsVolume(v);}
+async function ensureMic(){if(!lkRoom)return;try{if(!lkMic){lkMic=await LivekitClient.createLocalAudioTrack();await lkRoom.localParticipant.publishTrack(lkMic);}else{await lkMic.unmute();}}catch(e){lkStatus('Mic not available: '+e.message);}}
+async function muteMic(){try{if(lkMic)await lkMic.mute();}catch(e){}}
+
+/* ---- LemonSlice engine: the working Buddy SlamDunk avatar (same widget as buddyfetch.ai/slamdunk), shown in our frame ---- */
+var LS={on:false,poll:null};
+function lsRoot(){var w=$('ls-widget');return w&&w.shadowRoot;}
+function lsButtons(){var r=lsRoot();return r?[].slice.call(r.querySelectorAll('button')):[];}
+function lsBtn(label){return lsButtons().filter(function(b){return b.getAttribute('aria-label')===label;})[0]||null;}
+function lsMicBtn(){return lsButtons().filter(function(b){return !b.getAttribute('aria-label')&&b.querySelector('svg');})[0]||null;}
+function lsMicOn(){var b=lsMicBtn();return !!(b&&!b.querySelector('.text-red-500'));}
+function lsSetMic(on){var b=lsMicBtn();if(b&&lsMicOn()!==on)b.click();}
+function lsVideo(){var r=lsRoot();if(!r)return null;var v=[].slice.call(r.querySelectorAll('video')).filter(function(x){return x.srcObject;});return v[0]||null;}
+function lsVolume(v){var r=lsRoot();if(!r)return;r.querySelectorAll('audio').forEach(function(a){a.muted=(v===0);a.volume=v;if(v>0&&a.paused&&a.srcObject)a.play().catch(function(){});});}
+function lsSend(text){var r=lsRoot();if(!r)return false;var ta=r.querySelector('textarea'),b=lsBtn('Send message');if(!ta||!b)return false;
+  Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype,'value').set.call(ta,text);ta.dispatchEvent(new Event('input',{bubbles:true}));
+  setTimeout(function(){b.click();},150);return true;}
+/* ---- Library mode: your voice -> text (browser speech recognition). The avatar's own mic stays off,
+   so every answer goes through VAPI -> text bubble -> Buddy whispers that exact text. ---- */
+var STT={rec:null,on:false,quietUntil:0};
+function sttSupported(){return !!(window.SpeechRecognition||window.webkitSpeechRecognition);}
+function sttStart(){if(STT.on||!sttSupported())return;var R=window.SpeechRecognition||window.webkitSpeechRecognition;
+  var r=new R();r.lang='en-US';r.continuous=true;r.interimResults=true;STT.rec=r;STT.on=true;
+  r.onresult=function(ev){if(Date.now()<STT.quietUntil)return;var interim='',fin='';
+    for(var i=ev.resultIndex;i<ev.results.length;i++){var t=ev.results[i][0].transcript;if(ev.results[i].isFinal)fin+=t;else interim+=t;}
+    if(interim)$('chat-input').value=interim;
+    if(fin.trim()){$('chat-input').value=fin.trim();lastTouch=Date.now();$('chat-form').requestSubmit();}};
+  r.onerror=function(e){if(e.error==='not-allowed'||e.error==='service-not-allowed'){STT.on=false;$('mode-hint').textContent='Library: allow the microphone to talk, or just type.';}};
+  r.onend=function(){if(STT.on&&(liveMode==='library'||liveMode==='voice')&&document.body.classList.contains('live')){try{r.start();}catch(e){}}else{STT.on=false;}};
+  try{r.start();}catch(e){STT.on=false;}}
+function sttStop(){STT.on=false;if(STT.rec){try{STT.rec.stop();}catch(e){}}STT.rec=null;}
+/* don't transcribe Buddy's own whisper coming out of the speaker while he reads an answer */
+function sttQuietFor(text){var words=String(text).split(/\s+/).length;STT.quietUntil=Date.now()+Math.min(60000,1500+words*420);}
+
+/* Make Buddy say exactly the text shown in the chat bubble (one source of truth = VAPI). */
+function lsSay(text){var clean=String(text).replace(/\s+/g,' ').trim();if(!clean)return;
+  lsSend('[READ ALOUD VERBATIM] Say the following text out loud exactly as written, word for word. Do not add, remove, rephrase, answer, or comment on anything - just read it: '+clean);}
+function lsStart(){var w=$('ls-widget');LS.on=true;w.setAttribute('controlled-widget-state','active');
+  lkStatus('Connecting to '+C.name+'...');$('lk-end').style.display='block';
+  var tries=0,clicked=false;clearInterval(LS.poll);
+  LS.poll=setInterval(function(){tries++;
+    if(!clicked&&lsBtn('Send message')){clicked=true;lkStatus(C.name+' is joining...');sttQuietFor(C.greeting);lsSay(C.greeting);lastBot=addMsg('chat-bot',C.greeting);chatHist.push({role:'assistant',content:C.greeting});}  /* mic tap starts the live call */
+    var v=lsVideo();
+    if(v&&$('lk-video').srcObject!==v.srcObject){$('lk-video').srcObject=v.srcObject;$('lk-video').play().catch(function(){});lkStatus('Connected - '+C.name+' is on.');
+      setTimeout(function(){lsSetMic(false);applyVolume();},800);}
+    if(v)applyVolume();
+    if(!v&&tries===60)lkStatus(C.name+' is taking a while - try End Chat and tap again.');},500);}
+/* ---- Save Lemon Slice minutes: end the call when nobody is there ---- */
+function endLive(why){sttStop();if(!LS.on&&!lkRoom)return;lastTouch=Date.now();if(LS.on)lsStop();if(lkRoom){try{lkRoom.disconnect();}catch(e){}lkRoom=null;}
+  document.body.classList.remove('live');$('lk-end').style.display='none';if(why)lkStatus(why);}
+/* left the tab, locked the phone, or closed the page -> hang up right away */
+document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')endLive('Chat ended when you left the page.');});
+window.addEventListener('pagehide',function(){endLive();});
+/* user's side goes dead: internet drops -> hang up so the call doesn't bill until Lemon Slice notices */
+window.addEventListener('offline',function(){endLive('Chat ended - your connection dropped. Tap the picture to start again.');});
+/* Silent / Library have no voice for Lemon Slice to hear, so cap them on our side:
+   no tap, click, key or typing for 90 seconds -> hang up (Voice mode uses Lemon Slice's 60s silence timeout) */
+var lastTouch=Date.now();
+['pointerdown','keydown','touchstart','input','wheel'].forEach(function(ev){document.addEventListener(ev,function(){lastTouch=Date.now();},{capture:true,passive:true});});
+setInterval(function(){if((LS.on||lkRoom)&&Date.now()-lastTouch>90000)endLive('Chat ended after 90 seconds with no activity. Tap the picture to start again.');},5000);
+/* Lemon Slice hung up on its own (60s idle timeout / 5 min max) -> go back to the home screen instead of a frozen frame */
+setInterval(function(){if(LS.on&&LS.wasLive&&!lsVideo()){LS.wasLive=false;endLive();}if(LS.on&&lsVideo())LS.wasLive=true;},2000);
+function lsStop(){LS.wasLive=false;clearInterval(LS.poll);LS.on=false;var c=lsBtn('Close');if(c)c.click();$('ls-widget').setAttribute('controlled-widget-state','minimized');$('lk-video').srcObject=null;}
+
+
+function setMode(m,quiet){liveMode=m;document.body.classList.remove('mode-voice','mode-library','mode-silent');document.body.classList.add('mode-'+m);
+  document.querySelectorAll('#mode-bar button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-mode')===m);});
+  $('mode-hint').textContent=HINTS[m];applyVolume();
+  if(LS.on)lsSetMic(false);
+  if((m==='library'||m==='voice')&&document.body.classList.contains('live'))sttStart();else sttStop();
+  if(m==='voice'&&lkRoom){ensureMic();}else{muteMic();}if(m!=='voice'&&!quiet)$('chat-input').focus();}
+function setAvatarHidden(h){document.body.classList.toggle('avatar-hidden',h);$('boring-bubble').textContent=h?'Show Avatar':'Boring Mode / Hide Avatar';}
+
+async function startLive(mode){if(typeof mode!=='string')mode='voice';lastTouch=Date.now();if(mode==='library'||mode==='voice')setTimeout(sttStart,300);
+  document.body.classList.add('live');setMode(mode,true);if(lkRoom||LS.on)return;
+  if(C.engine==='lemonslice'){lsStart();return;}
+  try{var w=$('ls-widget');if(w){w.setAttribute('controlled-widget-state','minimized');}
+    lkStatus('Getting a Live Chat token...');
+    var r=await fetch(C.tokenUrl+'?room='+encodeURIComponent(C.room)+'&participant='+encodeURIComponent('visitor-'+Math.floor(Math.random()*1e5))+'&dispatch=0&t='+Date.now());
+    var t=await r.json().catch(function(){return {};});
+    if(!r.ok||!t.token)throw new Error(t.error||('token HTTP '+r.status));
+    lkStatus('Connecting to '+C.name+'...');
+    lkRoom=new LivekitClient.Room({adaptiveStream:false,dynacast:false});
+    lkRoom.on(LivekitClient.RoomEvent.TrackSubscribed,function(track){if(track.kind==='video'){track.attach($('lk-video'));$('lk-video').play().catch(function(){});lkStatus('Connected - '+C.name+' is on.');}else if(track.kind==='audio'){var a=track.attach();a.style.display='none';a.className='lk-audio';a.setAttribute('playsinline','');document.body.appendChild(a);applyVolume();}});
+    lkRoom.on(LivekitClient.RoomEvent.TrackUnsubscribed,function(track){if(track.kind==='video')track.detach();});
+    lkRoom.on(LivekitClient.RoomEvent.DataReceived,onLiveData);
+    lkRoom.on(LivekitClient.RoomEvent.Disconnected,function(){lkRoom=null;lkMic=null;document.body.classList.remove('live');$('lk-end').style.display='none';});
+    await lkRoom.connect(t.url,t.token);
+    try{await lkRoom.startAudio();}catch(e){}
+    /* Same as /ginger: always publish the mic once connected - that's what brings the avatar bridge into the room.
+       In Library / Silent the mic is published muted. */
+    await ensureMic();if(liveMode!=='voice'){await muteMic();}
+    applyVolume();
+    if(!$('lk-video').videoWidth)lkStatus(C.name+' is joining - about 20 seconds...');
+    $('lk-end').style.display='block';
+  }catch(e){lkStatus('Could not connect: '+e.message+' - you can still type below.');$('lk-end').style.display='block';}}
+
+/* Tap the avatar picture, the pill, or the button -> straight into Live Chat */
+$('avatar-img').addEventListener('click',function(){startLive('voice');});
+$('yap-pill').addEventListener('click',function(){startLive('voice');});
+$('btn-ambassador').href=C.ambassadorUrl;$('btn-double').href=C.digitalDoubleUrl;
+$('lk-end').addEventListener('click',async function(){sttStop();if(LS.on)lsStop();if(lkRoom){await lkRoom.disconnect();lkRoom=null;}document.body.classList.remove('live');$('lk-end').style.display='none';});
+document.querySelectorAll('#mode-bar button').forEach(function(b){b.addEventListener('click',function(){var m=b.getAttribute('data-mode');setMode(m);if(!lkRoom&&!LS.on)startLive(m);});});
+$('lib-vol-range').addEventListener('input',applyVolume);
+$('boring-bubble').addEventListener('click',function(){setAvatarHidden(!document.body.classList.contains('avatar-hidden'));});
+
+
+/* ---- Live Chat text ---- */
+var chatHist=[],lastBot=null,lastBotAt=0,waitTimer=null,pendingEl=null,lastTyped='';
+function addMsg(cls,text){var d=document.createElement('div');d.className='chat-msg '+cls;d.textContent=text;$('chat-log').appendChild(d);$('chat-log').scrollTop=$('chat-log').scrollHeight;return d;}
+function clearWait(){if(waitTimer){clearTimeout(waitTimer);waitTimer=null;}if(pendingEl){pendingEl.remove();pendingEl=null;}$('chat-send').disabled=false;}
+function onLiveData(payload,participant,kind,topic){if(topic!==C.dataReplyTopic)return;var m;try{m=JSON.parse(new TextDecoder().decode(payload));}catch(e){return;}
+  var text=String(m.text||'').trim();if(!text)return;
+  if(m.role==='assistant'){clearWait();var now=Date.now();
+    if(lastBot&&now-lastBotAt<6000){lastBot.textContent+=' '+text;}else{lastBot=addMsg('chat-bot',text);}lastBotAt=now;$('chat-log').scrollTop=$('chat-log').scrollHeight;}
+  else{if(text.toLowerCase()===lastTyped.toLowerCase())return;lastBot=null;addMsg('chat-you',text);}}
+async function askText(t){var ok=false;if(pendingEl)pendingEl.textContent=C.name+' is typing...';var rep;
+  try{var r=await fetch(C.askUrl,{method:'POST',headers:{'content-type':'text/plain'},body:JSON.stringify({persona:C.persona,message:(C.vapiContext?C.vapiContext+'\n\n':'')+t,history:chatHist.slice(-8)})});
+    var j=await r.json().catch(function(){return null;});
+    if(!r.ok||!j||!j.reply)throw new Error((j&&j.error)||('HTTP '+r.status));
+    ok=true;rep=j.reply;chatHist.push({role:'user',content:t},{role:'assistant',content:rep});
+  }catch(e){rep=LS.on?(C.name+(liveMode==='silent'?' is answering out loud - tap Library or Voice to hear him. (Text replies coming soon.)':' is answering out loud. (Text replies coming soon.)')):('Could not reach '+C.name+' right now ('+e.message+').');}
+  clearWait();lastBot=null;addMsg('chat-bot',rep);
+  if(LS.on&&ok){sttQuietFor(rep);lsSay(rep);}}
+$('chat-form').addEventListener('submit',async function(e){e.preventDefault();var t=$('chat-input').value.trim();if(!t)return;
+  $('chat-input').value='';lastTyped=t;lastBot=null;addMsg('chat-you',t);
+  clearWait();$('chat-send').disabled=true;pendingEl=addMsg('chat-pending',C.name+' is fetching...');
+  var sent=false;if(lkRoom&&lkRoom.state==='connected'&&C.dataTopic){try{await lkRoom.localParticipant.publishData(new TextEncoder().encode(JSON.stringify({text:t})),{reliable:true,topic:C.dataTopic});sent=true;}catch(err){}}
+  if(!sent){askText(t);return;}
+  waitTimer=setTimeout(function(){waitTimer=null;askText(t);},C.avatarWaitMs);});
+setMode('voice',true);
+
+/* ---- Audio unlock (from buddyfetch.ai/ginger, Buddy 2026-10-18) ----
+   Chrome can hold back playback until a real user gesture, which makes a working avatar look silent.
+   On the first tap/key anywhere, re-run LiveKit startAudio and replay media at the current mode's volume. */
+(function(){
+  function unlock(){try{
+    if(lkRoom&&lkRoom.startAudio){lkRoom.startAudio().catch(function(){});}
+    document.querySelectorAll('audio.lk-audio,#lk-video').forEach(function(el){if(el.play)el.play().catch(function(){});});
+    applyVolume();
+  }catch(e){}}
+  ['pointerdown','keydown','touchstart'].forEach(function(ev){document.addEventListener(ev,unlock,{capture:true});});
+})();
+
+/* ---- Swipe / arrow navigation (same cycle as slamdunk.html, Glenn 10/18) ----
+   left swipe (or ArrowLeft) = next page, right swipe (or ArrowRight) = previous page.
+   Cycle: Hey Ginger -> iLendGirl -> SlamDunk -> Hey Ginger ...  Home screen only (off during Live Chat). */
+(function(){
+  if(!C.swipeSelfUrl)return; /* not in the Ginger/iLendGirl/SlamDunk swipe cycle */
+  var ORDER=[C.ambassadorUrl,C.digitalDoubleUrl,C.swipeSelfUrl], SELF=2;
+  function go(dir){location.href=ORDER[(SELF+dir+ORDER.length)%ORDER.length];}
+  function active(){return !document.body.classList.contains('live');}
+  var sx=0,sy=0,tracking=false;
+  document.addEventListener('touchstart',function(e){if(!active())return;var t=e.touches[0];sx=t.clientX;sy=t.clientY;tracking=true;},{passive:true});
+  document.addEventListener('touchmove',function(e){if(tracking&&active()&&Math.abs(e.touches[0].clientX-sx)>10)e.preventDefault();},{passive:false});
+  document.addEventListener('touchend',function(e){if(!tracking)return;tracking=false;if(!active())return;
+    var t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;
+    if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.4){go(dx<0?1:-1);}},{passive:true});
+  document.addEventListener('keydown',function(e){if(!active()||/INPUT|TEXTAREA/.test((e.target||{}).tagName||''))return;
+    if(e.key==='ArrowLeft')go(1);else if(e.key==='ArrowRight')go(-1);});
+})();
+</script>
+</body></html>
