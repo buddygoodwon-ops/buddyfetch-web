@@ -26,7 +26,8 @@ body:has(lemon-slice-widget[controlled-widget-state="active"]) #buddy-mute-hint{
 @media (max-width:480px){
 body{background:#333333;}
 .buddy-avatar-promo{width:100%;max-width:none;min-height:100dvh;box-sizing:border-box;margin:0;border-radius:0;display:flex;flex-direction:column;justify-content:center;padding:calc(env(safe-area-inset-top) + 16px) 20px calc(env(safe-area-inset-bottom) + 16px);}
-.buddy-avatar-promo .avatar-frame{width:min(329px,40dvh);height:min(329px,40dvh);}
+.buddy-avatar-promo .avatar-frame{width:clamp(180px,calc(100dvh - 440px - env(safe-area-inset-top) - env(safe-area-inset-bottom)),329px);height:clamp(180px,calc(100dvh - 440px - env(safe-area-inset-top) - env(safe-area-inset-bottom)),329px);}
+.buddy-avatar-promo .avatar-frame img[alt*="logo"]{width:41%!important;bottom:16%!important;}
 }
 </style>
 </head><body>
