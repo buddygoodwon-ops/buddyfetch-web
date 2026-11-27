@@ -4,9 +4,14 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "npx serve -l 3000"
+    "dev": "npx serve -l 3000",
+    "test:phone-fit": "node test-phone-fit.mjs",
+    "test:widget-fit": "node -e \"process.env.PHONE_FIT_MODE=1;import('./test-phone-fit.mjs')\""
   },
   "dependencies": {
     "@vapi-ai/web": "^2.5.2"
+  },
+  "devDependencies": {
+    "puppeteer": "^25.18.1"
   }
 }
